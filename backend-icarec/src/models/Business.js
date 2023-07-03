@@ -2,24 +2,16 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const userSchema = new Schema({
-    first_name:{
-        type:String,
-        required:false
-    },
-    last_name: {
+const businessSchema = new Schema({
+    business_name: {
         type: String,
         required: false
     },
-    age:{
-        type:Number,
-        required:false
-    },
-    city: {
+    business_location: {
         type: String,
         required: false
     },
-    password: {
+    RUC: {
         type: String,
         required: false
     },
@@ -27,23 +19,23 @@ const userSchema = new Schema({
         type: String,
         required: false
     },
-    dni: {
+    website: {
         type: String,
         required: false
     },
-    email: {
-        type: String,
+    services: {
+        type: [String],
         required: false
     },
-    role: {
-        type: String,
+    images: {
+        type: [String],
         required: false
     },
 
-    business: {
+    user: {
         type: Schema.Types.ObjectId,
-        ref: 'Business'
+        ref: 'User'
     }
-})
+});
 
-module.exports = mongoose.model("User",userSchema)
+module.exports = mongoose.model("Business", businessSchema)
