@@ -39,10 +39,12 @@ const userSchema = new Schema({
         type: [String],
         required: false
     },
-    business: {
-        type: Schema.Types.ObjectId,
-        ref: 'Business'
-    }
+    businesses: [
+        { 
+            type: Schema.Types.ObjectId, 
+            ref: 'Business' 
+        }
+    ]
 })
 
 module.exports = mongoose.model("User",userSchema)
