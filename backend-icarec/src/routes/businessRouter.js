@@ -1,10 +1,11 @@
 const express = require('express')
-const businessController = require('../controllers/business.controller')
+const BC = require('../controllers/business.controller');
+const { checkUserExistence } = require('../middlewares/middleware');
 
 const businessRouter = express.Router();
 
-businessRouter.post("/createBusiness",businessController.create_business)
+businessRouter.post("/createBusiness/:userId", checkUserExistence, BC.create_business)
 
-businessRouter.get("/getBusiness",businessController.get_business)
+businessRouter.get("/getBusiness", BC.get_business)
 
 module.exports= businessRouter;

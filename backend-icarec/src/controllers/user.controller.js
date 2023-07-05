@@ -3,14 +3,13 @@ const User = require("../models/User")
 const get_user = async(req,res) => {
     try {
         const {first_name} = req.body
-        const currentUser = await User.find({
-            first_name
-        })
+        const currentUser = await User.findOne({ first_name }).populate('businesses')
         return res.status(200).json({
             found:true,
             currentUser
         })
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             found:false,
             message:"User not found",
