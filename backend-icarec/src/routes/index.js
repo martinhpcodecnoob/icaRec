@@ -1,7 +1,9 @@
 const userRouter = require("./userRouter")
+const businessRouter = require("./businessRouter")
 
 const routes =[
-    ["user",userRouter]
+    ["user",userRouter],
+    ["business",businessRouter]
 ]
 
 const router = (app) => {

@@ -10,7 +10,7 @@ const logger = require('morgan')
 
 const router = require('./src/routes/index')
 
-const {DB_URL} = process.env
+const {DB_URL, DB_URL_LOCAL} = process.env
 
 const app = express()
 mongoose
