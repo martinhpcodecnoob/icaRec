@@ -39,7 +39,6 @@ const userSchema = new Schema({
         type: String,
         required: false
     },
-
     business: {
         type: Schema.Types.ObjectId,
         ref: 'Business'
