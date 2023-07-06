@@ -1,8 +1,25 @@
-import React from 'react'
+import React, {useState} from 'react'
+import Login1 from './Login1'
+import CreateAccount from './CreateAccount'
+import ResetPassword from './ResetPassword'
 
-const Login = ({ onClose }) => {
+const Login2 = ({ onClose }) => {
   const handleBack = () => {
     onClose()
+  }
+
+  const [showLogin1, setShowLogin1] = useState(false)
+  const [showCreateAccount, setShowCreateAccount] = useState(false)
+  const [showResetPassword, setShowResetPassword] = useState(false)
+
+  const handleLogin1Close = () => {
+    setShowLogin1(false)
+  }
+  const handleCreateAccountClick = () => {
+    setShowCreateAccount(true)
+  }
+  const handleResetPasswordClick = () => {
+    setShowResetPassword(true)
   }
 
   return (
@@ -52,18 +69,21 @@ const Login = ({ onClose }) => {
         </button>
         <div className="text-sm text-center">
           <p className="mb-2">
-            <button className="text-red-500 underline">
+            <button className="text-red-500 underline" onClick={handleResetPasswordClick}>
               He olvidado mi contraseña
             </button>
           </p>
           <p>
             ¿Todavía no tienes una cuenta?{' '}
-            <button className="text-red-500 underline">Regístrate</button>
+            <button className="text-red-500 underline" onClick={handleCreateAccountClick}>Regístrate</button>
           </p>
         </div>
       </div>
+      {showLogin1 && <Login1 onClose={handleLogin1Close}  />}
+      {showCreateAccount && <CreateAccount onClose={() => setShowCreateAccount(false)} />}
+      {showResetPassword && <ResetPassword onClose={() => setShowResetPassword(false)} />}
     </div>
   )
 }
 
-export default Login
+export default Login2
