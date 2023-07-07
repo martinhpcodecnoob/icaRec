@@ -3,11 +3,10 @@ import CreateAccount from './CreateAccount'
 import Login2 from './Login2'
 
 const Login1 = ({ onClose }) => {
-
   const handleBack = () => {
     onClose()
   }
-
+  
   const [showCreateAccount, setShowCreateAccount] = useState(false)
   const [ShowLogin2, setShowLogin2] = useState(false)
 
@@ -24,7 +23,7 @@ const Login1 = ({ onClose }) => {
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-10">
       <div className="bg-white p-8 rounded shadow-md w-80 h-100 relative">
         <button
           className="text-red-500 font-bold absolute left-4 top-4"
@@ -91,5 +90,6 @@ const Login1 = ({ onClose }) => {
     </div>
   )
 }
+
 
 export default Login1
