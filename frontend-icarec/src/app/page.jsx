@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import Login from '../components/Login'
+import Login from '../components/Login1'
 import Image from 'next/image'
 import { Button } from 'flowbite-react';
 import DefaultCarousels from '../components/Carousel'
