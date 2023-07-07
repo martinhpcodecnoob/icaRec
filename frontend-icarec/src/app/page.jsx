@@ -1,6 +1,11 @@
 'use client'
 import React, { useState } from 'react'
 import Login from '../components/Login'
+import Image from 'next/image'
+import { Button } from 'flowbite-react';
+import DefaultCarousels from '../components/Carousel'
+import Searchbar from '../components/Searchbar';
+import Cardsup from '@/components/Cardsup';
 
 const IndexPage = () => {
   const [isLoginOpen, setLoginOpen] = useState(false);
@@ -15,12 +20,26 @@ const IndexPage = () => {
 
   return (
     <div>
-      <h1>Hello, Next.js!</h1>
-      <p>Welcome to my Next.js app.</p>
-      <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mt-4" onClick={handleOpenLogin}>
-        Abrir Login
-      </button>
-      {isLoginOpen && <Login onClose={handleCloseLogin} />}
+      <div className='flex justify-between'>
+        <Image
+          src={'/detodologo.png'}
+          width={100}
+          height={70}
+          alt='logo'
+        />
+        <div className='flex justify-center items-center'><p>Descubre un mundo de oportunidades con un clic!</p></div>
+        <div className='flex justify-center items-center'>
+          <Button color="failure" onClick={handleOpenLogin}>
+            Login
+          </Button>
+          {isLoginOpen && <Login onClose={handleCloseLogin} />}
+        </div>
+      </div>
+      <div>
+        <DefaultCarousels/>
+        <Searchbar/>
+        <Cardsup/>
+      </div>
     </div>
   )
 }
