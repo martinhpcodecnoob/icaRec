@@ -31,11 +31,12 @@ const businessSchema = new Schema({
         type: [String],
         required: false
     },
+    owner: { 
+        type: Schema.Types.ObjectId, 
+        ref: 'User', 
+        required: true 
+    },
 
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    }
-});
+})
 
 module.exports = mongoose.model("Business", businessSchema)
