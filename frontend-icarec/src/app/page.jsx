@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react'
-import Login from '../components/Login1'
+
+import Login1 from '../components/Login1'
 import Image from 'next/image'
 import { Button } from 'flowbite-react';
 import DefaultCarousels from '../components/Carousel'
@@ -32,7 +33,7 @@ const IndexPage = () => {
           <Button color="failure" onClick={handleOpenLogin}>
             Login
           </Button>
-          {isLoginOpen && <Login onClose={handleCloseLogin} />}
+          {isLoginOpen && <Login1 onClose={handleCloseLogin} />}
         </div>
       </div>
       <div>

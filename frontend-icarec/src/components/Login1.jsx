@@ -1,13 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
+import CreateAccount from './CreateAccount'
+import Login2 from './Login2'
 
-const Login = ({ onClose }) => {
+const Login1 = ({ onClose }) => {
   const handleBack = () => {
     onClose()
+  }
+  
+  const [showCreateAccount, setShowCreateAccount] = useState(false)
+  const [ShowLogin2, setShowLogin2] = useState(false)
+
+  const handleCreateAccountClick = () => {
+    setShowCreateAccount(true)
+  }
+
+  const handleShowLogin2Click = () => {
+    setShowLogin2(true)
+  }
+
+  const handleLogin2Close = () => {
+    setShowLogin2(false)
   }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-10">
-      <div className="bg-white p-10 rounded shadow-md w-80 h-100 relative">
+      <div className="bg-white p-8 rounded shadow-md w-80 h-100 relative">
         <button
           className="text-red-500 font-bold absolute left-4 top-4"
           onClick={handleBack}
@@ -24,46 +41,55 @@ const Login = ({ onClose }) => {
           <h2 className="text-2xl font-bold mb-4">Inicio de sesión</h2>
         </div>
         <div className="mb-4">
-          <label htmlFor="email" className="block mb-1">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-          />
+          <button
+            className="w-full border border-gray-300 rounded px-3 py-2 mb-2 flex items-center"
+          >
+            <img
+              src="/googlelogo.png"
+              alt="Google Logo"
+              className="mr-2"
+              style={{ width: '16px', height: '16px' }}
+            />
+            Continuar con Google
+          </button>
+          <button
+            className="w-full border border-gray-300 rounded px-3 py-2 mb-2 flex items-center"
+          >
+            <img
+              src="/facebooklogo.png"
+              alt="Facebook Logo"
+              className="mr-2"
+              style={{ width: '16px', height: '16px' }}
+            />
+            Continuar con Facebook
+          </button>
+          <button
+            className="w-full border border-gray-300 rounded px-3 py-2 mb-2 flex items-center"
+            onClick={handleShowLogin2Click}
+          >
+            <img
+              src="/maillogo.png"
+              alt="Account Logo"
+              className="mr-2"
+              style={{ width: '16px', height: '16px' }}
+            />
+            Continuar con mi cuenta
+          </button>
         </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block mb-1">
-            Contraseña
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-          />
-        </div>
-        <div className="flex items-center mb-4">
-          <input type="checkbox" id="remember" className="mr-2" />
-          <label htmlFor="remember">Mantener sesión iniciada</label>
-        </div>
-        <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded w-full mb-4">
-          Inicio de sesión
-        </button>
         <div className="text-sm text-center">
           <p className="mb-2">
-            <button className="text-red-500 underline">
-              He olvidado mi contraseña
-            </button>
-          </p>
-          <p>
             ¿Todavía no tienes una cuenta?{' '}
-            <button className="text-red-500 underline">Regístrate</button>
+            <button className="text-red-500 underline" onClick={handleCreateAccountClick}>
+              Crear cuenta
+            </button>
           </p>
         </div>
       </div>
+      {showCreateAccount && <CreateAccount onClose={() => setShowCreateAccount(false)} />}
+      {ShowLogin2 && <Login2 onClose={handleLogin2Close} />}
     </div>
   )
 }
 
-export default Login
+
+export default Login1
