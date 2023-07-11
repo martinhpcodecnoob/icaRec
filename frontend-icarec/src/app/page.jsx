@@ -6,7 +6,8 @@ import Image from 'next/image'
 import { Button } from 'flowbite-react';
 import DefaultCarousels from '../components/Carousel'
 import Searchbar from '../components/Searchbar';
-import Cardsup from '@/components/Cardsup';
+import Cardsup from '@/components/Cards/Cardsup';
+import Cardsdown from '@/components/Cards/Cardsdown';
 
 const IndexPage = () => {
   const [isLoginOpen, setLoginOpen] = useState(false);
@@ -40,6 +41,9 @@ const IndexPage = () => {
         <DefaultCarousels/>
         <Searchbar/>
         <Cardsup/>
+        <div id='cardDown'>
+          <Cardsdown/>
+        </div>
       </div>
     </div>
   )
