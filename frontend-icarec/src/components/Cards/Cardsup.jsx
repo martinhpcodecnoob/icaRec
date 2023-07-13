@@ -42,7 +42,7 @@ const Cardsup = () => {
                             </Carousel>
                         </div>
                     ) : (
-                        <div className="grid gap-5 2xl:grid-cols-4  xl:grid-cols-3 md:grid-cols-2">
+                        <div className="grid gap-5 xl:grid-cols-4 md:grid-cols-2">
                             <div className="w-72 h-48 bg-stone-50 relative rounded-lg">
                                 <img 
                                 src='https://wallpapers.com/images/featured/business-jzw8ax93flqonkce.jpg'

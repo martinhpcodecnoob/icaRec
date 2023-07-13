@@ -9,6 +9,7 @@ import Searchbar from '../components/Searchbar';
 import Cardsup from '@/components/Cards/Cardsup';
 import Cardsdown from '@/components/Cards/Cardsdown';
 
+
 const IndexPage = () => {
   const [isLoginOpen, setLoginOpen] = useState(false);
 
@@ -39,6 +40,7 @@ const IndexPage = () => {
       </div>
       <div>
         <DefaultCarousels/>
+        <div className='flex justify-center items-center text-2xl pt-2'>¿En que te puedo ayudar?</div>
         <Searchbar/>
         <Cardsup/>
         <div id='cardDown'>
