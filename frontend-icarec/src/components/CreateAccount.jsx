@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import RegisterUser from './RegisterUser'
 
 const CreateAccount = ({ onClose }) => {
   const handleBack = () => {
