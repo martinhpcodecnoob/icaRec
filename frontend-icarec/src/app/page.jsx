@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-
+import { useSession } from 'next-auth/react'
 import Login1 from '../components/Login1'
 import Image from 'next/image'
 import { Button } from 'flowbite-react';
@@ -9,9 +9,10 @@ import Searchbar from '../components/Searchbar';
 import Cardsup from '@/components/Cards/Cardsup';
 import Cardsdown from '@/components/Cards/Cardsdown';
 
-
 const IndexPage = () => {
   const [isLoginOpen, setLoginOpen] = useState(false);
+  const {data} = useSession()
+  console.log("session data:",data)
 
   const handleOpenLogin = () => {
     setLoginOpen(true)

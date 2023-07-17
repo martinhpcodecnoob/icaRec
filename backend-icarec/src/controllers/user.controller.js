@@ -18,6 +18,31 @@ const get_user = async(req,res) => {
     }
 }
 
+const get_user_by_id = async (req, res) => {
+    try {
+      const { userId } = req.params
+      const currentUser = await User.findById(userId).populate('businesses')
+      console.log(userId)
+      if (!currentUser) {
+        return res.status(404).json({
+          found: false,
+          message: 'User not found',
+        })
+      }
+      return res.status(200).json({
+        found: true,
+        currentUser,
+      })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({
+        found: false,
+        message: 'An error occurred while fetching the user',
+        error,
+      })
+    }
+  }
+
 const create_user = async(req,res) =>{
     try {
         const { 
@@ -55,5 +80,6 @@ const create_user = async(req,res) =>{
 
 module.exports = {
     get_user,
-    create_user
+    create_user,
+    get_user_by_id,
 }
