@@ -5,8 +5,8 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 
 const containerStyle = {
-    width: '40%',
-    height: '500px',
+    width: '100%',
+    height: '100vh',
     border: '1px solid black',
   }
 
@@ -26,6 +26,7 @@ useEffect(() => {
       (position) => {
         const { latitude, longitude } = position.coords
         setUserLocation({ lat: latitude, lng: longitude })
+        setMarkerPosition({ lat: latitude, lng: longitude })
       },
       (error) => {
         console.error('Error al obtener la ubicación:', error)
@@ -43,7 +44,7 @@ useEffect(() => {
         if (status === 'OK') {
           console.log(results)
           if (results[0]) {
-            setZoneName(results[0].formatted_address)
+            setZoneName(results[3].formatted_address)
             setZoneError(false)
           } else {
             setZoneName('Nombre de zona no disponible')
@@ -56,7 +57,7 @@ useEffect(() => {
       })
     }
   }, [markerPosition])
-
+  
     return (
       <div className='flex flex-col items-center p-2'>
         <p>User Loc:{JSON.stringify(userLocation)}</p>
@@ -79,7 +80,7 @@ useEffect(() => {
           <GoogleMap
             mapContainerStyle={containerStyle}
             center={userLocation || markerPosition || { lat: -14, lng: -79 }}
-            zoom={4}
+            zoom={7}
             onClick={(event) => setMarkerPosition(event.latLng)}
           >
             {markerPosition && (

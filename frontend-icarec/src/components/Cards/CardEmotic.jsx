@@ -5,11 +5,6 @@ export default function Card({initialNumber,increment=1}) {
 const [emoReaction, setEmoReaction] = useState(false)
 const [count, setCount] = useState(initialNumber)
 
-useEffect(() => {
-    console.log("Esta es la cuenta : ",count);
-
-}, [emoReaction])
-
 const handleEmoReact = () =>{
     if (emoReaction === true) {
     setEmoReaction(false)

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 
 import Login1 from '../components/Login1'
 import Image from 'next/image'
@@ -12,7 +12,8 @@ import Cardsdown from '@/components/Cards/Cardsdown';
 
 const IndexPage = () => {
   const [isLoginOpen, setLoginOpen] = useState(false);
-
+  // const sizeResolution = window.innerWidth
+  // console.log("Esto es sizeResolution: ",sizeResolution);
   const handleOpenLogin = () => {
     setLoginOpen(true)
   }
