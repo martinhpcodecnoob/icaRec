@@ -25,7 +25,7 @@ return (
             <div className='w-1/3'>
                 <Form/>
             </div>
-            <div>ola como estas</div>
+            <div></div>
         </div>
     </div>
   )

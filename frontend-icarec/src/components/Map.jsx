@@ -4,13 +4,13 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 
-const containerStyle = {
-    width: '100%',
-    height: '100vh',
-    border: '1px solid black',
-  }
 
 const Map = () => {
+  const containerStyle = {
+      width: '100%',
+      height: '10.77rem',
+      borderRadius:'0.375rem'
+    }
     const [userLocation, setUserLocation] = useState(null);
     const [markerPosition, setMarkerPosition] = useState(null)
     const [zoneName, setZoneName] = useState('')
@@ -59,23 +59,7 @@ useEffect(() => {
   }, [markerPosition])
   
     return (
-      <div className='flex flex-col items-center p-2'>
-        <p>User Loc:{JSON.stringify(userLocation)}</p>
-        {markerPosition ? (
-        <div className='p-4'>
-          {zoneError ? (
-            <p>Error al obtener el nombre de la zona</p>
-          ) : (
-            <p>
-              <span className="font-bold text-lg">Ubicación:</span> {zoneName}
-            </p>
-          )}
-        </div>
-        ) : (
-          <p className='p-4'>
-            <span className="font-bold text-lg">Ubicación:</span> Seleccione una ubicación en el mapa con clic izquierdo
-          </p>
-        )}
+      <div className='z-1'>
         <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
           <GoogleMap
             mapContainerStyle={containerStyle}
@@ -90,7 +74,7 @@ useEffect(() => {
                 onDrag={handleMarkerDrag}
                 options={{
                     icon: {
-                      path: window.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                      path: globalThis.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
                       fillColor: 'green', 
                       fillOpacity: 1,
                       strokeWeight: 0,
@@ -104,4 +88,6 @@ useEffect(() => {
       </div>
     )
 }
+
+
 export default Map
