@@ -1,16 +1,25 @@
-import Map from '@/components/Map'
+'use client'
+import BusinessSubComponent from '@/components/BusinessSubComponent'
 import React from 'react'
 
 const IndexPage = () => {
- 
+  const title = 'Título del componente'
+  const whatsapp = '123456789'
+  const horario = 'Lunes a Viernes, 9AM-5PM'
+  const webMedia = {"webPage": ["pagina web"], "Facebook": ["pagina de facebook"]}
+  const servicios = ['S1', 'Sv2', 'ci3', 'Sevi4', 'Sevico5', 'Servicio 6']
+  const ruc = '1234567890'
   return (
     <div>
-      <h1>Hello, About.js!</h1>
-      <p>Welcome to my Next.js app.</p>
-      <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mt-4" >
-        Abrir Login
-      </button>
-      <Map />
+      <BusinessSubComponent
+        componentType="view"
+        businessName={title}
+        whatsappNumber={whatsapp}
+        schedule={horario}
+        webMedia={webMedia}
+        services={servicios}
+        ruc={ruc}
+      />
     </div>
   )
 }

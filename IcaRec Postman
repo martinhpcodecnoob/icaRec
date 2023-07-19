@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "7f84abd3-7a8a-4931-b03e-1551208fcd7c",
+		"name": "IcaRed",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27284213"
+	},
+	"item": [
+		{
+			"name": "Business",
+			"item": [
+				{
+					"name": "Business",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"business_name\":\"Negocio 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3004/api/business/getBusiness",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3004",
+							"path": [
+								"api",
+								"business",
+								"getBusiness"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Business",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"business_name\":\"Negocio 1\", \r\n    \"business_location\":\"Av.Negocio 123\", \r\n    \"RUC\":\"123456\", \r\n    \"cellphone\":\"945 945 123\", \r\n    \"website\":\"www.negocio.com\",\r\n    \"services\": [\"servicio1\",\"servicio2\"],\r\n    \"images\":[\"url1\",\"url2\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3004/api/business/createBusiness/64a51869fa16008f8cf02e1d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3004",
+							"path": [
+								"api",
+								"business",
+								"createBusiness",
+								"64a51869fa16008f8cf02e1d"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\":\"Juan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3004/api/user/getUser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3004",
+							"path": [
+								"api",
+								"user",
+								"getUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\":\"Juan\", \r\n    \"last_name\":\"Hernandez\", \r\n    \"age\":21, \r\n    \"city\":\"Ciudad Imaginaria\", \r\n    \"password\":\"contraseña1234\",\r\n    \"cellphone\":\"942 942 123\",\r\n    \"dni\": \"45678912\",\r\n    \"email\": \"juanhernandez@gmail.com\",\r\n    \"role\":[\"admin\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3004/api/user/createUser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3004",
+							"path": [
+								"api",
+								"user",
+								"createUser"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

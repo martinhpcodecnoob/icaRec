@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import CreateAccount from './CreateAccount'
 import Login2 from './Login2'
+import GoogleButton from './GoogleButton'
+//import { GoogleLoginButton } from './GoogleLoginButton'
 
 const Login1 = ({ onClose }) => {
   const handleBack = () => {
@@ -41,17 +43,7 @@ const Login1 = ({ onClose }) => {
           <h2 className="text-2xl font-bold mb-4">Inicio de sesión</h2>
         </div>
         <div className="mb-4">
-          <button
-            className="w-full border border-gray-300 rounded px-3 py-2 mb-2 flex items-center"
-          >
-            <img
-              src="/googlelogo.png"
-              alt="Google Logo"
-              className="mr-2"
-              style={{ width: '16px', height: '16px' }}
-            />
-            Continuar con Google
-          </button>
+          <GoogleButton />
           <button
             className="w-full border border-gray-300 rounded px-3 py-2 mb-2 flex items-center"
           >

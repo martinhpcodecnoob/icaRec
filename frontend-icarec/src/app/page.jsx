@@ -1,19 +1,20 @@
 'use client'
-import React, { useState,useEffect } from 'react'
-
+import React, { useState } from 'react'
+import { useSession, signIn, signOut } from 'next-auth/react'
 import Login1 from '../components/Login1'
 import Image from 'next/image'
-import { Button } from 'flowbite-react';
+import { Button } from 'flowbite-react'
 import DefaultCarousels from '../components/Carousel'
-import Searchbar from '../components/Searchbar';
-import Cardsup from '@/components/Cards/Cardsup';
-import Cardsdown from '@/components/Cards/Cardsdown';
-
+import Searchbar from '../components/Searchbar'
+import Cardsup from '@/components/Cards/Cardsup'
+import Cardsdown from '@/components/Cards/Cardsdown'
+import LoadingScreen from '@/components/LoadingScreen'
 
 const IndexPage = () => {
-  const [isLoginOpen, setLoginOpen] = useState(false);
-  // const sizeResolution = window.innerWidth
-  // console.log("Esto es sizeResolution: ",sizeResolution);
+  const [isLoginOpen, setLoginOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const { data: session, status } = useSession()
+
   const handleOpenLogin = () => {
     setLoginOpen(true)
   }
@@ -22,6 +23,15 @@ const IndexPage = () => {
     setLoginOpen(false)
   }
 
+  const handleSignOut = () => {
+    setIsLoading(true)
+    signOut()
+  } 
+
+   if (status === "loading" || isLoading) {
+    return <LoadingScreen />
+  }
+ 
   return (
     <div>
       <div className='flex justify-between'>
@@ -33,9 +43,19 @@ const IndexPage = () => {
         />
         <div className='flex justify-center items-center'><p>Descubre un mundo de oportunidades con un clic!</p></div>
         <div className='flex justify-center items-center'>
-          <Button color="failure" onClick={handleOpenLogin}>
-            Login
-          </Button>
+          {!session && (
+            <Button color="failure" onClick={handleOpenLogin}>
+              Login
+            </Button>
+          )}
+          {session && (
+          <div className='flex space-x-6 px-4 items-center'>
+            <p className='justify-center'>Bienvenido! {session.user.email}</p>
+            <Button color="failure" onClick={handleSignOut}>
+              Sign out
+            </Button>
+          </div>
+          )}
           {isLoginOpen && <Login1 onClose={handleCloseLogin} />}
         </div>
       </div>
