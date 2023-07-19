@@ -5,8 +5,8 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 
 const containerStyle = {
-    width: '40%',
-    height: '500px',
+    width: '90%',
+    height: '300px',
     border: '1px solid black',
   }
 
@@ -59,7 +59,6 @@ useEffect(() => {
 
     return (
       <div className='flex flex-col items-center p-2'>
-        <p>User Loc:{JSON.stringify(userLocation)}</p>
         {markerPosition ? (
         <div className='p-4'>
           {zoneError ? (
