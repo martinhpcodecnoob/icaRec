@@ -8,6 +8,17 @@
   }
 }
 
+.scrolbar::-webkit-scrollbar{
+  width: 7px;
+  height: 7px;
+}
+
+.scrolbar::-webkit-scrollbar-thumb{
+  background:red;
+  border-radius: 5px;
+}
+
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

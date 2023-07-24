@@ -78,18 +78,17 @@ const BusinessSubComponent = ({ componentType, businessName, whatsappNumber, sch
           <p className="font-bold">Horario:</p>
           <p>{schedule}</p>
         </div>
-        <div className="grid grid-cols-2">
-          <div className="col-span-2 justify-around">
+
             {Object.entries(webMedia).map(([mediaName, mediaInfo], index) => (
-              <div key={index} className='flex justify-between'>
+              <div key={index} className='grid grid-cols-2'>
                 <p className="font-bold">{getMediaNameContent(mediaName)}:</p>
                 {mediaInfo.map((info, infoIndex) => (
                 <p key={infoIndex}>{info}</p>
                 ))}
               </div>
             ))}
-          </div>
-        </div>
+
+
         <div className="grid grid-cols-2">
           <p className="font-bold">Servicios:</p>
           <div className="col-span-1">
