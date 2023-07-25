@@ -1,8 +1,10 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import { GoogleMap, Marker } from '@react-google-maps/api'
+import {useJsApiLoader} from '@react-google-maps/api'
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+const libraries = ['places']
 
 const Map = () => {
   const containerStyle = {
@@ -21,7 +23,6 @@ const Map = () => {
 }
 
 useEffect(() => {
-  const loadGoogleMaps = () => {
     setIsLoaded(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -37,16 +38,6 @@ useEffect(() => {
     } else {
       console.error('Geolocalización no soportada')
     }
-  }
-
-  if (!window.google) {
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}`;
-    script.onload = loadGoogleMaps;
-    document.body.appendChild(script);
-  } else {
-    loadGoogleMaps();
-  }
 }, [])
 
 useEffect(() => {
