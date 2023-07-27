@@ -1,20 +1,14 @@
+'use client'
 import BusinessSubComponent from '@/components/BusinessSubComponent'
 import FileInput from '@/components/Formbussiness/Fileinput'
 import Form from '@/components/Formbussiness/Form'
 import Image from 'next/image'
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 
 export default function createForm() {
-
-    const pruebaDatos={
-        title:'Título del componente',
-        whatsapp:'123456789',
-        horario:'Lunes a Viernes, 9AM-5PM',
-        webMedia:{"webPage": ["pagina web"], "Facebook": ["pagina de facebook"]},
-        servicios:['S1', 'Sv2', 'ci3', 'Sevi4', 'Sevico5', 'Servicio 6'],
-        ruc:'1234567890'
-    }
+    const inputForm = useSelector(state => state.preview.inputForm)
     
 return (
     <div>
@@ -32,22 +26,16 @@ return (
                 </div>
             </div>
         </div>
-        <div className='flex justify-between px-6'>
+        <div className='flex justify-around px-6'>
             <div className='smartphone:w-[100%] lg:w-[20rem]'>
                 <Form/>
             </div>
-            <div className='lg:w-[50%]'>
-                <FileInput/>
+            <div className='lg:w-[50%] relative'>
+                <FileInput images={inputForm.images}/>
             </div>
-            <div className='flex'>
+            <div className='flex xl:w-[30%]'>
                 <BusinessSubComponent
-                    componentType="view"
-                    businessName={pruebaDatos.title}
-                    whatsappNumber={pruebaDatos.whatsapp}
-                    schedule={pruebaDatos.horario}
-                    webMedia={pruebaDatos.webMedia}
-                    services={pruebaDatos.servicios}
-                    ruc={pruebaDatos.ruc}
+                    inputForm={inputForm}
                 />
             </div>
         </div>

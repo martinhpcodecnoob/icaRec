@@ -1,99 +1,49 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Map from './Map'
 import ErrorScreen from './ErrorScreen'
+import Skeleton from './Formbussiness/Skeleton'
+import { set } from 'mongoose'
+import { object } from 'yup'
 
-const BusinessSubComponent = ({ componentType, businessName, whatsappNumber, schedule, webMedia, services, ruc }) => {
-
-  function getMediaNameContent(mediaName) {
-    if (mediaName === "webPage") {
-      return "Pagina web"
-    } else if (mediaName === "Facebook") {
-      return "Facebook"
-    } else {
-      return mediaName
-    }
-  }
-
+const BusinessSubComponent = ({inputForm}) => {
+  
   return (
     <>
-    {componentType === 'edit' ? (
-    <div className="max-w-md mx-auto bg-red-100 p-4 rounded-lg border-4 border-gray-400">
-      <h2 className="text-center mb-4 font-bold">{businessName}</h2>
-      <Map />
-      <div className='flex-col items-center p-6'>
-        <div className="grid grid-cols-2">
-          <p className="font-bold">Whatsapp:</p>
-          <p>{whatsappNumber}</p>
-        </div>
-        <div className="grid grid-cols-2">
-          <p className="font-bold">Horario:</p>
-          <p>{schedule}</p>
-        </div>
-        <div className="grid grid-cols-2">
-          <div className="col-span-2 justify-around">
-            {Object.entries(webMedia).map(([mediaName, mediaInfo], index) => (
-              <div key={index} className='flex justify-between'>
-                <p className="font-bold">{getMediaNameContent(mediaName)}:</p>
-                {mediaInfo.map((info, infoIndex) => (
-                <p key={infoIndex}>{info}</p>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="grid grid-cols-2">
-          <p className="font-bold">Servicios:</p>
-          <div className="col-span-1">
-            {services.map((service, index) => (
-              <p key={index}>- {service}</p>
-            ))}
-          </div>
-        </div>
-        <div className='grid grid-cols-2'>
-          <p className="font-bold">RUC:</p>
-          <p>{ruc}</p>
-        </div>
-      </div>
-      <div className="flex justify-center mt-4">
-        <button className="bg-red-500 text-white py-2 px-4 rounded w-2/3">
-          Crear Negocio
-        </button>
-      </div>
-    </div>
-    ) : componentType === 'view' ? (
-      <div className="max-w-md mx-auto bg-red-100 p-4 rounded-lg border-4 border-gray-400">
-      <h2 className="text-center mb-4 font-bold">{businessName}</h2>
+    {Object.keys(inputForm).length !== 0 ? (
+      <div className="scrolbar max-w-md mx-auto bg-red-100 p-4 rounded-lg border-4 border-gray-400 overflow-auto">
+      <h2 className="text-center mb-4 font-bold text-[2rem]">{inputForm.name_business}</h2>
       <div className="flex justify-center mt-4">
         <button className="bg-red-500 text-white py-2 px-4 rounded w-2/3">
           Recomiendame
         </button>
       </div>
-      <Map />
+      <div className='my-2 flex items-center justify-center'>
+        <p className='font-bold'>Ubicacion: </p>
+        <p className='ml-2'>{inputForm.geo_business}</p>
+      </div>
+      <Map latProp={inputForm.location.lat} longProp={inputForm.location.long}/>
       <div className='flex-col items-center p-6'>
         <div className="grid grid-cols-2">
           <p className="font-bold">Whatsapp:</p>
-          <p>{whatsappNumber}</p>
+          <p>{inputForm.cellphone}</p>
         </div>
         <div className="grid grid-cols-2">
-          <p className="font-bold">Horario:</p>
-          <p>{schedule}</p>
+          <p className="font-bold">Horarios:</p>
+          <p>{inputForm.schedule}</p>
         </div>
-
-            {Object.entries(webMedia).map(([mediaName, mediaInfo], index) => (
-              <div key={index} className='grid grid-cols-2'>
-                <p className="font-bold">{getMediaNameContent(mediaName)}:</p>
-                {mediaInfo.map((info, infoIndex) => (
-                <p key={infoIndex}>{info}</p>
-                ))}
-              </div>
-            ))}
-
-
+        <div className="grid grid-cols-2">
+          <p className="font-bold">Pagina Web:</p>
+          <p>{inputForm.name_web}</p>
+        </div>
+        <div className="grid grid-cols-2">
+          <p className="font-bold">Facebook:</p>
+          <p>{inputForm.facebook}</p>
+        </div>
         <div className="grid grid-cols-2">
           <p className="font-bold">Servicios:</p>
           <div className="col-span-1">
             <div className="w-full">
-              {services.map((service, index) => (
+              {inputForm.list_service.map((service, index) => (
                 <p key={index} className="inline-block bg-gray-500 rounded-lg text-white py-1 px-2 m-1">- {service}</p>
               ))}
             </div>
@@ -101,11 +51,11 @@ const BusinessSubComponent = ({ componentType, businessName, whatsappNumber, sch
         </div>
         <div className='grid grid-cols-2'>
           <p className="font-bold">RUC:</p>
-          <p>{ruc}</p>
+          <p>{inputForm.ruc}</p>
         </div>
       </div>
     </div>
-    ) : <ErrorScreen />}
+    ) : <Skeleton />}
     </>
   )
 }

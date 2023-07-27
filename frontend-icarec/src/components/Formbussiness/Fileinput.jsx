@@ -1,9 +1,22 @@
+import Image from "next/image";
 import React from "react";
 
-export default function FileInput() {
+export default function FileInput({images=[]}) {
+  if (images.length > 0) {
+    return(
+      <>
+        <div className="flex items-center justify-center w-full h-full rounded-md">
+          <Image
+            src={images[0]}
+            fill
+          />
+        </div>
+      </>
+    )
+  }
   return (
     <>
-      <div className="flex items-center justify-center w-full h-full bg-gray-300 rounded dark:bg-gray-700">
+      <div className="animate-pulse flex items-center justify-center w-full h-full bg-red-300 rounded">
         <svg
           className="w-10 h-10 text-gray-200 dark:text-gray-600"
           aria-hidden="true"

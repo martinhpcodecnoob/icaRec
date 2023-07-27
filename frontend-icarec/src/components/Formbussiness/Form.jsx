@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import Map from '../../components/Map'
 import { IoIosAddCircle } from "react-icons/io";
 import EtiquetasScroll from "./EtiquetasScroll";
+import { useDispatch } from "react-redux";
+import { saveFormPreview } from "@/redux/Slices/slicePreview";
 
 export default function Form() {
     const initialValues = {
@@ -13,7 +15,12 @@ export default function Form() {
         facebook:"",
         name_web:"",
         list_service:[],
-        images:[]
+        images:[],
+        schedule:"",
+        location:{
+            lat:"",
+            long:""
+        }
     }
     const inputService =""
     const selectImage = ""
@@ -21,6 +28,7 @@ export default function Form() {
     const [input, setInput] = useState(initialValues)
     const [addService, setAddService] = useState(inputService)
     const [selected, setSelected] = useState(selectImage)
+    const dispatch = useDispatch()
 
     const handleInputService = (e) => {
         e.preventDefault()
@@ -60,6 +68,7 @@ export default function Form() {
     const handleSubmit = (e) =>{
         e.preventDefault()
         console.log(input);
+        dispatch(saveFormPreview(input))
     }
     return (
         <div>
@@ -101,7 +110,7 @@ export default function Form() {
                     Ubicacion del Negocio
                 </label>
                 <div className={`mt-3 w-full h-[11rem] border-2 border-gray-300 rounded-md`}>
-                    <Map/>
+                    <Map view={true}/>
                 </div>
             </div>
             <div className="relative z-0 w-full mb-3 group">
@@ -172,6 +181,23 @@ export default function Form() {
                     className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                 >
                     Pagina Web
+                </label>
+            </div>
+            <div className="relative z-0 w-full mb-3 group">
+                <input
+                    type="text"
+                    name="schedule"
+                    id="schedule"
+                    value={input.schedule}
+                    onChange={handleImputChange}
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                />
+                <label
+                    htmlFor="name_web"
+                    className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                    Horario
                 </label>
             </div>
             <div className="relative z-0 w-full mb-3 group">

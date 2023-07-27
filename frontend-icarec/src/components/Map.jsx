@@ -1,66 +1,108 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import { GoogleMap, Marker } from '@react-google-maps/api'
-import {useJsApiLoader} from '@react-google-maps/api'
+import { useDispatch } from 'react-redux'
+import { saveLoaction } from '@/redux/Slices/slicePreview'
 
-const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-const libraries = ['places']
-
-const Map = () => {
-  const containerStyle = {
-      width: '100%',
-      height: '10.77rem',
-      borderRadius:'0.375rem'
-    }
+const Map = ({latProp,longProp,view}) => {
+    const containerStyle = {
+        width: '100%',
+        height: '10.77rem',
+        borderRadius:'0.375rem'
+      }
+    const dispatch = useDispatch()
     const [userLocation, setUserLocation] = useState(null);
     const [markerPosition, setMarkerPosition] = useState(null)
-    const [zoneName, setZoneName] = useState('')
-    const [zoneError, setZoneError] = useState(false)
+    // const [zoneName, setZoneName] = useState('')
+    // const [zoneError, setZoneError] = useState(false)
     const [isLoaded, setIsLoaded] = useState(false);
 
     const handleMarkerDrag = (event) => {
-    setMarkerPosition(event.latLng)
-}
+      const { latLng } = event;
+      const lat = latLng.lat();
+      const lng = latLng.lng();
+
+      // Actualizar la posición del marcador
+      setMarkerPosition({ lat, lng });
+
+      // Mostrar la latitud y longitud en la consola
+      console.log('Latitud:', lat);
+      console.log('Longitud:', lng);
+      dispatch(saveLoaction({
+        latitude:lat,
+        longitude:lng
+      }))
+      // setMarkerPosition(event.latLng)
+    }
+    const handleMarkerPositionChanged = () => {
+      // Obtener la latitud y longitud del marcador cuando cambie su posición
+      const lat = markerPosition.lat;
+      const lng = markerPosition.lng;
+
+      // Mostrar la latitud y longitud en la consola
+      console.log('Latitud:', lat);
+      console.log('Longitud:', lng);
+      dispatch(saveLoaction({
+        latitude:lat,
+        longitude:lng
+      }))
+    };
+    const handleMarkeyClic = (event) =>{
+      if (view) {
+        setMarkerPosition({ lat: event.latLng.lat(), lng: event.latLng.lng() })
+      } else{
+        console.log("Bloquedo");
+      }
+    }
 
 useEffect(() => {
     setIsLoaded(true);
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords
-          setUserLocation({ lat: latitude, lng: longitude })
-          setMarkerPosition({ lat: latitude, lng: longitude })
-        },
-        (error) => {
-          console.error('Error al obtener la ubicación:', error)
-        }
-      );
+      if (latProp && longProp) {
+        setUserLocation({ lat: latProp, lng: longProp })
+        setMarkerPosition({ lat: latProp, lng: longProp })
+      }else{
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords
+            setUserLocation({ lat: latitude, lng: longitude })
+            setMarkerPosition({ lat: latitude, lng: longitude })
+          },
+          (error) => {
+            console.error('Error al obtener la ubicación:', error)
+          }
+        );
+      }
     } else {
       console.error('Geolocalización no soportada')
     }
-}, [])
+}, [latProp, longProp])
 
-useEffect(() => {
-    if (markerPosition) {
-      const geocoder = new window.google.maps.Geocoder()
-      geocoder.geocode({ location: markerPosition }, (results, status) => {
-        if (status === 'OK') {
-          console.log(results)
-          if (results[0]) {
-            setZoneName(results[3].formatted_address)
-            setZoneError(false)
-          } else {
-            setZoneName('Nombre de zona no disponible')
-            setZoneError(true)
-          }
-        } else {
-          setZoneName('Error al obtener el nombre de la zona')
-          setZoneError(true)
-        }
-      })
-    }
-  }, [markerPosition])
-
+// useEffect(() => {
+//     if (markerPosition) {
+//       const geocoder = new window.google.maps.Geocoder()
+//       geocoder.geocode({ location: markerPosition }, (results, status) => {
+//         // dispatch(saveLoaction({
+//           //   latitude:markerPosition.lat,
+//           //   longitude:markerPosition.lng
+//           // }))
+//           if (status === 'OK') {
+//             // console.log("Este es: ",results)
+//             if (results[0]) {
+//             setZoneName(results[3].formatted_address)
+//             setZoneError(false)
+//           } else {
+//             setZoneName('Nombre de zona no disponible')
+//             setZoneError(true)
+//           }
+//         } else {
+//           setZoneName('Error al obtener el nombre de la zona')
+//           setZoneError(true)
+//         }
+//       })
+//     }
+//   }, [markerPosition])
+  
 if (!isLoaded) {
   return (
     <div className='flex justify-center m-12'>
@@ -74,27 +116,28 @@ if (!isLoaded) {
     </div>
   )
 }
-
   return (
     <div className='z-1'>
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={userLocation || markerPosition || { lat: -14, lng: -79 }}
           zoom={7}
-          onClick={(event) => setMarkerPosition(event.latLng)}
+          onClick={handleMarkeyClic}
+          // onClick={(event) => setMarkerPosition(event.latLng)}
         >
           {markerPosition && (
             <Marker
               position={markerPosition}
-              draggable={true}
+              draggable={view}
               onDrag={handleMarkerDrag}
+              onPositionChanged={handleMarkerPositionChanged}
               options={{
                   icon: {
                     path: window.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
                     fillColor: 'green', 
                     fillOpacity: 1,
                     strokeWeight: 0,
-                    scale: 7,
+                    scale: 8,
                   },
                 }}
             />
