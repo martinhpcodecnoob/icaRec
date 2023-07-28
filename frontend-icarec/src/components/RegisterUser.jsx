@@ -1,13 +1,18 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import { useRouter } from "next/navigation"
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Alert } from 'flowbite-react'
 import { fetchCountries } from '../../utils/apiServices'
 import { getContainerClasses, getHalfContainerClasses, getSelectClasses, getInputClasses } from '../../utils/responsiveUtils'
 import { validationSchema } from '../../utils/utils'
+import ErrorScreen from './ErrorScreen';
 
-const RegisterUser = () => {
+
+const RegisterUser = ({ providerType }) => {
+
+  const router = useRouter()
 
   const [countries, setCountries] = useState([])
   const [selectedCountry, setSelectedCountry] = useState("")
@@ -43,39 +48,65 @@ const RegisterUser = () => {
       setShowPhoneInput(true)
     } 
   }
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(validationSchema),
+  })
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
 
-  const handlePasswordChange = (e) => {
-    setPassword1(e.target.value)
-  }
-
+  
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword)
   }
-
-  const handleConfirmPasswordChange = (e) => {
+  
+ /*  const handleConfirmPasswordChange = (e) => {
     setPassword2(e.target.value)
   }
-
- /*  const handleSubmit = (e) => {
-    e.preventDefault()
-    const { password, confirmPassword } = e.target.elements
-    console.log(password.value)
-    console.log(confirmPassword.value)
-  } */
-
-  const onSubmit = (data) => {
-    console.log(data)
+  const handlePasswordChange = (e) => {
+    setPassword1(e.target.value)
   }
-
+  
+  
+  const updatePassword1InRegister = (value) => {
+    register('password', value);
+  };
+  
+  const updatePassword2InRegister = (value) => {
+    register('confirmPassword', value);
+  };
+   */
+  const onSubmit = async (data) => {
+    //console.log("Data del form:", data)
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/register`, {
+       method: 'POST',
+       headers: {
+         'Content-Type':'application/json'
+       },
+       body: JSON.stringify({
+         name: data.nombreApellidos, 
+         cellphone: data.celular,
+         dni: data.numeroDocumento, 
+         email: data.correoElectronico, 
+         password: data.password
+        }),
+      })
+      console.log(res)
+      console.log("ok=?", !res.ok)
+     if (!res.ok) {
+      return <ErrorScreen />
+      }
+      router.push("/")
+    } catch (error) {
+      console.error("Error en la solicitud fetch:", error)
+      return <ErrorPage />
+    }
+  }
   const isPasswordMismatch = (password1 !== password2 ) 
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: yupResolver(validationSchema),
-  });
+
   return (
     <div className="bg-orange-100 min-h-screen flex items-center justify-center">
       <form className="bg-red-200 rounded p-4 md:p-8" onSubmit={handleSubmit(onSubmit)}>
@@ -91,10 +122,8 @@ const RegisterUser = () => {
             id="nombreApellidos"
             className="w-full border border-gray-300 rounded p-2 text-center"
             placeholder="Ingresa tu nombre y apellidos"
-            onChange={(e) => {
-              register('nombreApellidos').onChange(e)
-            }}
             required
+            {...register('nombreApellidos')}
           />
           {errors.nombreApellidos && <p className="error">{errors.nombreApellidos.message}</p>}
         </div>
@@ -127,15 +156,15 @@ const RegisterUser = () => {
               <div className="relative">
                 <input
                   type="text"
-                  id="numeroCelular"
+                  id="celular"
                   className={inputClasses}
                   placeholder="Ingresa tu número de celular"
-                  value={phone}
-                  onChange={(e) => {
+                  //value={phone}
+                  /* onChange={(e) => {
                     setPhone(e.target.value)
                     register('celular').onChange(e)
-                  }}
-                  required
+                  }} */
+                  {...register('celular')}
                 />
                 <div className="absolute inset-y-0 left-2 flex items-center pointer-events-none">
                   <span className="text-gray-500" >{countryCode}</span>
@@ -190,14 +219,17 @@ const RegisterUser = () => {
               id="correoElectronico"
               className={inputClasses}
               placeholder="Ingresa tu correo electrónico"
-              onChange={(e) => {
-                register('correoElectronico').onChange(e); // Actualizar el valor en el registro
-              }}
+              /* onChange={(e) => {
+                register('correoElectronico').onChange(e)
+              }} */
+              {...register('correoElectronico')}
               required
             />
             {errors.correoElectronico && <p className="error">{errors.correoElectronico.message}</p>}
           </div>
         </div>
+        {providerType === undefined ? (
+          <>
         <div className={containerClasses}>
           <div className={halfContainerClasses}>
             <label htmlFor="password" className="block font-bold mb-2">
@@ -209,12 +241,14 @@ const RegisterUser = () => {
                 id="password"
                 className={inputClasses}
                 placeholder="Ingresa tu contraseña"
-                value={password1}
-                onChange={(e) => {
-                  handlePasswordChange(e)
-                  register('password').onChange(e)
-                }}
-                required
+                //value={password1}
+                /* onChange={(e) => {
+                  setPassword1(e.target.value)
+                  updatePassword1InRegister(e.target.value)
+                  //handlePasswordChange(e)
+                  //register('password').onChange(e)
+                }} */
+                {...register('password')}
               />
               {errors.password && <p className="error">{errors.password.message}</p>}
               <button
@@ -248,12 +282,14 @@ const RegisterUser = () => {
                 id="confirmPassword"
                 className={inputClasses}
                 placeholder="Confirma tu contraseña"
-                value={password2}
-                onChange={(e) => {
-                  handleConfirmPasswordChange(e)
-                  register('confirmPassword').onChange(e)
-                }}
-                required
+                //value={password2}
+                /* onChange={(e) => {
+                  setPassword2(e.target.value)
+                  //handleConfirmPasswordChange(e)
+                  updatePassword2InRegister(e.target.value)
+                  //register('confirmPassword').onChange(e)
+                }} */
+                {...register('confirmPassword')}
               />
               {errors.confirmPassword && <p className="error">{errors.confirmPassword.message}</p>}
               <button
@@ -279,10 +315,7 @@ const RegisterUser = () => {
           </div>
         </div>
         {isPasswordMismatch && 
-          <Alert
-            color="failure"
-            className="bg-red-400"
-          >
+          <Alert color="failure" className="bg-red-400">
             <span>
               <p>
                 <span className="font-medium">
@@ -292,7 +325,7 @@ const RegisterUser = () => {
               </p>
             </span>
           </Alert>
-          }
+        }
        <div className="flex justify-center">
         <div className="w-max">
           <p className="font-bold">Debe usar al menos:</p>
@@ -307,6 +340,10 @@ const RegisterUser = () => {
           </ul>
         </div>
       </div>
+      </>
+      ) : (
+      null
+      )}
         <div className="mb-4">
           <input
             type="checkbox"

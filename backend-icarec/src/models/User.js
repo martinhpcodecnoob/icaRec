@@ -3,25 +3,9 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
-    first_name:{
+    name:{
         type:String,
-        required:false
-    },
-    last_name: {
-        type: String,
-        required: false
-    },
-    age:{
-        type:Number,
-        required:false
-    },
-    city: {
-        type: String,
-        required: false
-    },
-    password: {
-        type: String,
-        required: false
+        required:true
     },
     cellphone: {
         type: String,
@@ -29,15 +13,16 @@ const userSchema = new Schema({
     },
     dni: {
         type: String,
-        required: false
+        required: true
     },
     email: {
         type: String,
-        required: false
+        required: true
     },
     role: {
         type: [String],
-        required: false
+        required: false,
+        default: ['user']
     },
     businesses: [
         { 
@@ -45,6 +30,7 @@ const userSchema = new Schema({
             ref: 'Business' 
         }
     ]
-})
+    },
+    {versionKey: false})
 
 module.exports = mongoose.model("User",userSchema)

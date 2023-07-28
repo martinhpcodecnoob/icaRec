@@ -78,7 +78,15 @@ const Login1 = ({ onClose }) => {
         </div>
       </div>
       {showCreateAccount && <CreateAccount onClose={() => setShowCreateAccount(false)} />}
-      {ShowLogin2 && <Login2 onClose={handleLogin2Close} />}
+      {/* {ShowLogin2 && <Login2 onClose={handleLogin2Close} />} */}
+    {ShowLogin2 && (
+      <Login2
+        onClose={() => {
+          setShowLogin2(false)
+          onClose()
+        }}
+      />
+    )}
     </div>
   )
 }

@@ -1,9 +1,14 @@
+'use client'
+import BusinessSubComponent from '@/components/BusinessSubComponent'
+import FileInput from '@/components/Formbussiness/Fileinput'
 import Form from '@/components/Formbussiness/Form'
 import Image from 'next/image'
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 
 export default function createForm() {
+    const inputForm = useSelector(state => state.preview.inputForm)
     
 return (
     <div>
@@ -21,11 +26,20 @@ return (
                 </div>
             </div>
         </div>
-        <div className='flex p-9'>
-            <div className='w-1/3'>
+        <div className='flex justify-evenly px-6 smartphone:flex-col smartphone:h-[100%] sm:h-[85vh]'>
+            <div className='px-2 smartphone:w-[100%] lg:w-[20rem] overflow-auto scrolbar sm:w-[60%]'>
                 <Form/>
             </div>
-            <div></div>
+            <div className='flex items-center justify-center w-[70%] sm:relative smartphone:relative smartphone:w-full smartphone:mt-7'>
+                <div className='lg:h-full lg:w-[100%] lg:bottom-0 lg:relative mr-1 rounded-lg sm:absolute sm:w-[70%] sm:h-[20vh] sm:bottom-[1.5rem] smartphone:absolute smartphone:h-[20vh] smartphone:w-[70%] smartphone:bottom-[4rem]'>
+                    <FileInput images={inputForm.images}/>
+                </div>
+                <div className='flex h-full smartphone:w-[100%] smartphone:h-[85vh] smartphone:mb-[2rem] lg:max-w-[430px] md:w-full sm:w-[85%] ml-1'>
+                    <BusinessSubComponent
+                        inputForm={inputForm}
+                    />
+                </div>
+            </div>
         </div>
     </div>
   )
