@@ -1,9 +1,11 @@
 const userRouter = require("./userRouter")
 const businessRouter = require("./businessRouter")
+const authRouter = require("./authRouter")
 
 const routes =[
-    ["user",userRouter],
-    ["business",businessRouter]
+    ['user',userRouter],
+    ['business',businessRouter],
+    ['auth', authRouter]
 ]
 
 const router = (app) => {
@@ -12,4 +14,4 @@ const router = (app) => {
     })
 }
 
-module.exports = router;
+module.exports = router

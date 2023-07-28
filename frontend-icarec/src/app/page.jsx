@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react'
+//import { useRouter } from 'next/router';
 import { useSession, signIn, signOut } from 'next-auth/react'
 import Login1 from '../components/Login1'
 import Image from 'next/image'
@@ -11,10 +12,11 @@ import Cardsdown from '@/components/Cards/Cardsdown'
 import LoadingScreen from '@/components/LoadingScreen'
 
 const IndexPage = () => {
+  //const router = useRouter()
   const [isLoginOpen, setLoginOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { data: session, status } = useSession()
-
+  console.log("Data de la session: ", session)
   const handleOpenLogin = () => {
     setLoginOpen(true)
   }
@@ -26,6 +28,11 @@ const IndexPage = () => {
   const handleSignOut = () => {
     setIsLoading(true)
     signOut()
+  } 
+
+   const handleCreateBusiness = () => {
+    //router.push('/register')
+    window.location.href = '/ruta-de-negocio'
   } 
 
    if (status === "loading" || isLoading) {
@@ -51,6 +58,9 @@ const IndexPage = () => {
           {session && (
           <div className='flex space-x-6 px-4 items-center'>
             <p className='justify-center'>Bienvenido! {session.user.email}</p>
+            <Button color="failure" onClick={handleCreateBusiness}>
+                Crear Negocio
+              </Button>
             <Button color="failure" onClick={handleSignOut}>
               Sign out
             </Button>
