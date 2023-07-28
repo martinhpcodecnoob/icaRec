@@ -25,6 +25,7 @@ const RegisterUser = ({ providerType }) => {
   const [password1, setPassword1] = useState('')
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [password2, setPassword2] = useState('')
+  const [isEmailRegistered, setIsEmailRegistered] = useState(false)
   const [documentType, setdocumentType] = useState('default')
 
   const containerClasses = getContainerClasses()
@@ -93,15 +94,20 @@ const RegisterUser = ({ providerType }) => {
          password: data.password
         }),
       })
-      console.log(res)
-      console.log("ok=?", !res.ok)
-     if (!res.ok) {
-      return <ErrorScreen />
+
+      if (!res.ok) {
+        const errorData = await res.json()
+        if (res.status === 409 && errorData.error === "El correo electrónico ya está registrado.") {
+          setIsEmailRegistered(true)
+          return
+        } else {
+          throw new Error(errorData.error)
+        }
       }
       router.push("/")
     } catch (error) {
       console.error("Error en la solicitud fetch:", error)
-      return <ErrorPage />
+      return <ErrorScreen />
     }
   }
   const isPasswordMismatch = (password1 !== password2 ) 
@@ -226,6 +232,9 @@ const RegisterUser = ({ providerType }) => {
               required
             />
             {errors.correoElectronico && <p className="error">{errors.correoElectronico.message}</p>}
+            {isEmailRegistered && (
+              <p className="error">El correo electrónico ya está registrado.</p>
+            )}
           </div>
         </div>
         {providerType === undefined ? (

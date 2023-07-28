@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import CreateAccount from './CreateAccount'
 import Login2 from './Login2'
 import GoogleButton from './GoogleButton'
+import { signIn } from 'next-auth/react'
 //import { GoogleLoginButton } from './GoogleLoginButton'
 
 const Login1 = ({ onClose }) => {
@@ -45,7 +46,7 @@ const Login1 = ({ onClose }) => {
         <div className="mb-4">
           <GoogleButton />
           <button
-            className="w-full border border-gray-300 rounded px-3 py-2 mb-2 flex items-center"
+            className="w-full border border-gray-300 rounded px-3 py-2 mb-2 flex items-center" onClick={() => signIn('facebook')}
           >
             <img
               src="/facebooklogo.png"

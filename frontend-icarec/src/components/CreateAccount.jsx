@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useRouter } from "next/navigation"
 import RegisterUser from './RegisterUser'
+import { signIn } from 'next-auth/react'
 
 const CreateAccount = ({ onClose }) => {
 
@@ -64,7 +65,7 @@ const CreateAccount = ({ onClose }) => {
           <button
             className="w-full border border-gray-300 rounded px-3 py-2 mb-2 flex items-center"
             disabled={!notificationsChecked || !termsChecked}
-            onClick={handleCreateAccount}
+            onClick={() => {signIn('google')}}
           >
             <img
               src="/googlelogo.png"
@@ -72,12 +73,12 @@ const CreateAccount = ({ onClose }) => {
               className="mr-2"
               style={{ width: '16px', height: '16px' }}
             />
-            Crear cuenta con Google
+            Iniciar con Google
           </button>
           <button
             className="w-full border border-gray-300 rounded px-3 py-2 mb-2 flex items-center"
             disabled={!notificationsChecked || !termsChecked}
-            onClick={handleCreateAccount}
+            onClick={() => {signIn('facebook')}}
           >
             <img
               src="/facebooklogo.png"
@@ -85,7 +86,7 @@ const CreateAccount = ({ onClose }) => {
               className="mr-2"
               style={{ width: '16px', height: '16px' }}
             />
-            Crear cuenta con Facebook
+            Iniciar con Facebook
           </button>
           <button
             className="w-full border border-gray-300 rounded px-3 py-2 mb-2 flex items-center"
