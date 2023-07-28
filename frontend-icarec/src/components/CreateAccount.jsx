@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
+import { useRouter } from "next/navigation"
 import RegisterUser from './RegisterUser'
 
 const CreateAccount = ({ onClose }) => {
+
+  const router = useRouter()
+
   const handleBack = () => {
     onClose()
   }
@@ -34,9 +38,9 @@ const CreateAccount = ({ onClose }) => {
       alert("Debe aceptar los términos de uso y la política de privacidad.")
     } else {
       // Lógica para crear la cuenta
-      console.log("Creando la cuenta...")
+      router.push("/register")
     }
-  };
+  }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">

@@ -2,15 +2,19 @@
 import React, { useEffect, useState } from 'react'
 
 const LoadingScreen = () => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(true)
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setVisible(false);
-    }, 3000)
+    const handlePageLoad = () => {
+      setVisible(false)
+    }
 
-    return () => clearTimeout(timer);
+    // Check if 'window' is defined before using it
+    if (typeof window !== 'undefined') {
+      window.onload = handlePageLoad
+    }
   }, [])
+
 
   return (
     <div
@@ -18,11 +22,14 @@ const LoadingScreen = () => {
         visible ? 'opacity-100' : 'opacity-0'
       }`}
     >
-      <img
-        src="/detodologo.png" 
-        alt="Logo"
-        className="w-auto h-auto" 
-      />
+      <div className="flex flex-col items-center">
+        <img
+          src="/detodologo.png" 
+          alt="Logo"
+          className="w-auto h-auto mb-4" 
+        />
+        <div className="animate-spin rounded-full border-t-4 border-red-500 border-solid h-16 w-16"></div>
+      </div>
     </div>
   )
 }

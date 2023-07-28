@@ -2,15 +2,44 @@ import React, {useState} from 'react'
 import Login1 from './Login1'
 import CreateAccount from './CreateAccount'
 import ResetPassword from './ResetPassword'
+import { signIn } from "next-auth/react"
 
 const Login2 = ({ onClose }) => {
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+  const [showLogin1, setShowLogin1] = useState(false)
+  const [showCreateAccount, setShowCreateAccount] = useState(false)
+  const [showResetPassword, setShowResetPassword] = useState(false)
+
   const handleBack = () => {
     onClose()
   }
 
-  const [showLogin1, setShowLogin1] = useState(false)
-  const [showCreateAccount, setShowCreateAccount] = useState(false)
-  const [showResetPassword, setShowResetPassword] = useState(false)
+  const handleLogin = async () => {
+   
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false, 
+    })
+  
+    try {
+      if (result.error) {
+        if (result.error === "CredentialsSignin") {
+          setError("Usuario o contraseña inválidos")
+        } else {
+          console.error("Error de inicio de sesión:", result.error)
+        }
+      } else {
+        onClose()
+      }
+    } catch (error) {
+      console.error("Error de inicio de sesión:", error);
+    }
+    
+  }
 
   const handleLogin1Close = () => {
     setShowLogin1(false)
@@ -48,6 +77,8 @@ const Login2 = ({ onClose }) => {
             type="email"
             id="email"
             className="w-full border border-gray-300 rounded px-3 py-2"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="mb-4">
@@ -58,13 +89,18 @@ const Login2 = ({ onClose }) => {
             type="password"
             id="password"
             className="w-full border border-gray-300 rounded px-3 py-2"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
         <div className="flex items-center mb-4">
           <input type="checkbox" id="remember" className="mr-2" />
           <label htmlFor="remember">Mantener sesión iniciada</label>
         </div>
-        <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded w-full mb-4">
+        {error && (
+          <div className="text-red-500 text-sm text-center mb-4">{error}</div>
+        )}
+        <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded w-full mb-4" onClick={handleLogin}>
           Inicio de sesión
         </button>
         <div className="text-sm text-center">
