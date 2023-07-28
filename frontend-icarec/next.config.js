@@ -5,6 +5,9 @@ images: {
     {
         hostname: "rickandmortyapi.com",
     },
+    {
+        hostname: "images.unsplash.com"
+    }
     ],
 },
 async headers() {

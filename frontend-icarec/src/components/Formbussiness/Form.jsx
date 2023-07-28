@@ -1,10 +1,10 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Map from '../../components/Map'
 import { IoIosAddCircle } from "react-icons/io";
 import EtiquetasScroll from "./EtiquetasScroll";
-import { useDispatch } from "react-redux";
 import { saveFormPreview } from "@/redux/Slices/slicePreview";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Form() {
     const initialValues = {
@@ -23,12 +23,23 @@ export default function Form() {
         }
     }
     const inputService =""
-    const selectImage = ""
 
     const [input, setInput] = useState(initialValues)
     const [addService, setAddService] = useState(inputService)
-    const [selected, setSelected] = useState(selectImage)
+    const [selected, setSelected] = useState()
     const dispatch = useDispatch()
+    const newImagesRedux = useSelector(state => state.preview.inputForm.images)
+    useEffect(() => {
+        if (newImagesRedux) {
+            if (newImagesRedux.length >= 0) {
+                setInput({
+                    ...input,
+                    ["images"]:[...newImagesRedux]
+                }) 
+            }
+        }
+    }, [newImagesRedux])
+    
 
     const handleInputService = (e) => {
         e.preventDefault()
@@ -54,13 +65,15 @@ export default function Form() {
 
     const handleFileChange = (e) => {
         const file = e.target.files
-        const fileURL = URL.createObjectURL(file[0])
-        input.images.push(fileURL)
-        const currentFile = input.images
-        setInput({
-            ...input,
-            ["images"]:currentFile
-        })
+        if (file.length > 0) {
+            const fileURL = URL.createObjectURL(file[0])
+            input.images.push(fileURL)
+            const currentFile = input.images
+            setInput({
+                ...input,
+                ["images"]:currentFile
+            })   
+        }
         // console.log(file);
         // console.log(URL.createObjectURL(file[0]));
     }
@@ -71,8 +84,8 @@ export default function Form() {
         dispatch(saveFormPreview(input))
     }
     return (
-        <div>
-            <div className="flex justify-center">CREAR MI NEGOCIO</div>
+        <>
+        <div className="flex justify-center">CREAR MI NEGOCIO</div>
         <form onSubmit={handleSubmit}>
             <div className="relative z-0 w-full mb-3 group">
                 <input
@@ -113,41 +126,43 @@ export default function Form() {
                     <Map view={true}/>
                 </div>
             </div>
-            <div className="relative z-0 w-full mb-3 group">
-                <input
-                    type="text"
-                    name="ruc"
-                    id="ruc"
-                    value={input.ruc}
-                    onChange={handleImputChange}
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                />
-                <label
-                    htmlFor="ruc"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                    RUC
-                </label>
-            </div>
-            <div className="relative z-0 w-full mb-3 group">
-                <input
-                    type="text"
-                    name="cellphone"
-                    id="cellphone"
-                    value={input.cellphone}
-                    onChange={handleImputChange}
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                />
-                <label
-                    htmlFor="cellphone"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                    Celular
-                </label>
+            <div className="grid md:grid-cols-2 md:gap-6 smartphone:grid-cols-2 smartphone:gap-6">
+                <div className="relative z-0 w-full mb-3 group">
+                    <input
+                        type="text"
+                        name="ruc"
+                        id="ruc"
+                        value={input.ruc}
+                        onChange={handleImputChange}
+                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        placeholder=" "
+                        required
+                    />
+                    <label
+                        htmlFor="ruc"
+                        className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    >
+                        RUC
+                    </label>
+                </div>
+                <div className="relative z-0 w-full mb-3 group">
+                    <input
+                        type="text"
+                        name="cellphone"
+                        id="cellphone"
+                        value={input.cellphone}
+                        onChange={handleImputChange}
+                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        placeholder=" "
+                        required
+                    />
+                    <label
+                        htmlFor="cellphone"
+                        className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    >
+                        Celular
+                    </label>
+                </div>
             </div>
             <div className="relative z-0 w-full mb-3 group">
                 <input
@@ -227,7 +242,7 @@ export default function Form() {
             <div className="flex items-center justify-center w-full relative">
                 <label
                 htmlFor="dropzone-file"
-                className="flex items-center justify-center w-full lg:h-[4rem] border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                className="flex items-center justify-center w-full sm:h-[4rem] smartphone:h-[4rem]  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                 >
                 <div className="flex items-center justify-center pt-5 pb-6">
                     <svg
@@ -266,6 +281,6 @@ export default function Form() {
                 </button>
             </div>
         </form>
-        </div>
+        </>
     );
 }

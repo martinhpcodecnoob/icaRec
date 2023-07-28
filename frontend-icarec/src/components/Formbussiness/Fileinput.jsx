@@ -1,22 +1,18 @@
 import Image from "next/image";
 import React from "react";
+import CarouselSingle from "../Carouseltools/CarouselSingle";
 
 export default function FileInput({images=[]}) {
   if (images.length > 0) {
     return(
       <>
-        <div className="flex items-center justify-center w-full h-full rounded-md">
-          <Image
-            src={images[0]}
-            fill
-          />
-        </div>
+        <CarouselSingle imageSlides={images}/>
       </>
     )
   }
   return (
     <>
-      <div className="animate-pulse flex items-center justify-center w-full h-full bg-red-300 rounded">
+      <div className="animate-pulse flex items-center justify-center w-full h-full bg-red-300 rounded-lg">
         <svg
           className="w-10 h-10 text-gray-200 dark:text-gray-600"
           aria-hidden="true"

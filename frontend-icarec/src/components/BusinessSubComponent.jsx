@@ -10,7 +10,7 @@ const BusinessSubComponent = ({inputForm}) => {
   return (
     <>
     {Object.keys(inputForm).length !== 0 ? (
-      <div className="scrolbar max-w-md mx-auto bg-red-100 p-4 rounded-lg border-4 border-gray-400 overflow-auto">
+      <div className="scrolbar w-full h-full bg-red-100 p-3 rounded-lg border-4 border-gray-400">
       <h2 className="text-center mb-4 font-bold text-[2rem]">{inputForm.name_business}</h2>
       <div className="flex justify-center mt-4">
         <button className="bg-red-500 text-white py-2 px-4 rounded w-2/3">
@@ -22,7 +22,7 @@ const BusinessSubComponent = ({inputForm}) => {
         <p className='ml-2'>{inputForm.geo_business}</p>
       </div>
       <Map latProp={inputForm.location.lat} longProp={inputForm.location.long}/>
-      <div className='flex-col items-center p-6'>
+      <div className='flex-col items-center p-4 lg:h-full sm:h-[15rem] smartphone:h-[12rem] overflow-auto scrolbar'>
         <div className="grid grid-cols-2">
           <p className="font-bold">Whatsapp:</p>
           <p>{inputForm.cellphone}</p>
@@ -44,7 +44,7 @@ const BusinessSubComponent = ({inputForm}) => {
           <div className="col-span-1">
             <div className="w-full">
               {inputForm.list_service.map((service, index) => (
-                <p key={index} className="inline-block bg-gray-500 rounded-lg text-white py-1 px-2 m-1">- {service}</p>
+                <p key={index} className="inline-block bg-gray-500 rounded-lg text-white py-1 px-2 m-1">{service}</p>
               ))}
             </div>
           </div>

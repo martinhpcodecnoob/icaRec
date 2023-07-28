@@ -23,8 +23,14 @@ export const Slice = createSlice({
                 long:state.logCurrent
             }
             state.inputForm.location={...location}
+        },
+        removeImageOfRedux:(state,action) => {
+            const image=action.payload
+            const arrayImages = state.inputForm.images
+            const newArrayImages = arrayImages.filter(img => image !== img)
+            state.inputForm.images=[...newArrayImages]
         }
     }
 })
 
-export const {saveLoaction,saveFormPreview} =Slice.actions
+export const {saveLoaction,saveFormPreview,removeImageOfRedux} =Slice.actions
