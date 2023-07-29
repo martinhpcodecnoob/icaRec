@@ -1,5 +1,6 @@
 import NextAuth from "next-auth/next"
 import GoogleProvider from "next-auth/providers/google"
+import FacebookProvider from "next-auth/providers/facebook"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import clientPromise from "../../../../../utils/mongodb.js"
@@ -18,6 +19,10 @@ const handler = NextAuth({
       GoogleProvider({
         clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
         clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET
+      }),
+      FacebookProvider({
+        clientId: process.env.FACEBOOK_ID,
+        clientSecret: process.env.FACEBOOK_SECRET,
       }),
       CredentialsProvider({
         name: "DeTodo",
