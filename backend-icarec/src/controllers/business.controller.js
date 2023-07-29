@@ -8,7 +8,7 @@ const get_business = async(req,res) => {
         })
         return res.status(200).json({
             found:true,
-            currentBusiness
+            business:currentBusiness
         })
     } catch (error) {
         return res.status(500).json({
@@ -30,7 +30,7 @@ const create_business = async(req,res) =>{
             services,
             images
         } = req.body
-
+        const user = req.user
         const newBusiness = new Business({
             business_name, 
             business_location, 
@@ -38,13 +38,16 @@ const create_business = async(req,res) =>{
             cellphone, 
             website,
             services,
-            images
+            images,
+            owner: user._id,
         })
-        newBusiness.save()
+        await newBusiness.save()
+        user.businesses.push(newBusiness)
+        await user.save()
         return res.status(200).json(newBusiness)
     } catch (error) {
         return res.status(500).json({
-            found:false,
+            created:false,
             message:"Business not created",
             error
         })
