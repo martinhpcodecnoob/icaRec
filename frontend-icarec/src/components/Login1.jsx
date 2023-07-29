@@ -46,8 +46,7 @@ const Login1 = ({ onClose }) => {
         <div className="mb-4">
           <GoogleButton />
           <button
-            className="w-full border border-gray-300 rounded px-3 py-2 mb-2 flex items-center"
-            onClick={() => signIn("facebook")}
+            className="w-full border border-gray-300 rounded px-3 py-2 mb-2 flex items-center" onClick={() => signIn('facebook')}
           >
             <img
               src="/facebooklogo.png"
