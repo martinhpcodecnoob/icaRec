@@ -10,6 +10,8 @@ import Searchbar from '../components/Searchbar'
 import Cardsup from '@/components/Cards/Cardsup'
 import Cardsdown from '@/components/Cards/Cardsdown'
 import LoadingScreen from '@/components/LoadingScreen'
+import detodologo from '../../public/detodologo.png'
+import detodologo2 from '../../public/detodologo2.png'
 
 const IndexPage = () => {
   //const router = useRouter()
@@ -32,7 +34,7 @@ const IndexPage = () => {
 
    const handleCreateBusiness = () => {
     //router.push('/register')
-    window.location.href = '/ruta-de-negocio'
+    window.location.href = '/mybusiness'
   } 
 
    if (status === "loading" || isLoading) {
@@ -41,14 +43,15 @@ const IndexPage = () => {
  
   return (
     <div>
-      <div className='flex justify-between'>
+      <div className='flex justify-between items-center p-4'>
         <Image
-          src={'/detodologo.png'}
-          width={100}
-          height={70}
+          src={detodologo}
           alt='logo'
+          className='h-[1.7rem] w-[9rem]'
         />
-        <div className='flex justify-center items-center'><p>Descubre un mundo de oportunidades con un clic!</p></div>
+        <div className='flex justify-center items-center lgx:hidden'>
+          <p>Descubre un mundo de oportunidades con un clic!</p>
+        </div>
         <div className='flex justify-center items-center'>
           {!session && (
             <Button color="failure" onClick={handleOpenLogin}>
@@ -57,7 +60,7 @@ const IndexPage = () => {
           )}
           {session && (
           <div className='flex space-x-6 px-4 items-center'>
-            <p className='justify-center'>Bienvenido! {session.user.email}</p>
+            <p className='justify-center'>Bienvenido! {session.user.name}</p>
             <Button color="failure" onClick={handleCreateBusiness}>
                 Crear Negocio
               </Button>

@@ -26,7 +26,7 @@ const LoadingScreen = () => {
         <img
           src="/detodologo.png" 
           alt="Logo"
-          className="w-auto h-auto mb-4" 
+          className="w-1/2 h-1/2 mb-4" 
         />
         <div className="animate-spin rounded-full border-t-4 border-red-500 border-solid h-16 w-16"></div>
       </div>
