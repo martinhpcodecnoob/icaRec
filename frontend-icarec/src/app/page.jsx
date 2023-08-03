@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-//import { useRouter } from 'next/router';
+import { useRouter } from "next/navigation"
 import { useSession, signIn, signOut } from 'next-auth/react'
 import Login1 from '../components/Login1'
 import Image from 'next/image'
@@ -14,7 +14,7 @@ import detodologo from '../../public/detodologo.png'
 import detodologo2 from '../../public/detodologo2.png'
 
 const IndexPage = () => {
-  //const router = useRouter()
+  const router = useRouter()
   const [isLoginOpen, setLoginOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { data: session, status } = useSession()
@@ -33,8 +33,7 @@ const IndexPage = () => {
   } 
 
    const handleCreateBusiness = () => {
-    //router.push('/register')
-    window.location.href = '/mybusiness'
+    router.push('/createBusiness')
   } 
 
    if (status === "loading" || isLoading) {

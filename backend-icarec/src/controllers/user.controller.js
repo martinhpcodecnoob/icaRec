@@ -2,8 +2,8 @@ const User = require("../models/User")
 
 const get_user = async(req,res) => {
     try {
-        const {first_name} = req.body
-        const currentUser = await User.findOne({ first_name }).populate('businesses')
+        const {name} = req.body
+        const currentUser = await User.findOne({ name }).populate('businesses')
         return res.status(200).json({
             found:true,
             currentUser
