@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux'
 import detodologo from '../../../public/detodologo.png'
 import detodologo2 from '../../../public/detodologo2.png'
 
-
 export default function createForm() {
     const inputForm = useSelector(state => state.preview.inputForm)
     
