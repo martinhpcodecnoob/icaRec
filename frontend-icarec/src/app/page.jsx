@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-//import { useRouter } from 'next/router';
+import { useRouter } from "next/navigation"
 import { useSession, signIn, signOut } from 'next-auth/react'
 import Login1 from '../components/Login1'
 import Image from 'next/image'
@@ -12,7 +12,7 @@ import Cardsdown from '@/components/Cards/Cardsdown'
 import LoadingScreen from '@/components/LoadingScreen'
 
 const IndexPage = () => {
-  //const router = useRouter()
+  const router = useRouter()
   const [isLoginOpen, setLoginOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { data: session, status } = useSession()
@@ -31,8 +31,7 @@ const IndexPage = () => {
   } 
 
    const handleCreateBusiness = () => {
-    //router.push('/register')
-    window.location.href = '/ruta-de-negocio'
+    router.push('/createBusiness')
   } 
 
    if (status === "loading" || isLoading) {

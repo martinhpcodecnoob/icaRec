@@ -26,3 +26,24 @@ export const validationSchema = Yup.object().shape({
       .required('Confirma tu contraseña'),
     terminosCondiciones: Yup.boolean().oneOf([true], 'Debes aceptar los términos y condiciones').required(),
   })
+
+
+/*   // utils/ga.js
+import ReactGA from 'react-ga';
+
+export const initGA = () => {
+  ReactGA.initialize('UA-XXXXXXXXX-X'); // Reemplaza 'UA-XXXXXXXXX-X' con tu ID de seguimiento
+};
+
+export const logPageView = () => {
+  ReactGA.set({ page: window.location.pathname });
+  ReactGA.pageview(window.location.pathname);
+};
+
+export const logEvent = (category, action, label) => {
+  ReactGA.event({
+    category,
+    action,
+    label,
+  });
+}; */
