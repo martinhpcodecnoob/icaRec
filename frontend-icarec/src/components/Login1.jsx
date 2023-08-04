@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from 'react'
 import CreateAccount from './CreateAccount'
 import Login2 from './Login2'

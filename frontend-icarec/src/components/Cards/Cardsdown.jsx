@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect } from 'react'
 import { FaAngleDown } from "react-icons/fa";
 import Card from './CardEmotic';

@@ -1,3 +1,4 @@
+'use client'
 import { Carousel } from 'flowbite-react';
 import { useState, useEffect } from "react";
 import CardEmotic from './CardEmotic';
