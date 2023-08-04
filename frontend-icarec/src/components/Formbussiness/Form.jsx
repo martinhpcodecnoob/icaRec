@@ -26,7 +26,6 @@ export default function Form() {
 
     const [input, setInput] = useState(initialValues)
     const [addService, setAddService] = useState(inputService)
-    const [selected, setSelected] = useState()
     const dispatch = useDispatch()
     const newImagesRedux = useSelector(state => state.preview.inputForm.images)
     useEffect(() => {
