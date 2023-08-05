@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^3.1.1",
     "@leecheuk/react-google-login": "^5.4.1",
     "@mongodb-js/zstd": "^1.1.0",
+    "@napi-rs/snappy": "^1.0.2",
     "@react-google-maps/api": "^2.18.1",
     "@react-hook/media-query": "^1.1.1",
     "@reduxjs/toolkit": "^1.9.5",
@@ -29,6 +30,7 @@
     "kerberos": "^2.0.1",
     "mongodb": "^5.7.0",
     "mongodb-client-encryption": "^2.9.0",
+    "mongoose": "^7.3.4",
     "next": "13.4.7",
     "next-auth": "^4.22.1",
     "postcss": "^8.4.25",
@@ -41,7 +43,6 @@
     "react-use": "^17.4.0",
     "snappy": "^7.2.2",
     "tailwindcss": "^3.3.2",
-    "yup": "^1.2.0",
-    "mongoose": "^7.3.4"
+    "yup": "^1.2.0"
   }
 }
