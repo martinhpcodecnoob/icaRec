@@ -4,7 +4,6 @@ import CreateAccount from './CreateAccount'
 import Login2 from './Login2'
 import GoogleButton from './GoogleButton'
 import { signIn } from 'next-auth/react'
-//import { GoogleLoginButton } from './GoogleLoginButton'
 
 const Login1 = ({ onClose }) => {
   const handleBack = () => {
