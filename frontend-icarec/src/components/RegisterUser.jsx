@@ -362,7 +362,7 @@ const RegisterUser = ({ providerType }) => {
             {...register('terminosCondiciones')}
           />
           <label htmlFor="terminosCondiciones">
-            Acepto los términos y condiciones de "detodo.com" y autorizo la política de privacidad
+            Acepto los términos y condiciones de &quot;detodo.com&quot; y autorizo la política de privacidad
           </label>
           {errors.terminosCondiciones && <p className="error">{errors.terminosCondiciones.message}</p>}
         </div>
