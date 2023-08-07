@@ -1,4 +1,5 @@
 import * as Yup from 'yup'
+import ReactGA from 'react-ga'
 
 export const validationSchema = Yup.object().shape({
     nombreApellidos: Yup.string().required('El nombre y apellidos son obligatorios'),
@@ -27,3 +28,23 @@ export const validationSchema = Yup.object().shape({
     terminosCondiciones: Yup.boolean().oneOf([true], 'Debes aceptar los términos y condiciones').required(),
   })
 
+  export const initGA = () => {
+    ReactGA.initialize(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID)
+    // Deshabilitar las características publicitarias
+    ReactGA.ga('set', 'allowAdFeatures', false);
+
+    console.log("Se inicializa google analytics")
+  }
+  
+  export const logPageView = (pageName) => {
+    ReactGA.set({ page: pageName })
+    ReactGA.pageview(pageName)
+  };
+  
+  export const logEvent = (category, action, label) => {
+    ReactGA.event({
+      category,
+      action,
+      label,
+    })
+  }
