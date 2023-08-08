@@ -8,6 +8,7 @@ import ProvidersRedux from "@/redux/provider";
 const raleway = Raleway({ subsets: ['latin'] })
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+const GOOGLE_ANALYTICS_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
 
 export default function RootLayout({ children }) {
 
@@ -21,7 +22,7 @@ export default function RootLayout({ children }) {
           />
           <Script
             strategy='lazyOnload'
-            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
+            src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
             id="ga-initialize"
           />
           <Script strategy='lazyOnload' id="ga-config">
@@ -31,7 +32,7 @@ export default function RootLayout({ children }) {
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}');
+            gtag('config', '${GOOGLE_ANALYTICS_ID}');
             `
             }
           </Script>
