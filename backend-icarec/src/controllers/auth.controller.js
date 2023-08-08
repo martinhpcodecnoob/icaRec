@@ -1,8 +1,25 @@
 const bcrypt = require("bcryptjs")
-const User = require('../models/User')
-const Account = require('../models/Account')
 const { ObjectId } = require('mongodb')
 
+const User = require('../models/User')
+const Account = require('../models/Account')
+
+const { generateAuthToken } = require("../utils/utils")
+
+async function generateToken(req, res){
+  try {
+    const user = req.user
+    const result = generateAuthToken(user._id.toString())
+    if (result.error) {
+      return res.status(500).json({ error: result.error })
+    }
+    const token = result.token
+    res.status(200).json({ message: "Token Creado", token })
+  } catch (error) {
+    console.error("Error en el generate Token:", error)
+    res.status(500).json({ error: "Error al generar el token." })
+  }
+}
 
 async function register(req, res) {
   try {
@@ -48,29 +65,6 @@ async function register(req, res) {
   }
 }
 
-async function test(req, res) {
-  try {
-    const { provider, userId } = req.body
-
-   const existingAccount = await Account.findOne({provider})
-    
-    if (existingAccount) {
-      return res.status(201).json({ message: "Correo encontrado", account: existingAccount })
-    }else{
-      const newAccount = new Account({
-        provider:"credentials",
-        type: "o2auth",
-        userId: new ObjectId(userId)
-      })
-      newAccount.save()
-    }
-
-    res.status(200).json({ message: "Usuario inexistente. Error al logear usuario." })
-  } catch (error) {
-    console.error("Error en el registro:", error)
-    res.status(500).json({ error: "Error en el registro." })
-  }
-}
 
 async function login(req, res) {
   try {
@@ -103,8 +97,10 @@ async function login(req, res) {
 module.exports = {
   register,
   login,
-  test,
+  generateToken,
 }
+
+
 
 /* const jwt = require('jsonwebtoken')
 const secretKey = 'tu_clave_secreta'

@@ -1,6 +1,6 @@
+'use client'
 import React, { useState } from 'react'
 import { useRouter } from "next/navigation"
-import RegisterUser from './RegisterUser'
 import { signIn } from 'next-auth/react'
 
 const CreateAccount = ({ onClose }) => {

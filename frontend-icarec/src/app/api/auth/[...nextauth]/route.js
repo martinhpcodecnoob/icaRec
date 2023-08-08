@@ -6,6 +6,7 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import clientPromise from "../../../../../utils/mongodb.js"
 
 const handler = NextAuth({
+  secret:"secret123",
   adapter: MongoDBAdapter(clientPromise, {
     collections: {
       accounts: "custom-accounts-collection",
@@ -50,10 +51,9 @@ const handler = NextAuth({
         }
       })
     ],
-    secret: "secret123",
     session: {
       strategy: "jwt",
-    }, 
+    },
     callbacks: {
       async signIn({ user, account, profile, email, credentials }) {
           //if (account.provider === "google") {
@@ -63,18 +63,52 @@ const handler = NextAuth({
           }
           await saveAccessTokenInDatabase(user.id, tokenData) */
         //}  
+          //console.log("sigIn:", { user, account, profile, email, credentials })
+        /* const token = await user.idToken;
+        console.log("Token JWT generado:", token); */
         return true
       },
        async jwt({ token, account, user }) {
         if (account) {
           token.providerType = account.provider
+           /* console.log("token, token: ", token)
+          console.log("token, account: ", account)
+          console.log("token, user: ", user)   */
+          if (account.type === 'credentials') {
+            console.log("Entra al credentials")
+            if(user && user?._id){
+              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateToken/${user._id}`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type':'application/json'
+                },
+              })
+              const data = await res.json()
+              token.userToken = data.token
+            }
+          }else {
+            if(token?.sub){
+
+              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateToken/${token.sub}`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type':'application/json'
+                },
+              })
+              const data = await res.json()
+              token.userToken = data.token
+            }
+          }  
         }
+
         return token
       }, 
       async session({ session, token, user }) {
         
         session.user.providerType = token.providerType 
-        
+        session.user.token = token.userToken
+         /* console.log("session, session: ", session)
+        console.log("session, token: ", token)  */
         return session
       },
     },
