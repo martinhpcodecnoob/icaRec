@@ -12,7 +12,7 @@ import Cardsdown from '@/components/Cards/Cardsdown'
 import LoadingScreen from '@/components/LoadingScreen'
 import detodologo from '../../public/detodologo.png'
 import detodologo2 from '../../public/detodologo2.png'
-import { initGA, logPageView, logEvent } from '../../utils/utils'
+import { initGA, logPageView, logEvent, logEvent2 } from '../../utils/utils'
 
 const IndexPage = () => {
   const router = useRouter()
@@ -26,7 +26,8 @@ const IndexPage = () => {
   }, [])
 
   const handleOpenLogin = () => {
-    logEvent('Botones', 'Clic en botón', 'Botón personalizado')
+    //logEvent('login_button2', 'Clic en botón', '0')
+    logEvent2('login_buttondos', 'Clic en botón', '0')
     setLoginOpen(true)
   }
 

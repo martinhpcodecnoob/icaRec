@@ -48,3 +48,12 @@ export const validationSchema = Yup.object().shape({
       label,
     })
   }
+
+  export const logEvent2 = (action, category, label) => {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', action, {
+        event_category: category,
+        event_label: label,
+      });
+    }
+  };
