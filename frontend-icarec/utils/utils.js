@@ -28,32 +28,20 @@ export const validationSchema = Yup.object().shape({
     terminosCondiciones: Yup.boolean().oneOf([true], 'Debes aceptar los términos y condiciones').required(),
   })
 
-  export const initGA = () => {
-    ReactGA.initialize(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID)
-    // Deshabilitar las características publicitarias
-    ReactGA.ga('set', 'allowAdFeatures', false);
-
-    console.log("Se inicializa google analytics")
-  }
-  
   export const logPageView = (pageName) => {
-    ReactGA.set({ page: pageName })
-    ReactGA.pageview(pageName)
-  };
-  
-  export const logEvent = (category, action, label) => {
-    ReactGA.event({
-      category,
-      action,
-      label,
-    })
+    console.log("Entra en la funcion logPageView")
+    if (typeof window !== 'undefined' && window.gtag) {
+      console.log("Entra al logPageView por window.gtag")
+      const pagePath = window.location.pathname
+      gtag('event', 'page_view', {
+        'page_title': pageName,
+        'page_path': pagePath
+      })
+    }
   }
 
-  export const logEvent2 = (action, category, label) => {
+  export const logEvent = (action) => {
     if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', action, {
-        event_category: category,
-        event_label: label,
-      });
+      window.gtag('event', action)
     }
-  };
+  }

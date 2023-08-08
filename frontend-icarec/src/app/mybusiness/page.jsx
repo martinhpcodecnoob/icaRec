@@ -1,16 +1,20 @@
 'use client'
+import React, { useEffect } from 'react'
+import Image from 'next/image'
+import { useSelector } from 'react-redux'
 import BusinessSubComponent from '@/components/BusinessSubComponent'
 import FileInput from '@/components/Formbussiness/Fileinput'
 import Form from '@/components/Formbussiness/Form'
-import Image from 'next/image'
-import React from 'react'
-import { useSelector } from 'react-redux'
 import detodologo from '../../../public/detodologo.png'
 import detodologo2 from '../../../public/detodologo2.png'
+import { logPageView } from '../../../utils/utils'
+
 
 export default function CreateForm() {
     const inputForm = useSelector(state => state.preview.inputForm)
-    
+    useEffect(() => {
+        logPageView('business_form')
+      }, [])
 return (
     <div>
         <div className='hidden mdx:block sticky top-0 z-10'>
