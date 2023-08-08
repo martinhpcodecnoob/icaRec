@@ -29,9 +29,9 @@ export const validationSchema = Yup.object().shape({
   })
 
   export const logPageView = (pageName) => {
-    console.log("Entra en la funcion logPageView")
+
     if (typeof window !== 'undefined' && window.gtag) {
-      console.log("Entra al logPageView por window.gtag")
+      
       const pagePath = window.location.pathname
       gtag('event', 'page_view', {
         'page_title': pageName,
