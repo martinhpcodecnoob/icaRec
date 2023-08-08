@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from "next/navigation"
 import { useSession, signIn, signOut } from 'next-auth/react'
 import Login1 from '../components/Login1'
@@ -12,14 +12,22 @@ import Cardsdown from '@/components/Cards/Cardsdown'
 import LoadingScreen from '@/components/LoadingScreen'
 import detodologo from '../../public/detodologo.png'
 import detodologo2 from '../../public/detodologo2.png'
+import { initGA, logPageView, logEvent, logEvent2 } from '../../utils/utils'
 
 const IndexPage = () => {
   const router = useRouter()
   const [isLoginOpen, setLoginOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const { data: session, status } = useSession()
-  console.log("Data de la session: ", session)
+  const { data: session, status } = useSession()  
+
+  useEffect(() => {
+    initGA()
+    logPageView('Landing Page DeTodo')
+  }, [])
+
   const handleOpenLogin = () => {
+    //logEvent('login_button2', 'Clic en botón', '0')
+    logEvent2('login_buttondos', 'Clic en botón', '0')
     setLoginOpen(true)
   }
 
