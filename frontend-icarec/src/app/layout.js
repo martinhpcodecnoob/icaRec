@@ -21,21 +21,18 @@ export default function RootLayout({ children }) {
             // Este script tiene un API_KEY pero el ultimo es una funcion pero puede ser cualquier funciona que pongas
           />
           <Script
-            strategy='lazyOnload'
             src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
-            id="ga-initialize"
+            id="google-analytics1"
           />
-          <Script strategy='lazyOnload' id="ga-config">
-            {
-            `
+          <Script id="google-analytics2">
+            {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
             gtag('config', '${GOOGLE_ANALYTICS_ID}');
-            `
-            }
-          </Script>
+            `}
+          </Script>   
         </head>
           <ProvidersRedux>
             <body className={raleway.className}>

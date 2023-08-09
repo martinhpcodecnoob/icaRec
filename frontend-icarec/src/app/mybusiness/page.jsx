@@ -9,12 +9,12 @@ import detodologo from '../../../public/detodologo.png'
 import detodologo2 from '../../../public/detodologo2.png'
 import { logPageView } from '../../../utils/utils'
 
-
 export default function CreateForm() {
     const inputForm = useSelector(state => state.preview.inputForm)
     useEffect(() => {
         logPageView('business_form')
       }, [])
+      
 return (
     <div>
         <div className='hidden mdx:block sticky top-0 z-10'>

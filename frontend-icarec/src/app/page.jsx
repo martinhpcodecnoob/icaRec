@@ -22,7 +22,6 @@ const IndexPage = () => {
 
   useEffect(() => {
     logPageView('landing_page')
-    
   }, [])
 
   const handleOpenLogin = () => {
