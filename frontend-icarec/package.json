@@ -11,6 +11,8 @@
   "dependencies": {
     "@auth/mongodb-adapter": "^1.0.0",
     "@aws-sdk/credential-providers": "^3.385.0",
+    "@cloudinary/react": "^1.11.2",
+    "@cloudinary/url-gen": "^1.11.1",
     "@hookform/resolvers": "^3.1.1",
     "@leecheuk/react-google-login": "^5.4.1",
     "@mongodb-js/zstd": "^1.1.0",
