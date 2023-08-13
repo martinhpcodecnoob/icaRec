@@ -27,23 +27,22 @@ export const validationSchema = Yup.object().shape({
     terminosCondiciones: Yup.boolean().oneOf([true], 'Debes aceptar los términos y condiciones').required(),
   })
 
+export const logPageView = (pageName) => {
+  if (typeof window !== 'undefined') {
+      const pagePath = window.location.pathname
+      if (window.gtag) {
+          window.gtag('event', 'page_view', {
+              'page_title': pageName,
+              'page_path': pagePath || 'default/rute'
+          })
+      } else {
+          console.log("window.gtag is not available. Analytics not tracked.")
+      }
+  }
+}
 
-/*   // utils/ga.js
-import ReactGA from 'react-ga';
-
-export const initGA = () => {
-  ReactGA.initialize('UA-XXXXXXXXX-X'); // Reemplaza 'UA-XXXXXXXXX-X' con tu ID de seguimiento
-};
-
-export const logPageView = () => {
-  ReactGA.set({ page: window.location.pathname });
-  ReactGA.pageview(window.location.pathname);
-};
-
-export const logEvent = (category, action, label) => {
-  ReactGA.event({
-    category,
-    action,
-    label,
-  });
-}; */
+export const logEvent = (action) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', action)
+  }
+}
