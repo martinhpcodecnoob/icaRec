@@ -8,13 +8,49 @@ import Form from '@/components/Formbussiness/Form'
 import detodologo from '../../../public/detodologo.png'
 import detodologo2 from '../../../public/detodologo2.png'
 import { logPageView } from '../../../utils/utils'
+import { useSession } from 'next-auth/react'
+import { useRouter } from "next/navigation"
+import { PiShieldWarningFill } from "react-icons/pi";
+import LoadingScreen from '@/components/LoadingScreen'
 
 export default function CreateForm() {
+    const router = useRouter()
     const inputForm = useSelector(state => state.preview.inputForm)
+    
     useEffect(() => {
         logPageView('business_form')
       }, [])
-      
+  
+    const {status} = useSession();
+
+if (status === "loading") {
+    return <LoadingScreen />
+}
+
+if (status === "unauthenticated") {
+    return(
+        <div className="flex items-center justify-center h-[90vh]">
+            <div className="flex flex-col items-center">
+                <span className="text-[1.2rem] md:text-[1.5rem] xl:text-[2vw] text-center mx-3">
+                    Oops!!, No puedes entrar a esta ruta sin Autenticarte
+                </span>
+                <PiShieldWarningFill className="text-[10rem] text-gray-500"/>
+                <button 
+                    type="button" 
+                    className="text-white text-[1.5rem]
+                                bg-gradient-to-r from-red-400 via-red-500 to-red-600 
+                                hover:bg-gradient-to-br focus:ring-4 
+                                focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 
+                                font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                    onClick={()=> router.push("/")}
+                >
+                Volver
+                </button>
+            </div>
+        </div>
+    )
+}
+  
 return (
     <div>
         <div className='hidden mdx:block sticky top-0 z-10'>
