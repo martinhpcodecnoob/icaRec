@@ -27,3 +27,22 @@ export const validationSchema = Yup.object().shape({
     terminosCondiciones: Yup.boolean().oneOf([true], 'Debes aceptar los términos y condiciones').required(),
   })
 
+export const logPageView = (pageName) => {
+  if (typeof window !== 'undefined') {
+      const pagePath = window.location.pathname
+      if (window.gtag) {
+          window.gtag('event', 'page_view', {
+              'page_title': pageName,
+              'page_path': pagePath || 'default/rute'
+          })
+      } else {
+          console.log("window.gtag is not available. Analytics not tracked.")
+      }
+  }
+}
+
+export const logEvent = (action) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', action)
+  }
+}

@@ -8,6 +8,7 @@ import ProvidersRedux from "@/redux/provider";
 const raleway = Raleway({ subsets: ['latin'] })
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+const GOOGLE_ANALYTICS_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
 
 export default function RootLayout({ children }) {
 
@@ -19,6 +20,19 @@ export default function RootLayout({ children }) {
             src={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=Function.prototype`}
             // Este script tiene un API_KEY pero el ultimo es una funcion pero puede ser cualquier funciona que pongas
           />
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
+            id="google-analytics1"
+          />
+          <Script id="google-analytics2">
+            {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', '${GOOGLE_ANALYTICS_ID}');
+            `}
+          </Script>   
         </head>
           <ProvidersRedux>
             <body className={raleway.className}>

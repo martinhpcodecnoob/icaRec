@@ -1,12 +1,13 @@
 'use client'
+import React, { useEffect } from 'react'
+import Image from 'next/image'
+import { useSelector } from 'react-redux'
 import BusinessSubComponent from '@/components/BusinessSubComponent'
 import FileInput from '@/components/Formbussiness/Fileinput'
 import Form from '@/components/Formbussiness/Form'
-import Image from 'next/image'
-import React from 'react'
-import { useSelector } from 'react-redux'
 import detodologo from '../../../public/detodologo.png'
 import detodologo2 from '../../../public/detodologo2.png'
+import { logPageView } from '../../../utils/utils'
 import { useSession } from 'next-auth/react'
 import { useRouter } from "next/navigation"
 import { PiShieldWarningFill } from "react-icons/pi";
@@ -15,6 +16,11 @@ import LoadingScreen from '@/components/LoadingScreen'
 export default function CreateForm() {
     const router = useRouter()
     const inputForm = useSelector(state => state.preview.inputForm)
+    
+    useEffect(() => {
+        logPageView('business_form')
+      }, [])
+  
     const {status} = useSession();
 
 if (status === "loading") {
@@ -44,7 +50,7 @@ if (status === "unauthenticated") {
         </div>
     )
 }
-    
+  
 return (
     <div>
         <div className='hidden mdx:block sticky top-0 z-10'>
