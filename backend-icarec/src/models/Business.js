@@ -2,6 +2,17 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
+const imageSchema = new Schema({
+    url_cloudinary:{
+        type:String,
+        required: false
+    },
+    public_id:{
+        type:String,
+        required:false
+    }
+})
+
 const businessSchema = new Schema({
     business_name: {
         type: String,
@@ -11,6 +22,16 @@ const businessSchema = new Schema({
         type: String,
         required: false
     },
+    location_coordinates:{
+        latitude:{
+            type:String,
+            required:false
+        },
+        longitude:{
+            type:String,
+            required:false
+        }
+    },
     RUC: {
         type: String,
         required: false
@@ -19,8 +40,16 @@ const businessSchema = new Schema({
         type: String,
         required: false
     },
+    facebook:{
+        type: String,
+        required: false
+    },
     website: {
         type: String,
+        required: false
+    },
+    schedule:{
+        type:String,
         required: false
     },
     services: {
@@ -28,7 +57,7 @@ const businessSchema = new Schema({
         required: false
     },
     images: {
-        type: [String],
+        type: [imageSchema],
         required: false
     },
     owner: { 
