@@ -9,6 +9,7 @@ const raleway = Raleway({ subsets: ['latin'] })
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 const GOOGLE_ANALYTICS_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
+const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID
 
 export default function RootLayout({ children }) {
 
@@ -32,7 +33,14 @@ export default function RootLayout({ children }) {
 
             gtag('config', '${GOOGLE_ANALYTICS_ID}');
             `}
-          </Script>   
+          </Script>
+          <Script
+            id="Adsense-id"
+            data-ad-client={GOOGLE_ADS_ID}
+            async="true"
+            strategy="beforeInteractive"
+             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+          />
         </head>
           <ProvidersRedux>
             <body className={raleway.className}>
