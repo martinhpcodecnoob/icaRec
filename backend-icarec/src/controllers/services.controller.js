@@ -1,23 +1,24 @@
+const { Resend } = require('resend')
 const { RegistrationEmailHTML } = require('../utils/templates')
-const { sendEmailWithResend } = require('../utils/utils')
+
+const RESEND_API_KEY = process.env.RESEND_API_KEY
+const resend = new Resend(RESEND_API_KEY)
 
 const sendEmail = async  (req, res ) => {
     try {
         const user = req.user
-
-        const emailOptions = {
-            from: 'tiendasE@resend.dev',
+        const emailContent = RegistrationEmailHTML(user.name)
+        resend.emails.send({
+            from: 'onboarding@resend.dev',
             to: user.email,
             subject: 'Bienvenido a Tienda é',
-            html: RegistrationEmailHTML(user.name)
-          }
-      
-          await sendEmailWithResend(emailOptions)
-      
+            html: emailContent
+          })
+
           return res.status(200).json({
             success: true,
             message: 'Email sent successfully',
-            user: user.name
+            user: user
         })
     } catch (error) {
         console.log(error)
