@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import Image from 'next/image'
 import { useDispatch, useSelector } from 'react-redux'
 import BusinessSubComponent from '@/components/BusinessSubComponent'
@@ -13,25 +13,71 @@ import { useRouter } from "next/navigation"
 import { PiShieldWarningFill } from "react-icons/pi";
 import LoadingScreen from '@/components/LoadingScreen'
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { convertURLtofile } from '../../../utils/converURLtofile'
+import { signResponseCloudinary } from '../../../utils/apiCloudinary'
 
 export default function CreateForm() {
     const router = useRouter()
+    const [signData, setSignData] = useState("")
     const inputForm = useSelector(state => state.preview.inputForm)
     const dispatch = useDispatch()
-    
+    const {data,status} = useSession();
+    console.log(data);
+    const persBussines={
+        nombre:data?.user?.name.split(' ').join(''),
+        business:inputForm?.name_business
+    }
     useEffect(() => {
         logPageView('business_form')
-      }, [])
-  
-    const {status} = useSession();
+    }, [])
+    
+    useEffect(() => {
+        console.log("persBussines:  ",persBussines.nombre,persBussines.business, status);
+        if (status === "authenticated" && persBussines.nombre && persBussines.business) {
+            signResponseCloudinary(persBussines.nombre, persBussines.business)
+                .then(data => setSignData(data))
+            
+        }
+    }, [inputForm])
+
+    
+    
+    const handleSubmitBack = () => {
+        const imageURLarray = inputForm.images
+        console.log(imageURLarray[0].fileURL);
+        for (let i = 0; i < imageURLarray.length; i++) {
+            convertURLtofile(imageURLarray[i].fileURL)
+                            .then(file => {
+                                if (file) {
+                                    const formData = new FormData()
+                                    formData.append('file',file)
+                                    formData.append('api_key',signData.apiKey)
+                                    formData.append("timestamp", signData.timestamp);
+                                    formData.append("signature", signData.signature);
+                                    formData.append("eager", "c_pad,h_300,w_400|c_crop,h_200,w_260");
+                                    formData.append("folder", `${persBussines.nombre}/${persBussines.business}`);
+                                    fetch(`https://api.cloudinary.com/v1_1/${signData.cloudname}/auto/upload`,{
+                                        method:"POST",
+                                        body:formData
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log("Respuesta: ",data);
+                                    })
+                                    .catch(error => {
+                                        console.log("Error: ",error);
+                                    })
+                                }
+                            })
+        
+        }
+        // dispatch(createAsyncThunk)
+    }
 
 if (status === "loading") {
     return <LoadingScreen />
 }
 
-const handleSubmitBack = () => {
-    dispatch(createAsyncThunk)
-}
 
 if (status === "unauthenticated") {
     return(

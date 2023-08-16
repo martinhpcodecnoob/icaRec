@@ -64,16 +64,21 @@ export default function Form() {
 
     const handleFileChange = (e) => {
         const file = e.target.files
+        console.log(file);
         if (file.length > 0) {
             const fileURL = URL.createObjectURL(file[0])
-            input.images.push(fileURL)
+            const objImages = {
+                fileURL: fileURL,
+                url_cloudinary:"",
+                public_id: ""
+            }
+            input.images.push(objImages)
             const currentFile = input.images
             setInput({
                 ...input,
                 ["images"]:currentFile
             })   
         }
-        // console.log(file);
         // console.log(URL.createObjectURL(file[0]));
     }
 

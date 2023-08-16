@@ -1,9 +1,10 @@
 'use client'
 import React, { useState,useEffect } from 'react'
-import {Cloudinary} from '@cloudinary/url-gen'
-import {AdvancedImage} from '@cloudinary/react'
-import {sepia} from "@cloudinary/url-gen/actions/effect";
+// import {Cloudinary} from '@cloudinary/url-gen'
+// import {AdvancedImage} from '@cloudinary/react'
+// import {sepia} from "@cloudinary/url-gen/actions/effect";
 import { signResponseCloudinary } from '../../../utils/apiCloudinary';
+import { convertURLtofile } from '../../../utils/converURLtofile';
 
 const IndexPage = () => {
   console.log("Ejecutando");
@@ -22,30 +23,35 @@ useEffect(() => {
 }, [])
   const upload = () => {
     try {
-      console.log("Este es la imagen: ",imageSelected);
-      const formData = new FormData()
-      formData.append("file",imageSelected)
-      formData.append("api_key", signData.apiKey);
-      formData.append("timestamp", signData.timestamp);
-      formData.append("signature", signData.signature);
-      formData.append("eager", "c_pad,h_300,w_400|c_crop,h_200,w_260");
-      formData.append("folder", `${persBussines.nombre}/${persBussines.business}`);
+      convertURLtofile(URL.createObjectURL(imageSelected)).then(
+        response => {
+          const formData = new FormData()
+          formData.append("file",response)
+          formData.append("api_key", signData.apiKey);
+          formData.append("timestamp", signData.timestamp);
+          formData.append("signature", signData.signature);
+          formData.append("eager", "c_pad,h_300,w_400|c_crop,h_200,w_260");
+          formData.append("folder", `${persBussines.nombre}/${persBussines.business}`);
+          fetch(`https://api.cloudinary.com/v1_1/${signData.cloudname}/auto/upload`,{
+            method:"POST",
+            body:formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log("Respuesta: ",data);
+            setShowImage(data.url)
+          })
+          .catch(error => {
+            console.log("Error: ",error);
+          })
+
+        }
+      )
   
-      fetch(`https://api.cloudinary.com/v1_1/${signData.cloudname}/auto/upload`,{
-        method:"POST",
-        body:formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log("Respuesta: ",data);
-        setShowImage(data.url)
-      })
-      .catch(error => {
-        console.log("Error: ",error);
-      })
     } catch (error) {
       console.log("Este es el error: ",error);
     }
+      // console.log("Este es la imagen: ",imageSelected);
   }
 
 

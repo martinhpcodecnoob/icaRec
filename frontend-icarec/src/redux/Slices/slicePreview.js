@@ -53,7 +53,9 @@ export const Slice = createSlice({
             const input = action.payload
             state.inputForm = { ...input };
             state.inputForm.list_service = [...input.list_service];
-            state.inputForm.images=[...input.images]
+            state.inputForm.images=[
+                ...input.images,
+            ]
             const location={
                 lat:state.latCurrent,
                 long:state.logCurrent
