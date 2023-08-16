@@ -40,7 +40,7 @@ const IndexPage = () => {
   } 
 
    const handleCreateBusiness = () => {
-    router.push('/createBusiness')
+    router.push('/mybusiness')
   } 
 
    if (status === "loading" || isLoading) {
