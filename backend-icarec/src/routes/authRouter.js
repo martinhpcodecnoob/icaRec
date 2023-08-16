@@ -7,5 +7,6 @@ const authRouter = express.Router()
 authRouter.post("/login", authController.login)
 authRouter.post("/register", authController.register)
 authRouter.post("/generateToken/:userId", checkUserExistence, authController.generateToken)
+authRouter.post("/generateRecovery", authController.generateRecoveryToken)
 
 module.exports= authRouter

@@ -4,7 +4,8 @@ const { ObjectId } = require('mongodb')
 const User = require('../models/User')
 const Account = require('../models/Account')
 
-const { generateAuthToken } = require("../utils/utils")
+const { generateAuthToken, sendEmailWithResend } = require("../utils/utils")
+const { EmailPasswordRecoveryHTML } = require("../utils/templates")
 
 async function generateToken(req, res){
   try {
@@ -94,39 +95,58 @@ async function login(req, res) {
   }
 }
 
+async function generateRecoveryToken(req, res) {
+  try {
+    const { email } = req.body
+
+    const users = await User.find({ email })
+
+    if (users.length === 0) {
+      return res.status(404).json({ error: "Usuario no encontrado." })
+    }
+    
+    let userWithCredentials
+    for (const user of users) {
+      const account = await Account.findOne({
+        provider: 'credentials',
+        userId: user._id
+      })
+    
+      if (account) {
+        userWithCredentials = user;
+        break
+      }
+    }
+    
+    if (!userWithCredentials) {
+      return res.status(404).json({ error: "Cuenta de usuario no encontrada." })
+    }
+
+    const recoveryToken = await bcrypt.genSalt(10)
+
+    userWithCredentials.passwordResetToken = recoveryToken
+    userWithCredentials.passwordResetExpiration = new Date(Date.now() + (60 * (60 * 1000)))
+    await userWithCredentials.save()
+    const recoveryLink = `${process.env.FRONT_URL}/recuperar-contrasena?token=${recoveryToken}`
+    const emailOptions = {
+      from: 'tiendasE@resend.dev',
+      to: userWithCredentials.email,
+      subject: 'Recuperación de Contraseña(Tienda é)',
+      html: EmailPasswordRecoveryHTML(userWithCredentials.name, recoveryLink)
+    }
+
+    await sendEmailWithResend(emailOptions)
+
+    res.status(200).json({ message: "Token de recuperación generado exitosamente." })
+  } catch (error) {
+    console.error("Error al generar el token de recuperación:", error)
+    res.status(500).json({ error: "Error al generar el token de recuperación." })
+  }
+}
+
 module.exports = {
   register,
   login,
   generateToken,
+  generateRecoveryToken,
 }
-
-
-
-/* const jwt = require('jsonwebtoken')
-const secretKey = 'tu_clave_secreta'
-
-// Función para generar un token JWT al autenticar un usuario
-function generateAuthToken(userId) {
-  const payload = { sub: userId }
-  const options = { expiresIn: '1h' }
-  return jwt.sign(payload, secretKey, options)
-}
-
-// Middleware para verificar el token JWT en las rutas protegidas
-function verifyAuthToken(req, res, next) {
-  const token = req.headers.authorization
-  if (!token) return res.status(401).json({ message: 'Token no proporcionado' })
-
-  jwt.verify(token, secretKey, (err, decodedToken) => {
-    if (err) return res.status(401).json({ message: 'Token inválido' })
-    req.userId = decodedToken.sub;
-    next();
-  });
-}
-
-// Ejemplo de uso en una ruta protegida
-app.get('/ruta_protegida', verifyAuthToken, (req, res) => {
-  // La autenticación fue exitosa, el usuario está autenticado
-  // Puedes usar req.userId para obtener el ID del usuario autenticado
-  res.json({ message: 'Ruta protegida, usuario autenticado' })
-}); */
