@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect } from 'react'
 import Image from 'next/image'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import BusinessSubComponent from '@/components/BusinessSubComponent'
 import FileInput from '@/components/Formbussiness/Fileinput'
 import Form from '@/components/Formbussiness/Form'
@@ -12,10 +12,12 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from "next/navigation"
 import { PiShieldWarningFill } from "react-icons/pi";
 import LoadingScreen from '@/components/LoadingScreen'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 
 export default function CreateForm() {
     const router = useRouter()
     const inputForm = useSelector(state => state.preview.inputForm)
+    const dispatch = useDispatch()
     
     useEffect(() => {
         logPageView('business_form')
@@ -25,6 +27,10 @@ export default function CreateForm() {
 
 if (status === "loading") {
     return <LoadingScreen />
+}
+
+const handleSubmitBack = () => {
+    dispatch(createAsyncThunk)
 }
 
 if (status === "unauthenticated") {
@@ -74,7 +80,11 @@ return (
                     </div>
                 </div>
                 <div>
-                    <button type="button" className="text-[1rem] focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                    <button 
+                        type="button" 
+                        className="text-[1rem] focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                        onClick={handleSubmitBack}
+                    >
                         Enviar
                     </button>
                 </div>
