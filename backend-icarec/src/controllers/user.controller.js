@@ -94,6 +94,7 @@ const create_user = async(req,res) =>{
             dni,
             email,
             role,
+            userCreationDate: new Date()
         })
         newUser.save()
         return res.status(200).json(newUser)

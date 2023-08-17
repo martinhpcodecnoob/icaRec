@@ -124,7 +124,38 @@ const delete_business = async (req, res) => {
     }
   }
 
+  const get_all_business_services = async (req, res) => {
+    try {
+        const result = await Business.aggregate([
+            {
+                $unwind: "$services"
+            },
+            {
+                $group: {
+                    _id: null,
+                    allServices: { $addToSet: { $toLower: "$services" } }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    services: "$allServices"
+                }
+            }
+        ])
+
+        if (result.length > 0) {
+            return res.status(200).json({services: result[0].services}) 
+        } else {
+          return res.status(400).json({services: []}) 
+        }
+    } catch (error) {
+      return res.status(500).json({error: error.message})
+    }
+  }
+
 module.exports = {
     get_business,
     create_business,
+    get_all_business_services,
 }
