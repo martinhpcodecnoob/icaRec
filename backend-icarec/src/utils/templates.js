@@ -18,7 +18,6 @@ const RegistrationEmailHTML = (clientName) => `
 </body>
 </html>
 `;
-//comentario
 const EmailPasswordRecoveryHTML = (clientName, recoveryLink) => `
 <!DOCTYPE html>
 <html lang="en">
@@ -43,4 +42,4 @@ const EmailPasswordRecoveryHTML = (clientName, recoveryLink) => `
 </html>
 `;
 
-module.exports = {RegistrationEmailHTML, EmailPasswordRecoveryHTML}
+module.exports = {RegistrationEmailHTML}

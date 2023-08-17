@@ -1,4 +1,5 @@
 'use client'
+
 import PasswordRecoveryPage from '@/components/PasswordRecoveryPage'
 import React from 'react'
 
