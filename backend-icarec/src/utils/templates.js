@@ -18,6 +18,7 @@ const RegistrationEmailHTML = (clientName) => `
 </body>
 </html>
 `;
+//comentario
 const EmailPasswordRecoveryHTML = (clientName, recoveryLink) => `
 <!DOCTYPE html>
 <html lang="en">
