@@ -22,14 +22,6 @@ const accountSchema = new Schema({
         ref: 'User', 
         required: true 
     },
-    passwordResetToken: {
-        type: String,
-        default: null
-    },
-    passwordResetExpiration: {
-        type: Date,
-        default: null
-    }
     },
     {versionKey: false})
 
