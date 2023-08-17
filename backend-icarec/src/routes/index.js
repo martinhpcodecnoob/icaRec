@@ -1,12 +1,14 @@
 const userRouter = require("./userRouter")
 const businessRouter = require("./businessRouter")
 const authRouter = require("./authRouter")
+const cloudinaryRouter = require('./cloudinaryRoute')
 const servicesRouter = require("./servicesRouter")
 
 const routes =[
     ['user',userRouter],
     ['business',businessRouter],
     ['auth', authRouter],
+    ['cloudinary',cloudinaryRouter]
     ['services', servicesRouter],
 ]
 
