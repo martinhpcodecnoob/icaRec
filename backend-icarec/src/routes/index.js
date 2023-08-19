@@ -8,7 +8,7 @@ const routes =[
     ['user',userRouter],
     ['business',businessRouter],
     ['auth', authRouter],
-    ['cloudinary',cloudinaryRouter]
+    ['cloudinary',cloudinaryRouter],
     ['services', servicesRouter],
 ]
 

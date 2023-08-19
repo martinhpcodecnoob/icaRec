@@ -26,10 +26,6 @@ const accountSchema = new Schema({
         type: String,
         default: null
     },
-    passwordResetExpiration: {
-        type: Date,
-        default: null
-    }
     },
     {versionKey: false})
 
