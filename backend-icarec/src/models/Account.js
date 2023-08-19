@@ -22,6 +22,10 @@ const accountSchema = new Schema({
         ref: 'User', 
         required: true 
     },
+    passwordResetToken: {
+        type: String,
+        default: null
+    },
     },
     {versionKey: false})
 

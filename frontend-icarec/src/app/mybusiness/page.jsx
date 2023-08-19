@@ -103,10 +103,9 @@ export default function CreateForm() {
         }); 
     };
 
-if (status === "loading") {
-    return <LoadingScreen />
-}
-
+// if (status === "loading") {
+//     return <LoadingScreen />
+// }
 
 if (status === "unauthenticated") {
     return(

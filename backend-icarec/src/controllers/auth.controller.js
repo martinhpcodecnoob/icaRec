@@ -1,10 +1,12 @@
 const bcrypt = require("bcryptjs")
+const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb')
 
 const User = require('../models/User')
 const Account = require('../models/Account')
 
-const { generateAuthToken } = require("../utils/utils")
+const { generateAuthToken, sendEmailWithResend } = require("../utils/utils")
+const { EmailPasswordRecoveryHTML } = require("../utils/templates")
 
 async function generateToken(req, res){
   try {
@@ -94,39 +96,105 @@ async function login(req, res) {
   }
 }
 
+async function generateRecoveryToken(req, res) {
+  try {
+    const { email } = req.body
+
+    const users = await User.find({ email })
+
+    if (users.length === 0) {
+      return res.status(404).json({ error: "Usuario no encontrado." })
+    }
+
+    let userWithCredentials
+    let accountToUpdate
+
+    for (const user of users) {
+      const account = await Account.findOne({
+        provider: 'credentials',
+        userId: user._id
+      });
+
+      if (account) {
+        userWithCredentials = user;
+        accountToUpdate = account;
+        break
+      }
+    }
+
+    if (!userWithCredentials || !accountToUpdate) {
+      return res.status(404).json({ error: "Usuario o cuenta no encontrados." })
+    }
+
+    const token = generateAuthToken(userWithCredentials._id).token
+    console.log("Token de function: ", token)
+    accountToUpdate.passwordResetToken = token
+    await accountToUpdate.save()
+
+    const recoveryLink = `${process.env.FRONT_URL}/recover-password?token=${token}`
+    const emailOptions = {
+      from: 'tiendasE@resend.dev',
+      to: userWithCredentials.email,
+      subject: 'Recuperación de Contraseña(Tienda é)',
+      html: EmailPasswordRecoveryHTML(userWithCredentials.name, recoveryLink)
+    }
+
+    await sendEmailWithResend(emailOptions)
+
+    res.status(200).json({ message: "Token de recuperación generado exitosamente." })
+  } catch (error) {
+    console.error("Error al generar el token de recuperación:", error)
+    res.status(500).json({ error: "Error al generar el token de recuperación." })
+  }
+}
+
+async function verifyRecoveryToken(req, res) {
+  try {
+    const { token } = req.body
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+
+    const account = await Account.findOne({
+      userId: decodedToken.sub,
+      passwordResetToken: token,
+    })
+    if (!account) {
+      return res.status(400).json({ error: "El token no es válido para este usuario." })
+    }
+
+    return res.status(200).json({ message: "El token es válido para este usuario.", userId: account.userId })
+  } catch (error) {
+    console.error("Error al verificar el token de recuperacion:", error)
+    return res.status(500).json({ error: "Error al verificar el token." })
+  }
+}
+
+async function changePassword(req, res) {
+  try {
+    const { userId, newPassword } = req.body;
+
+    const account = await Account.findOne({
+      userId,
+    })
+
+    if (!account) {
+      return res.status(400).json({ error: "El token no es válido para este usuario." })
+    }
+    const hashedPassword = await bcrypt.hash(newPassword.toString(), 10)
+    account.password = hashedPassword
+    await account.save()
+
+    res.status(200).json({ message: "Contraseña cambiada exitosamente." })
+  } catch (error) {
+    console.error("Error al cambiar la contraseña:", error)
+    res.status(500).json({ error: "Error al cambiar la contraseña." })
+  }
+}
+
 module.exports = {
   register,
   login,
   generateToken,
+  generateRecoveryToken,
+  verifyRecoveryToken,
+  changePassword,
 }
-
-
-
-/* const jwt = require('jsonwebtoken')
-const secretKey = 'tu_clave_secreta'
-
-// Función para generar un token JWT al autenticar un usuario
-function generateAuthToken(userId) {
-  const payload = { sub: userId }
-  const options = { expiresIn: '1h' }
-  return jwt.sign(payload, secretKey, options)
-}
-
-// Middleware para verificar el token JWT en las rutas protegidas
-function verifyAuthToken(req, res, next) {
-  const token = req.headers.authorization
-  if (!token) return res.status(401).json({ message: 'Token no proporcionado' })
-
-  jwt.verify(token, secretKey, (err, decodedToken) => {
-    if (err) return res.status(401).json({ message: 'Token inválido' })
-    req.userId = decodedToken.sub;
-    next();
-  });
-}
-
-// Ejemplo de uso en una ruta protegida
-app.get('/ruta_protegida', verifyAuthToken, (req, res) => {
-  // La autenticación fue exitosa, el usuario está autenticado
-  // Puedes usar req.userId para obtener el ID del usuario autenticado
-  res.json({ message: 'Ruta protegida, usuario autenticado' })
-}); */

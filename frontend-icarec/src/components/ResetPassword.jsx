@@ -1,10 +1,12 @@
 'use client'
 import React, { useState, useEffect } from 'react'
+import { forgotMyPassword } from '../../utils/apiBackend'
 
 const ResetPassword = ({ onClose }) => {
   const [email, setEmail] = useState('')
   const [isSending, setIsSending] = useState(false)
   const [isSent, setIsSent] = useState(false)
+  const [responseMessage, setResponseMessage] = useState('');
 
   const handleBack = () => {
     onClose()
@@ -14,14 +16,17 @@ const ResetPassword = ({ onClose }) => {
     setEmail(e.target.value)
   }
 
-  const handleSendLink = () => {
+  const handleSendLink = async() => {
     setIsSending(true)
-
-    setTimeout(() => {
-      setIsSending(false)
+    const response = await forgotMyPassword(email)
+    setIsSending(false)
+    if (response && response.message) {
       setIsSent(true)
-    }, 3000)
-  };
+      setResponseMessage(response.message);
+    } else {
+      setResponseMessage('Hubo un error al enviar la solicitud.')
+    }
+  }
 
   useEffect(() => {
     if (isSent) {
@@ -76,8 +81,11 @@ const ResetPassword = ({ onClose }) => {
           </div>
         ) : (
           <div className="flex items-center justify-center mb-4">
-            <div className="loader"></div>
-            <span className="ml-2">Enviando enlace...</span>
+            <div className="flex items-center justify-center mb-4">
+              <div className="loader"></div>
+              <span className="ml-2">Enviando enlace...</span>
+            </div>
+            <span className="ml-2">{responseMessage}</span>
           </div>
         )}
         <div className="text-sm text-center">

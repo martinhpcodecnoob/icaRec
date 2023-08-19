@@ -13,6 +13,7 @@ import LoadingScreen from '@/components/LoadingScreen'
 import detodologo from '../../public/detodologo.png'
 import detodologo2 from '../../public/detodologo2.png'
 import { logPageView, logEvent } from '../../utils/utils'
+import AdBanner from '@/components/AdBanner'
 
 const IndexPage = () => {
   const router = useRouter()
@@ -79,6 +80,11 @@ const IndexPage = () => {
       </div>
       <div>
         <DefaultCarousels/>
+        <AdBanner
+          data-ad-slot="2597718181"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
         <div className='flex justify-center items-center text-2xl pt-2'>¿En que te puedo ayudar?</div>
         <Searchbar/>
         <Cardsup/>

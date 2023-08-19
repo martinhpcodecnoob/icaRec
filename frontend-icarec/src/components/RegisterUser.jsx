@@ -57,7 +57,6 @@ const RegisterUser = ({ providerType }) => {
     setShowPassword(!showPassword)
   }
 
-  
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword)
   }
@@ -91,7 +90,7 @@ const RegisterUser = ({ providerType }) => {
          cellphone: data.celular,
          dni: data.numeroDocumento, 
          email: data.correoElectronico, 
-         password: data.password
+         password: data.password,
         }),
       })
 

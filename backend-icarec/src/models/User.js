@@ -24,6 +24,10 @@ const userSchema = new Schema({
         required: false,
         default: ['user']
     },
+    userCreationDate: {
+        type: Date,
+        default: Date.now
+    },
     businesses: [
         { 
             type: Schema.Types.ObjectId, 
