@@ -1,28 +1,34 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 
-const createBusiness = createAsyncThunk(
-    'preview/createBusiness',
-    async(userId, newInput) => {
+export const createBusiness = createAsyncThunk(
+    'createBusiness',
+    async(userForm) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/business/createBusiness/${userId}`,{
+            console.log("Estes el el input: ",userForm);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/business/createBusiness/${userForm.userId}`,{
                 method:"POST",
                 headers:{
                     'Content-Type':'application/json'
                 },
                 body:JSON.stringify({
-                    business_name: newInput.name_business,
-                    business_location: newInput.geo_business,
+                    business_name: userForm.business.name_business,
+                    business_location: userForm.business.geo_business,
                     location_coordinates:{
-                        latitude: newInput.location.lat,
-                        longitude: newInput.location.long
+                        latitude: userForm.business.location.lat,
+                        longitude: userForm.business.location.long
                     },
-                    RUC: newInput.ruc, 
-                    cellphone: newInput.cellphone, 
-                    facebook: newInput.facebook,
-                    website: newInput.name_web,
-                    schedule: newInput.schedule,
-                    services: newInput.list_service,
-                    images: newInput.images
+                    RUC: userForm.business.ruc, 
+                    cellphone: userForm.business.cellphone, 
+                    facebook: userForm.business.facebook,
+                    website: userForm.business.name_web,
+                    schedule: userForm.business.schedule,
+                    services: userForm.business.list_service,
+                    images: userForm.business.images.map(imagesCloudinary => {
+                        return {
+                            url_cloudinary:imagesCloudinary.url_cloudinary,
+                            public_id:imagesCloudinary.public_id
+                        }
+                    })
                 })
             })
 
@@ -33,6 +39,7 @@ const createBusiness = createAsyncThunk(
         }
     }
 )
+
 
 export const Slice = createSlice({
     name:"preview_values",
@@ -67,6 +74,20 @@ export const Slice = createSlice({
             const arrayImages = state.inputForm.images
             const newArrayImages = arrayImages.filter(img => image !== img)
             state.inputForm.images=[...newArrayImages]
+        },
+        saveDataCloudinary:(state,action) => {
+            const {url_cloudinary,public_id,fileURL} = action.payload
+            const newArrayImages = state.inputForm.images.map(objImage => {
+                if (objImage.fileURL === fileURL) {
+                    return {
+                        ...objImage,
+                        url_cloudinary,
+                        public_id
+                    }
+                }
+                return objImage
+            })
+            state.inputForm.images=[...newArrayImages]
         }
     },
     extraReducers:(builder) =>{
@@ -85,5 +106,4 @@ export const Slice = createSlice({
             })
     }
 })
-
-export const {saveLoaction,saveFormPreview,removeImageOfRedux} =Slice.actions
+export const {saveLoaction,saveFormPreview,removeImageOfRedux,saveDataCloudinary} =Slice.actions

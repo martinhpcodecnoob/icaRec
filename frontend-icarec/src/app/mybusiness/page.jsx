@@ -12,21 +12,23 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from "next/navigation"
 import { PiShieldWarningFill } from "react-icons/pi";
 import LoadingScreen from '@/components/LoadingScreen'
-import { createAsyncThunk } from '@reduxjs/toolkit'
 import { convertURLtofile } from '../../../utils/converURLtofile'
 import { signResponseCloudinary } from '../../../utils/apiCloudinary'
+import { createBusiness, saveDataCloudinary } from '@/redux/Slices/slicePreview'
+
 
 export default function CreateForm() {
     const router = useRouter()
-    const [signData, setSignData] = useState("")
     const inputForm = useSelector(state => state.preview.inputForm)
     const dispatch = useDispatch()
     const {data,status} = useSession();
-    console.log(data);
+    const [signData, setSignData] = useState("")
+    const [activatedSubmitForm, setActivatedSubmitForm] = useState(false)
     const persBussines={
         nombre:data?.user?.name.split(' ').join(''),
         business:inputForm?.name_business
     }
+    console.log(data);
     useEffect(() => {
         logPageView('business_form')
     }, [])
@@ -39,40 +41,67 @@ export default function CreateForm() {
             
         }
     }, [inputForm])
-
     
-    
-    const handleSubmitBack = () => {
-        const imageURLarray = inputForm.images
-        console.log(imageURLarray[0].fileURL);
-        for (let i = 0; i < imageURLarray.length; i++) {
-            convertURLtofile(imageURLarray[i].fileURL)
-                            .then(file => {
-                                if (file) {
-                                    const formData = new FormData()
-                                    formData.append('file',file)
-                                    formData.append('api_key',signData.apiKey)
-                                    formData.append("timestamp", signData.timestamp);
-                                    formData.append("signature", signData.signature);
-                                    formData.append("eager", "c_pad,h_300,w_400|c_crop,h_200,w_260");
-                                    formData.append("folder", `${persBussines.nombre}/${persBussines.business}`);
-                                    fetch(`https://api.cloudinary.com/v1_1/${signData.cloudname}/auto/upload`,{
-                                        method:"POST",
-                                        body:formData
-                                    })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        console.log("Respuesta: ",data);
-                                    })
-                                    .catch(error => {
-                                        console.log("Error: ",error);
-                                    })
-                                }
-                            })
-        
+    useEffect(() => {
+        if (activatedSubmitForm) {
+            finalSubmitback()
         }
-        // dispatch(createAsyncThunk)
+    }, [activatedSubmitForm])
+    
+    const finalSubmitback = async() => {
+        // Ahora ejecutamos el segundo fetch
+        try {
+            const dataUserResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/user/getUser`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: data?.user?.name
+                })
+            });
+            const dataUser = await dataUserResponse.json();
+            // const userAlbertoId = "64c18890b2dd91ead7f93be2"
+            dispatch(createBusiness({userId:dataUser.currentUser._id,business:inputForm})).then(response => console.log("este es response ",response))
+            setActivatedSubmitForm(false)
+        } catch (error) {
+            setActivatedSubmitForm(false)
+            console.error("Fetch error:", error);
+        }
     }
+    
+    const handleSubmitBack = async () => {
+        const imageURLarray = inputForm.images;
+    
+        // Usamos map para crear un array de Promesas
+        const promises = imageURLarray.map(async (image) => {
+            const file = await convertURLtofile(image.fileURL);
+            if (file) {
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('api_key', signData.apiKey);
+                formData.append("timestamp", signData.timestamp);
+                formData.append("signature", signData.signature);
+                formData.append("eager", "c_pad,h_300,w_400|c_crop,h_200,w_260");
+                formData.append("folder", `${persBussines.nombre}/${persBussines.business}`);
+                const response = await fetch(`https://api.cloudinary.com/v1_1/${signData.cloudname}/auto/upload`, {
+                    method: "POST",
+                    body: formData
+                });
+                const data = await response.json();
+                dispatch(saveDataCloudinary({
+                    url_cloudinary: data.url,
+                    public_id: data.public_id,
+                    fileURL: image.fileURL
+                }));
+            }
+        });
+        
+        // Esperamos a que todas las Promesas se resuelvan antes de continuar
+        await Promise.all(promises).then(() => {
+            setActivatedSubmitForm(true)
+        }); 
+    };
 
 if (status === "loading") {
     return <LoadingScreen />
@@ -112,11 +141,11 @@ return (
             </div>
         </div>
         <div className='hidden md:block'>
-            <div className='flex p-6'>
-                <div className='w-32 h-6 relative'>
+            <div className='flex items-center p-6'>
+                <button className='w-32 h-6 relative'>
                     <Image alt='logo' src={detodologo}
                         className='h-full w-full'/>
-                </div>
+                </button>
                 <div className='flex justify-center w-full'>
                     <div className='flex items-center text-[21px]'>
                         ¡Descubre un mundo de oportunidades con un click!

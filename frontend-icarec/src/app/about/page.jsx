@@ -1,8 +1,5 @@
 'use client'
 import React, { useState,useEffect } from 'react'
-// import {Cloudinary} from '@cloudinary/url-gen'
-// import {AdvancedImage} from '@cloudinary/react'
-// import {sepia} from "@cloudinary/url-gen/actions/effect";
 import { signResponseCloudinary } from '../../../utils/apiCloudinary';
 import { convertURLtofile } from '../../../utils/converURLtofile';
 

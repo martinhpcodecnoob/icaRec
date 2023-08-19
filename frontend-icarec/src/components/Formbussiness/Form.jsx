@@ -84,7 +84,7 @@ export default function Form() {
 
     const handleSubmit = (e) =>{
         e.preventDefault()
-        console.log(input);
+        // console.log(input);
         dispatch(saveFormPreview(input))
     }
     return (
