@@ -28,7 +28,7 @@ export default function CarouselSingle({imageSlides}) {
     return (
         <div className='w-full px-4 relative group'>
             <Image
-                src={imageSlides[currentIndex]}
+                src={imageSlides[currentIndex].fileURL}
                 alt={`imageSlide${currentIndex}`}
                 width={1000}
                 height={1000}

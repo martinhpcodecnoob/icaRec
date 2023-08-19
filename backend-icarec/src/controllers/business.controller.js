@@ -24,9 +24,12 @@ const create_business = async(req,res) =>{
         const {
             business_name, 
             business_location, 
+            location_coordinates,
             RUC, 
             cellphone, 
+            facebook,
             website,
+            schedule,
             services,
             images
         } = req.body
@@ -34,9 +37,12 @@ const create_business = async(req,res) =>{
         const newBusiness = new Business({
             business_name, 
             business_location, 
+            location_coordinates,
             RUC, 
-            cellphone, 
+            cellphone,
+            facebook,
             website,
+            schedule,
             services,
             images,
             owner: user._id,
@@ -56,11 +62,11 @@ const create_business = async(req,res) =>{
  
 const delete_business = async (req, res) => {
     try {
-      const { business_id } = req.params
+      const { businessId } = req.params
       const user = req.user
   
       const deletedBusiness = await Business.findOneAndDelete({
-        _id: business_id,
+        _id: businessId,
         owner: user._id
       })
   
@@ -72,7 +78,7 @@ const delete_business = async (req, res) => {
       }
   
       user.businesses = user.businesses.filter(
-        (business) => business._id.toString() !== business_id
+        (business) => business._id.toString() !== businessId
       );
       await user.save()
   
@@ -91,13 +97,13 @@ const delete_business = async (req, res) => {
 
   const update_business = async (req, res) => {
     try {
-      const { business_id } = req.params
+      const { businessId } = req.params
       const user = req.user
       const updates = req.body
   
       const updatedBusiness = await Business.findOneAndUpdate(
         {
-          _id: business_id,
+          _id: businessId,
           owner: user._id
         },
         updates,
@@ -158,4 +164,5 @@ module.exports = {
     get_business,
     create_business,
     get_all_business_services,
+    update_business
 }
