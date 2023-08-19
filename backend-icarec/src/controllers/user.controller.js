@@ -2,7 +2,13 @@ const User = require("../models/User")
 
 const get_user = async(req,res) => {
     try {
-        const {name} = req.body
+        const {name} = req.query
+        if (!name) {
+          return res.status(400).json({
+              found: false,
+              message: "Missing 'name' query parameter"
+          })
+        }
         const currentUser = await User.findOne({ name }).populate('businesses')
         return res.status(200).json({
             found:true,

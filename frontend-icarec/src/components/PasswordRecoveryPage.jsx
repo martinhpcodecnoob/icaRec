@@ -1,51 +1,73 @@
-import React, { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import React, { useState } from 'react'
+import { changePassword } from '../../utils/apiBackend'
 
-const PasswordRecoveryPage = () => {
-  const [tokenValid, setTokenValid] = useState(true)
+const PasswordRecoveryPage = ({userId}) => {
+
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [passwordChanged, setPasswordChanged] = useState(false)
 
-  useEffect(() => {
-    // Aquí verifica si el token es válido y aún no ha expirado
-    // Puedes hacer esto en el componente de montaje usando la información en "location"
-  }, [])
-
   const handleSubmit = async (e) => {
+
     e.preventDefault()
 
-  }
+    if (password !== confirmPassword) {
+      alert('Las contraseñas no coinciden. Por favor, verifica.');
+      return
+    }
 
-  if (!tokenValid) {
-    return <div>El enlace de recuperación es inválido o ha expirado.</div>;
+    try {
+      const result = await changePassword(userId, password)
+
+      if (result.success) {
+        setPasswordChanged(true)
+      } else {
+        console.error('Error al cambiar la contraseña:', result.error)
+      }
+    } catch (error) {
+      console.error('Error al cambiar la contraseña:', error)
+    }
   }
 
   if (passwordChanged) {
-    return <div>Tu contraseña ha sido cambiada exitosamente.</div>;
+    //redirijir
+    return <div>Tu contraseña ha sido cambiada exitosamente.</div>
   }
 
   return (
-    <div>
-      <h2>Recuperación de Contraseña</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Nueva Contraseña:
+    <div className="w-full max-w-sm mx-auto p-6">
+      <h2 className="text-2xl font-semibold mb-4">Recuperación de Contraseña</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block font-medium mb-1" htmlFor="password">
+            Nueva Contraseña:
+          </label>
           <input
+            id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500"
           />
-        </label>
-        <label>
-          Confirmar Nueva Contraseña:
+        </div>
+        <div>
+          <label className="block font-medium mb-1" htmlFor="confirmPassword">
+            Confirmar Nueva Contraseña:
+          </label>
           <input
+            id="confirmPassword"
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            className="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500"
           />
-        </label>
-        <button type="submit">Cambiar Contraseña</button>
+        </div>
+        <button
+          type="submit"
+          className="w-full bg-red-500 text-white rounded py-2 px-4 hover:bg-blue-600 transition duration-300"
+        >
+          Cambiar Contraseña
+        </button>
       </form>
     </div>
   )

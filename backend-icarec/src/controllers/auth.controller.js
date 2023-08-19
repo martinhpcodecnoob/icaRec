@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs")
+const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb')
 
 const User = require('../models/User')
@@ -104,30 +105,33 @@ async function generateRecoveryToken(req, res) {
     if (users.length === 0) {
       return res.status(404).json({ error: "Usuario no encontrado." })
     }
-    
+
     let userWithCredentials
+    let accountToUpdate
+
     for (const user of users) {
       const account = await Account.findOne({
         provider: 'credentials',
         userId: user._id
-      })
-    
+      });
+
       if (account) {
         userWithCredentials = user;
+        accountToUpdate = account;
         break
       }
     }
-    
-    if (!userWithCredentials) {
-      return res.status(404).json({ error: "Cuenta de usuario no encontrada." })
+
+    if (!userWithCredentials || !accountToUpdate) {
+      return res.status(404).json({ error: "Usuario o cuenta no encontrados." })
     }
 
-    const recoveryToken = await bcrypt.genSalt(10)
+    const token = generateAuthToken(userWithCredentials._id).token
+    console.log("Token de function: ", token)
+    accountToUpdate.passwordResetToken = token
+    await accountToUpdate.save()
 
-    userWithCredentials.passwordResetToken = recoveryToken
-    userWithCredentials.passwordResetExpiration = new Date(Date.now() + (60 * (60 * 1000)))
-    await userWithCredentials.save()
-    const recoveryLink = `${process.env.FRONT_URL}/recuperar-contrasena?token=${recoveryToken}`
+    const recoveryLink = `${process.env.FRONT_URL}/recover-password?token=${token}`
     const emailOptions = {
       from: 'tiendasE@resend.dev',
       to: userWithCredentials.email,
@@ -144,9 +148,53 @@ async function generateRecoveryToken(req, res) {
   }
 }
 
+async function verifyRecoveryToken(req, res) {
+  try {
+    const { token } = req.body
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+
+    const account = await Account.findOne({
+      userId: decodedToken.sub,
+      passwordResetToken: token,
+    })
+    if (!account) {
+      return res.status(400).json({ error: "El token no es válido para este usuario." })
+    }
+
+    return res.status(200).json({ message: "El token es válido para este usuario.", userId: account.userId })
+  } catch (error) {
+    console.error("Error al verificar el token de recuperacion:", error)
+    return res.status(500).json({ error: "Error al verificar el token." })
+  }
+}
+
+async function changePassword(req, res) {
+  try {
+    const { userId, newPassword } = req.body;
+
+    const account = await Account.findOne({
+      userId,
+    })
+
+    if (!account) {
+      return res.status(400).json({ error: "El token no es válido para este usuario." })
+    }
+    const hashedPassword = await bcrypt.hash(newPassword.toString(), 10)
+    account.password = hashedPassword
+    await account.save()
+
+    res.status(200).json({ message: "Contraseña cambiada exitosamente." })
+  } catch (error) {
+    console.error("Error al cambiar la contraseña:", error)
+    res.status(500).json({ error: "Error al cambiar la contraseña." })
+  }
+}
+
 module.exports = {
   register,
   login,
   generateToken,
   generateRecoveryToken,
+  verifyRecoveryToken,
+  changePassword,
 }

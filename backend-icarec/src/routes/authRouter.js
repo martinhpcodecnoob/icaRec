@@ -8,5 +8,7 @@ authRouter.post("/login", authController.login)
 authRouter.post("/register", authController.register)
 authRouter.post("/generateToken/:userId", checkUserExistence, authController.generateToken)
 authRouter.post("/generateRecovery", authController.generateRecoveryToken)
+authRouter.post("/verifyRecoveryToken", authController.verifyRecoveryToken)
+authRouter.post("/changePassword", authController.changePassword)
 
 module.exports= authRouter
