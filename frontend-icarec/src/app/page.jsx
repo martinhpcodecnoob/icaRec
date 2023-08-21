@@ -19,11 +19,16 @@ const IndexPage = () => {
   const router = useRouter()
   const [isLoginOpen, setLoginOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [hidden, setHidden] = useState('hidden')
   const { data: session, status } = useSession()  
 
   useEffect(() => {
     logPageView('landing_page')
   }, [])
+
+  useEffect(() => {
+    window.scroll(0,0)
+}, [])
 
   const handleOpenLogin = () => {
     logEvent('press_login_button')
@@ -41,6 +46,7 @@ const IndexPage = () => {
 
    const handleCreateBusiness = () => {
     router.push('/mybusiness')
+    setIsLoading(true)
   } 
 
    if (status === "loading" || isLoading) {
@@ -89,7 +95,7 @@ const IndexPage = () => {
         <Searchbar/>
         <Cardsup/>
         <div id='cardDown'>
-          <Cardsdown/>
+          <Cardsdown hidden={hidden} setHidden={setHidden}/>
         </div>
       </div>
     </div>

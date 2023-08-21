@@ -18,6 +18,7 @@ import { createBusiness, saveDataCloudinary } from '@/redux/Slices/slicePreview'
 
 
 export default function CreateForm() {
+    
     const router = useRouter()
     const inputForm = useSelector(state => state.preview.inputForm)
     const dispatch = useDispatch()
@@ -28,7 +29,7 @@ export default function CreateForm() {
         nombre:data?.user?.name.split(' ').join(''),
         business:inputForm?.name_business
     }
-    console.log(data);
+    
     useEffect(() => {
         logPageView('business_form')
     }, [])
@@ -37,7 +38,7 @@ export default function CreateForm() {
         console.log("persBussines:  ",persBussines.nombre,persBussines.business, status);
         if (status === "authenticated" && persBussines.nombre && persBussines.business) {
             signResponseCloudinary(persBussines.nombre, persBussines.business)
-                .then(data => setSignData(data))
+            .then(data => setSignData(data))
             
         }
     }, [inputForm])
@@ -48,6 +49,9 @@ export default function CreateForm() {
         }
     }, [activatedSubmitForm])
     
+    if (status === "loading") {
+        return <LoadingScreen />
+    }
     const finalSubmitback = async() => {
         // Ahora ejecutamos el segundo fetch
         try {
@@ -103,9 +107,6 @@ export default function CreateForm() {
         }); 
     };
 
-// if (status === "loading") {
-//     return <LoadingScreen />
-// }
 
 if (status === "unauthenticated") {
     return(

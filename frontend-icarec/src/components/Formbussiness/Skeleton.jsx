@@ -1,5 +1,4 @@
 export default function Skeleton() {
-    const repit = [1,2]
     return (
         <div className="flex lg:items-center w-full bg-red-100 p-4 rounded-lg border-4 border-gray-400">
             <div role="status" className="space-y-2.5 animate-pulse sm:w-full smartphone:w-full">
