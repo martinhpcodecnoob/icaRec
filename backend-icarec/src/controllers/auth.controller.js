@@ -179,11 +179,16 @@ async function changePassword(req, res) {
     if (!account) {
       return res.status(400).json({ error: "El token no es válido para este usuario." })
     }
+
+    const user = await User.findOne({_id: userId})
+    console.log("Usuario del change")
+    const userEmail = user.email
+
     const hashedPassword = await bcrypt.hash(newPassword.toString(), 10)
     account.password = hashedPassword
     await account.save()
 
-    res.status(200).json({ message: "Contraseña cambiada exitosamente." })
+    res.status(200).json({ message: "Contraseña cambiada exitosamente.", emailChanged: userEmail })
   } catch (error) {
     console.error("Error al cambiar la contraseña:", error)
     res.status(500).json({ error: "Error al cambiar la contraseña." })

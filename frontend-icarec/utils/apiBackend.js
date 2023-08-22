@@ -37,7 +37,7 @@ export const checkIfTokenIsValid = async (token) => {
       const data = await response.json()
   
       if (response.ok) {
-        return { success: true, data }
+        return { success: true, userRedirect: {userEmail: data.emailChanged, password: newPassword}, data }
       } else {
         return { success: false, error: data.error }
       }

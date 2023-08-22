@@ -5,8 +5,9 @@ const { checkUserExistence,validateUserSchema } = require('../middlewares/middle
 const businessRouter = express.Router()
 
 businessRouter.post("/createBusiness/:userId", checkUserExistence, validateUserSchema, BC.create_business)
-businessRouter.get("/getAllBusinessServices", BC.get_all_business_services)
 businessRouter.get("/getBusiness", BC.get_business)
+businessRouter.get("/getAllBusiness", BC.get_all_businesses)
+businessRouter.get("/getAllBusinessServices", BC.get_all_business_services)
 
 businessRouter.put('/updateBusiness/:userId/:businessId',checkUserExistence, BC.update_business)
 module.exports= businessRouter

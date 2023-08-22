@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
+import { signIn } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import { changePassword } from '../../utils/apiBackend'
 
 const PasswordRecoveryPage = ({userId}) => {
 
+  const router = useRouter()
+
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [passwordChanged, setPasswordChanged] = useState(false)
 
   const handleSubmit = async (e) => {
-
     e.preventDefault()
 
     if (password !== confirmPassword) {
-      alert('Las contraseñas no coinciden. Por favor, verifica.');
+      alert('Las contraseñas no coinciden. Por favor, verifica.')
       return
     }
 
@@ -20,7 +22,7 @@ const PasswordRecoveryPage = ({userId}) => {
       const result = await changePassword(userId, password)
 
       if (result.success) {
-        setPasswordChanged(true)
+        await signInAndRedirect(result.userRedirect)
       } else {
         console.error('Error al cambiar la contraseña:', result.error)
       }
@@ -29,10 +31,28 @@ const PasswordRecoveryPage = ({userId}) => {
     }
   }
 
-  if (passwordChanged) {
-    //redirijir
-    return <div>Tu contraseña ha sido cambiada exitosamente.</div>
-  }
+  const signInAndRedirect = async (userRedirectData) => {
+    try {
+      const { userEmail, password } = userRedirectData
+      console.log("Email:", userEmail)
+      console.log("Password:", password)
+      const result = await signIn('credentials', {
+        email: userEmail,
+        password,
+        redirect: false,
+      })
+
+      if (result.error === 'CredentialsSignin') {
+        console.error('Error login credentials:', result.error)
+      } else {
+        console.log("Aca se redirije")
+        //AL USAR EL PUSH.ROUTER SE CRASHEA
+        window.location.replace('/')
+      }
+    } catch (error) {
+      console.error('Error de inicio de sesión:', error)
+    }
+  };
 
   return (
     <div className="w-full max-w-sm mx-auto p-6">
