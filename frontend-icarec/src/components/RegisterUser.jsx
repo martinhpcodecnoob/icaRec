@@ -1,30 +1,28 @@
 'use client'
+
 import React, { useEffect, useState } from 'react'
 import { useRouter } from "next/navigation"
 import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Alert } from 'flowbite-react'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { fetchCountries } from '../../utils/apiServices'
 import { getContainerClasses, getHalfContainerClasses, getSelectClasses, getInputClasses } from '../../utils/responsiveUtils'
 import { validationSchema } from '../../utils/utils'
-import ErrorScreen from './ErrorScreen';
-
+import ErrorScreen from './ErrorScreen'
+import LoadingScreen from './LoadingScreen'
 
 const RegisterUser = ({ providerType }) => {
 
   const router = useRouter()
 
+  const [isLoading, setIsLoading] = useState(true)
   const [countries, setCountries] = useState([])
   const [selectedCountry, setSelectedCountry] = useState("")
   const [countryCode, setCountryCode] = useState("")
   
   const [showPhoneInput, setShowPhoneInput] = useState(false)
-  const [phone, setPhone] = useState('')
 
   const [showPassword, setShowPassword] = useState(false)
-  const [password1, setPassword1] = useState('')
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [password2, setPassword2] = useState('')
   const [isEmailRegistered, setIsEmailRegistered] = useState(false)
   const [documentType, setdocumentType] = useState('default')
 
@@ -37,6 +35,9 @@ const RegisterUser = ({ providerType }) => {
     fetchCountries()
       .then((data) => setCountries(data))
       .catch((error) => console.error("Error fetching countries:", error))
+      //Hacer que los campos se requieran al inicio, cambiar esto en el futuro
+      handleSubmit(onSubmit)()
+      setIsLoading(false)
   }, [])
 
   const handleCountryChange = (e) => {
@@ -49,10 +50,11 @@ const RegisterUser = ({ providerType }) => {
       setShowPhoneInput(true)
     } 
   }
+
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(validationSchema),
   })
-
+  
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
@@ -60,25 +62,8 @@ const RegisterUser = ({ providerType }) => {
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword)
   }
-  
- /*  const handleConfirmPasswordChange = (e) => {
-    setPassword2(e.target.value)
-  }
-  const handlePasswordChange = (e) => {
-    setPassword1(e.target.value)
-  }
-  
-  
-  const updatePassword1InRegister = (value) => {
-    register('password', value);
-  };
-  
-  const updatePassword2InRegister = (value) => {
-    register('confirmPassword', value);
-  };
-   */
+
   const onSubmit = async (data) => {
-    //console.log("Data del form:", data)
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/register`, {
        method: 'POST',
@@ -109,8 +94,10 @@ const RegisterUser = ({ providerType }) => {
       return <ErrorScreen />
     }
   }
-  const isPasswordMismatch = (password1 !== password2 ) 
 
+  if (isLoading) {
+    return <LoadingScreen />
+  }
 
   return (
     <div className="bg-orange-100 min-h-screen flex items-center justify-center">
@@ -125,12 +112,19 @@ const RegisterUser = ({ providerType }) => {
           <input
             type="text"
             id="nombreApellidos"
-            className="w-full border border-gray-300 rounded p-2 text-center"
+            className={`
+                    ${
+                      "w-full border border-gray-300 rounded p-2 text-center"
+                    } 
+                    ${errors.nombreApellidos ? "border-red-500" : ""} 
+                    ${
+                      !errors.nombreApellidos && "border-green-500"
+                    }
+                  `}
             placeholder="Ingresa tu nombre y apellidos"
-            required
             {...register('nombreApellidos')}
           />
-          {errors.nombreApellidos && <p className="error">{errors.nombreApellidos.message}</p>}
+          {errors.nombreApellidos && <p key="nombreApellidosError" className="text-red-500">{errors.nombreApellidos.message}</p>}
         </div>
         <div className={containerClasses}>
           <div className={halfContainerClasses}>
@@ -145,13 +139,11 @@ const RegisterUser = ({ providerType }) => {
                 setdocumentType(e.target.value)
                 register('tipoDocumento').onChange(e)    
               }}
-              required
             >
               <option value="default">Selecciona un tipo</option>
               <option value="DNI">DNI</option>
-              {/* Agregar más opciones aquí */}
             </select>
-            {errors.tipoDocumento && <p className="error">{errors.tipoDocumento.message}</p>}
+            {errors.tipoDocumento && <p key="tipoDocumentoError" className="text-red-500">{errors.tipoDocumento.message}</p>}
           </div>
           <div className={halfContainerClasses}>
             <label htmlFor="celular" className="block font-bold mb-2">
@@ -162,13 +154,16 @@ const RegisterUser = ({ providerType }) => {
                 <input
                   type="text"
                   id="celular"
-                  className={inputClasses}
+                  className={`
+                    ${
+                      inputClasses
+                    } 
+                    ${errors.celular ? "border-red-500" : ""} 
+                    ${
+                      !errors.celular && "border-green-500"
+                    }
+                  `}
                   placeholder="Ingresa tu número de celular"
-                  //value={phone}
-                  /* onChange={(e) => {
-                    setPhone(e.target.value)
-                    register('celular').onChange(e)
-                  }} */
                   {...register('celular')}
                 />
                 <div className="absolute inset-y-0 left-2 flex items-center pointer-events-none">
@@ -185,7 +180,7 @@ const RegisterUser = ({ providerType }) => {
                     handleCountryChange(e)
                     register('celular').onChange(e)
                   }}
-                  required
+                  
                 >
                   <option value="">Selecciona un país</option>
                   {countries.map((country) => (
@@ -196,7 +191,7 @@ const RegisterUser = ({ providerType }) => {
                 </select>
               </div>
                 )}
-                {errors.celular && <p className="error">{errors.celular.message}</p>}
+             {errors.celular && <p key="celularError" className="text-red-500">{errors.celular.message}</p>} 
           </div>
         </div>
         <div className={containerClasses}>
@@ -207,13 +202,20 @@ const RegisterUser = ({ providerType }) => {
             <input
               type="text"
               id="numeroDocumento"
-              className={inputClasses}
+              className={`
+                    ${
+                      inputClasses
+                    } 
+                    ${errors.numeroDocumento ? "border-red-500" : ""} 
+                    ${
+                      !errors.numeroDocumento && "border-green-500"
+                    }
+                  `}
               placeholder={documentType === "default" ? `Ingresa el tipo de documento primero` : `Ingresa tu ${documentType} aquí`}
               disabled={documentType === "default"}
-              required
               {...register('numeroDocumento')}
             />
-            {errors.numeroDocumento && <p className="error">{errors.numeroDocumento.message}</p>}
+            {errors.numeroDocumento && <p key="numeroDocumentoError" className="text-red-500">{errors.numeroDocumento.message}</p>}
           </div>
           <div className={halfContainerClasses}>
             <label htmlFor="correoElectronico" className="block font-bold mb-2">
@@ -222,17 +224,22 @@ const RegisterUser = ({ providerType }) => {
             <input
               type="email"
               id="correoElectronico"
-              className={inputClasses}
+              className={`
+                    ${
+                      inputClasses
+                    } 
+                    ${errors.correoElectronico ? "border-red-500" : ""} 
+                    ${
+                      !errors.correoElectronico && "border-green-500"
+                    }
+                  `}
               placeholder="Ingresa tu correo electrónico"
-              /* onChange={(e) => {
-                register('correoElectronico').onChange(e)
-              }} */
               {...register('correoElectronico')}
-              required
             />
-            {errors.correoElectronico && <p className="error">{errors.correoElectronico.message}</p>}
+            {errors.correoElectronico && <p key="correoElectronicoError" className="text-red-500">{errors.correoElectronico.message}</p>}
             {isEmailRegistered && (
-              <p className="error">El correo electrónico ya está registrado.</p>
+              //Puede ser una notificacion
+              <p className="text-red-500">El correo electrónico ya está registrado.</p>
             )}
           </div>
         </div>
@@ -247,38 +254,39 @@ const RegisterUser = ({ providerType }) => {
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
-                className={inputClasses}
+                className={`
+                    ${
+                      inputClasses
+                    } 
+                    ${errors.password ? "border-red-500" : ""} 
+                    ${
+                      !errors.password && "border-green-500"
+                    }
+                  `}
                 placeholder="Ingresa tu contraseña"
-                //value={password1}
-                /* onChange={(e) => {
-                  setPassword1(e.target.value)
-                  updatePassword1InRegister(e.target.value)
-                  //handlePasswordChange(e)
-                  //register('password').onChange(e)
-                }} */
                 {...register('password')}
               />
-              {errors.password && <p className="error">{errors.password.message}</p>}
               <button
                 type="button"
                 className="absolute inset-y-0 right-2 flex items-center focus:outline-none"
                 onClick={togglePasswordVisibility}
-              >
+                >
                 {showPassword ? (
                   <img
-                    src="/eye-open.png"
-                    alt="Ocultar contraseña"
-                    className="w-6 h-6"
+                  src="/eye-open.png"
+                  alt="Ocultar contraseña"
+                  className="w-6 h-6"
                   />
-                ) : (
-                  <img
+                  ) : (
+                    <img
                     src="/eye-closed.png"
                     alt="Mostrar contraseña"
                     className="w-10 h-10"
-                  />
-                )}
+                    />
+                    )}
               </button>
             </div>
+            {errors.password && <p key="passwordError" className="text-red-500">{errors.password.message}</p>}
           </div>
           <div className={halfContainerClasses}>
             <label htmlFor="confirmPassword" className="block font-bold mb-2">
@@ -288,52 +296,42 @@ const RegisterUser = ({ providerType }) => {
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 id="confirmPassword"
-                className={inputClasses}
+                className={`
+                ${
+                  inputClasses
+                } 
+                ${errors.confirmPassword ? "border-red-500" : ""} 
+                ${
+                  !errors.confirmPassword && "border-green-500"
+                }
+                `}
                 placeholder="Confirma tu contraseña"
-                //value={password2}
-                /* onChange={(e) => {
-                  setPassword2(e.target.value)
-                  //handleConfirmPasswordChange(e)
-                  updatePassword2InRegister(e.target.value)
-                  //register('confirmPassword').onChange(e)
-                }} */
                 {...register('confirmPassword')}
               />
-              {errors.confirmPassword && <p className="error">{errors.confirmPassword.message}</p>}
               <button
                 type="button"
-               className="absolute inset-y-0 right-2 flex items-center focus:outline-none"
+                className="absolute inset-y-0 right-2 flex items-center focus:outline-none"
                 onClick={toggleConfirmPasswordVisibility}
-              >
+                >
                 {showConfirmPassword ? (
                   <img
-                    src="/eye-open.png"
-                    alt="Ocultar contraseña"
-                    className="w-6 h-6"
+                  src="/eye-open.png"
+                  alt="Ocultar contraseña"
+                  className="w-6 h-6"
                   />
-                ) : (
+                  ) : (
                   <img
                     src="/eye-closed.png"
                     alt="Mostrar contraseña"
                     className="w-10 h-10"
-                  />
-                )}
+                    />
+                    )}
               </button>
             </div>
+            {errors.confirmPassword && <p key="confirmPasswordError" className="text-red-500 ">{errors.confirmPassword.message}</p>}
           </div>
         </div>
-        {isPasswordMismatch && 
-          <Alert color="failure" className="bg-red-400">
-            <span>
-              <p>
-                <span className="font-medium">
-                  Alerta!
-                </span>
-                Las contraseñas deben ser iguales
-              </p>
-            </span>
-          </Alert>
-        }
+
        <div className="flex justify-center">
         <div className="w-max">
           <p className="font-bold">Debe usar al menos:</p>
@@ -363,7 +361,7 @@ const RegisterUser = ({ providerType }) => {
           <label htmlFor="terminosCondiciones">
             Acepto los términos y condiciones de &quot;detodo.com&quot; y autorizo la política de privacidad
           </label>
-          {errors.terminosCondiciones && <p className="error">{errors.terminosCondiciones.message}</p>}
+          {errors.terminosCondiciones && <p key="terminosCondicionesError" className="text-red-500">{errors.terminosCondiciones.message}</p>}
         </div>
         <div className='flex justify-center'>
         <button
