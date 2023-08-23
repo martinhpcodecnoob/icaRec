@@ -30,7 +30,7 @@ export async function generateMetadata({ params, searchParams }, parent) {
       url:"https://ica-rec.vercel.app/",
       images: [
         {
-          url:"https://res.cloudinary.com/dl6jys7s8/image/upload/v1692676832/MartinHernandezPe%C3%B1a/Hughenst/w3yzlml36rl82htolpen.jpg",
+          url:"https://res.cloudinary.com/dl6jys7s8/image/upload/v1692326894/MartinHernandezPe%C3%B1a/Hughenst/eek3pnee5nxro0q4otd7.png",
           width:800,
           height:600
         }
