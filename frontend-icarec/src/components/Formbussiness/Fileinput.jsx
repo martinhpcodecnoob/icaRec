@@ -2,11 +2,11 @@ import Image from "next/image";
 import React from "react";
 import CarouselSingle from "../Carouseltools/CarouselSingle";
 
-export default function FileInput({images=[]}) {
+export default function FileInput({images=[], hiddenRemove=''}) {
   if (images.length > 0) {
     return(
       <>
-        <CarouselSingle imageSlides={images}/>
+        <CarouselSingle imageSlides={images} hidden={hiddenRemove}/>
       </>
     )
   }

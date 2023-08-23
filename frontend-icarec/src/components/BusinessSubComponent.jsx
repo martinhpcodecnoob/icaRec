@@ -1,5 +1,6 @@
 import Map from './Map'
 import Skeleton from './Formbussiness/Skeleton'
+import FileInput from './Formbussiness/Fileinput'
 
 const BusinessSubComponent = ({inputForm}) => {
   
@@ -49,6 +50,9 @@ const BusinessSubComponent = ({inputForm}) => {
           <p className="font-bold">RUC:</p>
           <p>{inputForm.ruc}</p>
         </div>
+      </div>
+      <div className='sm:w-[100%]'>
+        <FileInput images={inputForm.images}/>
       </div>
     </div>
     ) : <Skeleton />}
