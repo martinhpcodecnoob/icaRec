@@ -19,13 +19,19 @@ export async function generateMetadata({ params, searchParams }, parent) {
   // const product = await fetch(`https://.../${id}`).then((res) => res.json())
  
   // optionally access and extend (rather than replace) parent metadata
-  const previousImages = (await parent).openGraph?.images || []
+  // const previousImages = (await parent).openGraph?.images || []
  
   return {
     title: "Tiendas E",
     openGraph: {
-      descrition:"Somos un tienda de Negocios",
-      images: ['../../public/metadata/imageKeys.jpg', ...previousImages],
+      description:"Somos un tienda de Negocios",
+      images: [
+        {
+          url:"https://res.cloudinary.com/dl6jys7s8/image/upload/v1692676832/MartinHernandezPe%C3%B1a/Hughenst/w3yzlml36rl82htolpen.jpg",
+          width:800,
+          height:600
+        }
+      ],
     },
   }
 }
