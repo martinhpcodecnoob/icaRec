@@ -36,10 +36,10 @@ export async function generateMetadata({ params, searchParams }, parent) {
         }
       ],
       type: 'website',
+      twitter:{
+        card: 'summary_large_image',
+      }
     },
-    twitter:{
-      card: 'summary_large_image',
-    }
   }
 }
  
