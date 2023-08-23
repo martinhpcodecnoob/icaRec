@@ -24,6 +24,7 @@ export async function generateMetadata({ params, searchParams }, parent) {
   return {
     title: "Tiendas E",
     openGraph: {
+      title:"Tiendas E",
       description:"Somos un tienda de Negocios",
       images: [
         {
