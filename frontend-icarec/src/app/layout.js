@@ -11,28 +11,23 @@ const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 const GOOGLE_ANALYTICS_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
 const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID
 
-export const metadata = {
-  openGraph: {
-    title: 'Next.js',
-    description: 'The React Framework for the Web',
-    url: 'https://nextjs.org',
-    siteName: 'Next.js',
-    images: [
-      {
-        url: 'https://img.freepik.com/vector-gratis/vector-degradado-logotipo-colorido-pajaro_343694-1365.jpg',
-        width: 800,
-        height: 600,
-      },
-      {
-        url: 'https://img.freepik.com/vector-gratis/vector-degradado-logotipo-colorido-pajaro_343694-1365.jpg',
-        width: 1800,
-        height: 1600,
-        alt: 'My custom alt',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
+export async function generateMetadata({ params, searchParams }, parent) {
+  // read route params
+  // const id = params.id
+ 
+  // fetch data
+  // const product = await fetch(`https://.../${id}`).then((res) => res.json())
+ 
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || []
+ 
+  return {
+    title: "Tiendas E",
+    openGraph: {
+      descrition:"Somos un tienda de Negocios",
+      images: ['../../public/metadata/imageKeys.jpg', ...previousImages],
+    },
+  }
 }
  
 export default function RootLayout({ children }) {
