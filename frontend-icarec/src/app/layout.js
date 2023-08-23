@@ -26,6 +26,8 @@ export async function generateMetadata({ params, searchParams }, parent) {
     openGraph: {
       title:"Tiendas E",
       description:"Somos un tienda de Negocios",
+      siteName:"Tiendas E`",
+      url:"https://ica-rec.vercel.app/",
       images: [
         {
           url:"https://res.cloudinary.com/dl6jys7s8/image/upload/v1692676832/MartinHernandezPe%C3%B1a/Hughenst/w3yzlml36rl82htolpen.jpg",
@@ -33,6 +35,7 @@ export async function generateMetadata({ params, searchParams }, parent) {
           height:600
         }
       ],
+      type: 'website',
     },
   }
 }
