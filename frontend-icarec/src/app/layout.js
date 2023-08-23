@@ -23,6 +23,9 @@ export async function generateMetadata({ params, searchParams }, parent) {
  
   return {
     title: "Tiendas E",
+    twitter:{
+      card: 'summary_large_image',
+    },
     openGraph: {
       title:"Tiendas E",
       description:"Somos un tienda de Negocios",
@@ -36,11 +39,7 @@ export async function generateMetadata({ params, searchParams }, parent) {
         }
       ],
       type: 'website',
-      card: 'summary_large_image'
     },
-    // twitter:{
-    //   card: 'summary_large_image',
-    // }
   }
 }
  
