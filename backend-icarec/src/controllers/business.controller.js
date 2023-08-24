@@ -31,7 +31,7 @@ const get_all_businesses = async (req, res) => {
       "facebook",
       "website",
       "services",
-      "images"
+      "images",
     ]
     const allBusinesses = await Business.find({}, selectedFields)
     return res.status(200).json({ businesses: allBusinesses })
