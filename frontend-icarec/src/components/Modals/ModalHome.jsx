@@ -7,7 +7,10 @@ export default function ModalHome({activated, closeVisualModal}) {
     return (
         <>
             {/* <!-- Extra Large Modal --> */}
-            <div tabIndex="-1" className={`flex overflow-y-hidden items-center justify-center fixed top-0 left-0 right-0 z-50 ${activated} w-full p-2 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full`}>
+            <div 
+                tabIndex="-1" 
+                className={`flex items-center justify-center fixed top-0 left-0 right-0 z-50 ${activated} w-full p-2 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%)] max-h-full`}
+            >
                 <div className="relative w-full max-w-7xl max-h-full">
                     {/* <!-- Modal content --> */}
                     <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -42,6 +45,12 @@ export default function ModalHome({activated, closeVisualModal}) {
                             <button data-modal-hide="extralarge-modal" type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
                         </div> */}
                     </div>
+                </div>
+
+                <div 
+                    className='fixed inset-0 flex bg-slate-400 bg-opacity-50 items-center justify-center -z-10'
+                    onClick={closeVisualModal}
+                >
                 </div>
             </div>
         </>

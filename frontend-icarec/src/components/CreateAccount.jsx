@@ -44,7 +44,7 @@ const CreateAccount = ({ onClose }) => {
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center">
       <div className="bg-white p-8 rounded shadow-md w-80 h-100 relative">
         <button
           className="text-red-500 font-bold absolute left-4 top-4"
@@ -138,6 +138,11 @@ const CreateAccount = ({ onClose }) => {
             </button>
           </p>
         </div>
+      </div>
+      <div
+        className='fixed inset-0 flex bg-slate-400 bg-opacity-50 items-center justify-center -z-10'
+        onClick={onClose}
+      >
       </div>
     </div>
   )
