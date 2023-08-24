@@ -19,6 +19,29 @@ const get_business = async(req,res) => {
     }
 }
  
+const get_all_businesses = async (req, res) => {
+  try {
+    const selectedFields = 
+    [
+      "business_name", 
+      "business_location", 
+      "location_coordinates",
+      "RUC",
+      "cellphone",
+      "facebook",
+      "website",
+      "services",
+      "images",
+    ]
+    const allBusinesses = await Business.find({}, selectedFields)
+    return res.status(200).json({ businesses: allBusinesses })
+  } catch (error) {
+    return res.status(500).json({
+      error: "Error retrieving businesses",
+    })
+  }
+}
+
 const create_business = async(req,res) =>{
     try {
         const {
@@ -162,7 +185,8 @@ const delete_business = async (req, res) => {
 
 module.exports = {
     get_business,
+    get_all_businesses,
     create_business,
     get_all_business_services,
-    update_business
+    update_business,
 }

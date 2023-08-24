@@ -22,7 +22,7 @@ const ResetPassword = ({ onClose }) => {
     setIsSending(false)
     if (response && response.message) {
       setIsSent(true)
-      setResponseMessage(response.message);
+      setResponseMessage(response.message)
     } else {
       setResponseMessage('Hubo un error al enviar la solicitud.')
     }

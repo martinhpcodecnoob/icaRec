@@ -12,7 +12,7 @@ const RecoverPassword = () => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  useEffect(async () => {
+  useEffect(() => {
     async function checkTokenValidity() {
       const token = searchParams.get('token')
 
@@ -33,7 +33,9 @@ const RecoverPassword = () => {
     return <div>El enlace de recuperación es inválido o ha expirado.</div>
   }
 
-  return <PasswordRecoveryPage userId={user}/>
+  return  <div className="flex justify-center items-center h-screen bg-red-200">
+            <PasswordRecoveryPage userId={user}/>
+          </div>
 }
 
 export default RecoverPassword

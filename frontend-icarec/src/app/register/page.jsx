@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import RegisterUser from '@/components/RegisterUser'
 import { logPageView } from '../../../utils/utils'
+import Head from 'next/head'
 
 const Register = () => {
   const { data: session } = useSession()
@@ -10,7 +11,13 @@ const Register = () => {
       logPageView('register')
   }, [])
   return (
+    <>
+    <Head>
+        <title>Tiendas é Registro</title>
+        <meta name="description" content="Registro de las tiendas é" />
+    </Head>
     <RegisterUser providerType={session?.user?.providerType}/>
+    </>
   )
 }
 
