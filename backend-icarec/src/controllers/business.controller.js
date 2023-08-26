@@ -21,24 +21,40 @@ const get_business = async(req,res) => {
  
 const get_all_businesses = async (req, res) => {
   try {
-    const selectedFields = 
-    [
-      "business_name", 
-      "business_location", 
-      "location_coordinates",
-      "RUC",
-      "cellphone",
-      "facebook",
-      "website",
-      "services",
-      "images",
-    ]
-    const allBusinesses = await Business.find({}, selectedFields)
-    return res.status(200).json({ businesses: allBusinesses })
+    const businessesWithLikes = await Business.aggregate([
+      {
+        $lookup: {
+          from: "interactions",
+          localField: "_id",
+          foreignField: "business",
+          as: "interactions",
+        },
+      },
+      {
+        $addFields: {
+          totalLikes: {
+            $size: {
+              $filter: {
+                input: "$interactions",
+                as: "interaction",
+                cond: { $eq: ["$$interaction.liked", true] }
+              }
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          interactions: 0
+        }
+      }
+    ]);
+    return res.status(200).json({ businesses: businessesWithLikes });
   } catch (error) {
+    console.log("Error I: ", error)
     return res.status(500).json({
       error: "Error retrieving businesses",
-    })
+    });
   }
 }
 
