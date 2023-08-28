@@ -1,13 +1,13 @@
 'use client'
 
-import PasswordRecoveryPage from '@/components/PasswordRecoveryPage'
+import Map from '@/components/Map'
 import React from 'react'
 
 const IndexPage = () => {
 
   return (
     <div>
-      <PasswordRecoveryPage />
+      <Map />
     </div>
   )
 }

@@ -22,7 +22,7 @@ const create_interaction = async(req,res) =>{
 
 const update_interaction = async (req, res) => {
     try {
-        const { interactionId, updatedFields } = req.body
+        const { interactionId, uppdatedFields } = req.body
   
       const existingInteraction = await Interaction.findById(interactionId)
       if (!existingInteraction) {
