@@ -2,6 +2,11 @@ import { useMediaQuery } from '@react-hook/media-query'
 
 const MIN_WIDTH = '768px'
 
+export const getCompleteContainerClasses = () => {
+  const isWideScreen = useMediaQuery(`(min-width: ${MIN_WIDTH})`)
+  return isWideScreen ? 'mb-4' : 'flex flex-col mb-4'
+}
+
 export const getContainerClasses = () => {
   const isWideScreen = useMediaQuery(`(min-width: ${MIN_WIDTH})`)
   return isWideScreen ? 'flex mb-4' : 'flex flex-col mb-4'

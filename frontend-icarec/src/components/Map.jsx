@@ -31,7 +31,9 @@ const Map = ({latProp, longProp, view}) => {
       longitude:lng
     }))
   }
-
+  if(showWarning){
+    console.log("sw: ", showWarning)
+  }
   const handleMarkerPositionChanged = () => {
     const lat = markerPosition.lat
     const lng = markerPosition.lng
@@ -52,12 +54,14 @@ const Map = ({latProp, longProp, view}) => {
   useEffect(() => {
       setIsLoaded(true)
       if (navigator.geolocation) {
+        setShowWarning(false)
         if (latProp && longProp) {
           setUserLocation({ lat: latProp, lng: longProp })
           setMarkerPosition({ lat: latProp, lng: longProp })
         }else{
           navigator.geolocation.getCurrentPosition(
             (position) => {
+              setShowWarning(false)
               const { latitude, longitude } = position.coords
               setUserLocation({ lat: latitude, lng: longitude })
               setMarkerPosition({ lat: latitude, lng: longitude })
@@ -90,7 +94,7 @@ const Map = ({latProp, longProp, view}) => {
     )
   }
 
-  if (showWarning) {
+  if (showWarning === true) {
     return (
       <div className="w-full h-full flex items-center justify-center bg-gray-200">
         <div className="w-full h-10.77rem rounded-md flex flex-col items-center justify-center m-4">

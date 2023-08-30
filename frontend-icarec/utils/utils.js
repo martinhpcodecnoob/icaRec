@@ -27,6 +27,22 @@ export const validationSchema = Yup.object().shape({
     terminosCondiciones: Yup.boolean().oneOf([true], 'Debes aceptar los términos y condiciones').required(),
   })
 
+  export const validationSchemaWithoutCredentials = Yup.object().shape({
+    nombreApellidos: Yup.string().required('El nombre y apellidos son obligatorios'),
+    tipoDocumento: Yup.string().notOneOf(['default'], 'Selecciona un tipo de documento'),
+    numeroDocumento: Yup.number()
+        .integer('El número de documento debe ser un número entero')
+        .positive('El número de documento debe ser positivo')
+        .typeError('El número de documento es obligatorio')
+        .required('El número de documento es obligatorio'),
+    celular: Yup.number()
+    .integer('El celular debe ser un número entero')
+    .positive('El celular debe ser positivo')
+    .typeError('El celular es obligatorio')
+    .required('El celular es obligatorio'),
+    terminosCondiciones: Yup.boolean().oneOf([true], 'Debes aceptar los términos y condiciones').required(),
+  })
+
 export const logPageView = (pageName) => {
   if (typeof window !== 'undefined') {
       const pagePath = window.location.pathname

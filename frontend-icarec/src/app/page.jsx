@@ -21,6 +21,10 @@ const IndexPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const { data: session, status } = useSession()  
 
+  if(session){
+    console.log("Datos de la session actual: ", session)
+  }
+
   useEffect(() => {
     logPageView('landing_page')
   }, [])
@@ -39,11 +43,15 @@ const IndexPage = () => {
     signOut()
   } 
 
-   const handleCreateBusiness = () => {
+  const handleCreateBusiness = () => {
     router.push('/mybusiness')
   } 
 
-   if (status === "loading" || isLoading) {
+  const handleUpdateUserAccount = () => {
+    router.push('/register')
+  } 
+
+  if (status === "loading" || isLoading) {
     return <LoadingScreen />
   }
  
@@ -67,12 +75,25 @@ const IndexPage = () => {
           {session && (
           <div className='flex space-x-6 px-4 items-center'>
             <p className='justify-center'>Bienvenido! {session.user.name}</p>
-            <Button color="failure" onClick={handleCreateBusiness}>
-                Crear Negocio
+            {session.user.providerType === "credentials" ? (
+              <>
+                <Button color="failure" onClick={handleCreateBusiness}>
+                  Crear Negocio
+                </Button>
+                <Button color="failure" onClick={handleSignOut}>
+                  Sign out
+                </Button>
+              </>
+            ) : (
+              <>
+              <Button color="failure" onClick={handleUpdateUserAccount}>
+                Rellenar Datos
               </Button>
-            <Button color="failure" onClick={handleSignOut}>
+              <Button color="failure" onClick={handleSignOut}>
               Sign out
             </Button>
+            </>
+            )}
           </div>
           )}
           {isLoginOpen && <Login1 onClose={handleCloseLogin} />}

@@ -67,6 +67,43 @@ async function register(req, res) {
   }
 }
 
+async function registerWithoutCredentials(req, res) {
+  try {
+    const { email, providerType, name, cellphone, dni } = req.body
+
+    const usersWithEmail = await User.find({ email })
+
+    if (!usersWithEmail) {
+      return res.status(404).json({ error: "User not found" })
+    }
+
+    const matchingUsers = []
+
+    for (const user of usersWithEmail) {
+      const account = await Account.findOne({ userId: user._id, provider: providerType })
+
+      if (account) {
+        matchingUsers.push(user)
+      }
+    }
+
+    if (matchingUsers.length === 0) {
+      return res.status(404).json({ error: "Account not found" })
+    }
+
+    const userToUpdate = matchingUsers[0]
+
+    userToUpdate.name = name
+    userToUpdate.cellphone = cellphone
+    userToUpdate.dni = dni
+    await userToUpdate.save()
+
+    res.status(200).json({ message: "User registered successfully." })
+  } catch (error) {
+    console.error("Error in registration:", error)
+    res.status(500).json({ error: "Error in registration." })
+  }
+}
 
 async function login(req, res) {
   try {
@@ -197,6 +234,7 @@ async function changePassword(req, res) {
 
 module.exports = {
   register,
+  registerWithoutCredentials,
   login,
   generateToken,
   generateRecoveryToken,
