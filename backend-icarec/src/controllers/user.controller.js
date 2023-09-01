@@ -163,7 +163,7 @@ const update_user_by_account = async (req, res) => {
 
 const update_user = async (req, res) => {
   try {
-    const { userId, cellphone, dni } = req.body
+    const { userId, cellphone, dni, sex } = req.body
     
     if (!userId) {
       return res.status(400).json({ updated: false, message: 'User ID is required.' })
@@ -175,6 +175,10 @@ const update_user = async (req, res) => {
 
     if (dni === undefined ) {
       return res.status(400).json({ updated: false, message: 'The value of "dni" must be a string' })
+    }
+
+    if (sex === undefined ) {
+      return res.status(400).json({ updated: false, message: 'The value of "sex" must be a string' })
     }
 
     const existingUser = await User.findById(userId)
@@ -191,10 +195,14 @@ const update_user = async (req, res) => {
       updateData.dni = dni
     }
 
+    if (sex !== undefined) {
+      updateData.sex = sex
+    }
+
     await User.findByIdAndUpdate(
       userId,
       updateData,
-      { new: true } // Devuelve la interacción actualizada en la respuesta en vez de usar el .save()
+      { new: true } 
     )
 
     return res.status(200).json({ updated: true, message: "User updated successfully." })

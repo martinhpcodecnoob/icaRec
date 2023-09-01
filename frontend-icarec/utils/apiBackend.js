@@ -94,14 +94,14 @@ export const checkIfTokenIsValid = async (token) => {
     }
   }
 
-  export const updateUser = async (userId, cellphone, dni) => {
+  export const updateUser = async (userId, cellphone, dni, sex) => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/user/updateUser`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userId, cellphone, dni }),
+        body: JSON.stringify({ userId, cellphone, dni, sex }),
       })
   
       const data = await response.json()
