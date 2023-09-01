@@ -22,7 +22,7 @@ const create_interaction = async(req,res) =>{
 
 const update_interaction = async (req, res) => {
     try {
-        const { interactionId, liked } = req.body
+      const { interactionId, liked } = req.body
 
       if (!interactionId) {
         return res.status(400).json({ updated: false, message: 'Interaction ID is required.' })

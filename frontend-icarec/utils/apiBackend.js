@@ -68,3 +68,53 @@ export const checkIfTokenIsValid = async (token) => {
       return false
     }
   }
+
+  export const updateAccount = async ( userId, newAccount, isRegistered ) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/account/updateAccount`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, newAccount, isRegistered }),
+      })
+      
+      const data = await response.json()
+  
+      return {
+        status: response.status, 
+        data: data,
+      }
+    } catch (error) {
+      console.error("Error del servidor al actualizar el la cuenta del usuario:", error)
+      return {
+        status: 500, 
+        error: "Error del servidor al actualizar el la cuenta del usuario",
+      }
+    }
+  }
+
+  export const updateUser = async (userId, cellphone, dni) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/user/updateUser`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, cellphone, dni }),
+      })
+  
+      const data = await response.json()
+  
+      return {
+        status: response.status, 
+        data: data,
+      }
+    } catch (error) {
+      console.error("Error del servidor al actualizar el usuario:", error)
+      return {
+        status: 500, 
+        error: "Error del servidor al actualizar el usuario",
+      }
+    }
+  }
