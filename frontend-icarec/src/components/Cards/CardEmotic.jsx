@@ -1,6 +1,6 @@
 'use client'
 import { FaHeart } from "react-icons/fa";
-import { useState,useEffect } from "react";
+import { useState } from "react";
 
 export default function Card({initialNumber,increment=1}) {
 const [emoReaction, setEmoReaction] = useState(false)

@@ -36,17 +36,20 @@ const uploadDestroy = async(req,res) => {
         .then( response =>{
             if (response.result==="ok") {
                 return res.json({
+                    errorBolean:false,
                     message:"Exito al destruir la imagen",
                     response
                 })
             }
             return res.status(400).json({
+                errorBolean:true,
                 message:"El archivo a eliminar no se encuentra",
                 response
             })
         })
         .catch(error =>{
             return res.status(400).json({
+                errorBolean:true,
                 message:"Error al destruir la imagen",
                 error
             })

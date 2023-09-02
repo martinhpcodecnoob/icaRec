@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Map from '../../components/Map'
 import { IoIosAddCircle } from "react-icons/io";
 import EtiquetasScroll from "./EtiquetasScroll";
-import { saveFormPreview } from "@/redux/Slices/slicePreview";
+import { saveFormPreview, saveLimitMessage } from "@/redux/Slices/slicePreview";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Form() {
@@ -39,6 +39,17 @@ export default function Form() {
         }
     }, [newImagesRedux])
     
+    const handleUrlBlur = (e) => {
+        if (e.target.name === 'name_web' || e.target.name === 'facebook') {
+            let url = input[e.target.name]
+            if (url.trim() !== '' && !url.startsWith('http://') && !url.startsWith('https://')) {
+                setInput({
+                    ...input,
+                    [e.target.name]:`https://${e.target.value}`
+                })
+            }
+        }
+    }
 
     const handleInputService = (e) => {
         e.preventDefault()
@@ -65,6 +76,20 @@ export default function Form() {
     const handleFileChange = (e) => {
         const file = e.target.files
         console.log(file);
+        if (file.length > 0) {
+                if (file[0].size >= 1572864) {
+                    dispatch(saveLimitMessage("La imagen solo debe pesar menos de 1.5 megabytes"))
+                    return
+                }
+        }
+        
+        if (input.images) {
+            if (input.images.length >= 3) {
+                dispatch(saveLimitMessage('El limite es hasta 3 imagenes'))
+                return
+            }
+        }
+        console.log("Este son los arreglos de las imagenes: ",input.images);
         if (file.length > 0) {
             const fileURL = URL.createObjectURL(file[0])
             const objImages = {
@@ -175,6 +200,7 @@ export default function Form() {
                     id="facebook"
                     value={input.facebook}
                     onChange={handleImputChange}
+                    onBlur={handleUrlBlur}
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
                 />
@@ -192,6 +218,7 @@ export default function Form() {
                     id="name_web"
                     value={input.name_web}
                     onChange={handleImputChange}
+                    onBlur={handleUrlBlur}
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
                 />
@@ -226,6 +253,14 @@ export default function Form() {
                     id="list_service"
                     value={addService}
                     onChange={handleInputService}
+                    onKeyDown={
+                        (e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault()
+                                handleAddService()
+                            }
+                        }
+                    }
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
                 />

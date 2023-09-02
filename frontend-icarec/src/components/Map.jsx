@@ -20,7 +20,7 @@ const Map = ({latProp, longProp, view}) => {
   const [permissionRequested, setPermissionRequested] = useState(false)
   const [permissionDenied, setPermissionDenied] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
-
+  
   const handleMarkerDrag = (event) => {
     const { latLng } = event
     const lat = latLng.lat()

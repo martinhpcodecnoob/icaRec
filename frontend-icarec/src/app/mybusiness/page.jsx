@@ -14,21 +14,25 @@ import { PiShieldWarningFill } from "react-icons/pi";
 import LoadingScreen from '@/components/LoadingScreen'
 import { convertURLtofile } from '../../../utils/converURLtofile'
 import { signResponseCloudinary } from '../../../utils/apiCloudinary'
-import { createBusiness, saveDataCloudinary } from '@/redux/Slices/slicePreview'
-
+import { createBusiness, saveDataCloudinary, saveLimitMessage } from '@/redux/Slices/slicePreview'
+import LoadFormBusiness from '@/components/Formbussiness/LoadFormBusiness'
+import WarningModal from '@/components/Formbussiness/WarningModal'
 
 export default function CreateForm() {
+    
     const router = useRouter()
     const inputForm = useSelector(state => state.preview.inputForm)
+    const message = useSelector(state => state.preview.fileLimit)
     const dispatch = useDispatch()
     const {data,status} = useSession();
     const [signData, setSignData] = useState("")
     const [activatedSubmitForm, setActivatedSubmitForm] = useState(false)
+    const [progressBar, setProgressBar] = useState({percentage:0,modalProgress:false, message:''})
     const persBussines={
         nombre:data?.user?.name.split(' ').join(''),
         business:inputForm?.name_business
     }
-    console.log(data);
+
     useEffect(() => {
         logPageView('business_form')
     }, [])
@@ -37,20 +41,50 @@ export default function CreateForm() {
         console.log("persBussines:  ",persBussines.nombre,persBussines.business, status);
         if (status === "authenticated" && persBussines.nombre && persBussines.business) {
             signResponseCloudinary(persBussines.nombre, persBussines.business)
-                .then(data => setSignData(data))
+            .then(data => setSignData(data))
             
         }
     }, [inputForm])
     
     useEffect(() => {
         if (activatedSubmitForm) {
-            finalSubmitback()
+            finalSubmitback().then(() => {
+                setTimeout(() => {
+                    setProgressBar({
+                        percentage:100,
+                        modalProgress:true,
+                        message:"Finalizo el envio"
+                    })
+                }, 1000);
+            })
         }
     }, [activatedSubmitForm])
+
+    useEffect(() => {
+        if (progressBar.percentage === 100) {
+            setTimeout(() => {
+                setProgressBar({
+                    percentage:0,
+                    modalProgress:false,
+                    message:''
+                })
+            }, 1000);
+        }
+    }, [progressBar])
     
+    
+    if (status === "loading") {
+        return <LoadingScreen />
+    }
+
     const finalSubmitback = async() => {
         // Ahora ejecutamos el segundo fetch
         try {
+            setProgressBar({
+                percentage:85,
+                modalProgress:true,
+                message:"Guardando formulario"
+            })
             const dataUserResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/user/getUser`, {
                 method: 'POST',
                 headers: {
@@ -62,7 +96,7 @@ export default function CreateForm() {
             });
             const dataUser = await dataUserResponse.json();
             // const userAlbertoId = "64c18890b2dd91ead7f93be2"
-            dispatch(createBusiness({userId:dataUser.currentUser._id,business:inputForm})).then(response => console.log("este es response ",response))
+            dispatch(createBusiness({userId:dataUser.currentUser._id, business:inputForm})).then(response => console.log("este es response ",response))
             setActivatedSubmitForm(false)
         } catch (error) {
             setActivatedSubmitForm(false)
@@ -72,40 +106,53 @@ export default function CreateForm() {
     
     const handleSubmitBack = async () => {
         const imageURLarray = inputForm.images;
-    
+        const numberImages = imageURLarray.filter(image => {
+            if (image.url_cloudinary === '') {
+                return image
+            }
+        })
+        setProgressBar({
+            percentage:60,
+            modalProgress:true,
+            message:`Subiendo ${numberImages.length} imagen${numberImages.length === 1 ? '':'es'}`
+        })
         // Usamos map para crear un array de Promesas
-        const promises = imageURLarray.map(async (image) => {
-            const file = await convertURLtofile(image.fileURL);
-            if (file) {
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('api_key', signData.apiKey);
-                formData.append("timestamp", signData.timestamp);
-                formData.append("signature", signData.signature);
-                formData.append("eager", "c_pad,h_300,w_400|c_crop,h_200,w_260");
-                formData.append("folder", `${persBussines.nombre}/${persBussines.business}`);
-                const response = await fetch(`https://api.cloudinary.com/v1_1/${signData.cloudname}/auto/upload`, {
-                    method: "POST",
-                    body: formData
-                });
-                const data = await response.json();
-                dispatch(saveDataCloudinary({
-                    url_cloudinary: data.url,
-                    public_id: data.public_id,
-                    fileURL: image.fileURL
-                }));
+        const promises = imageURLarray.map(async (image,i) => {
+            if (image.url_cloudinary === '') {
+                const file = await convertURLtofile(image.fileURL);
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('api_key', signData.apiKey);
+                    formData.append("timestamp", signData.timestamp);
+                    formData.append("signature", signData.signature);
+                    formData.append("eager", "c_pad,h_300,w_400|c_crop,h_200,w_260");
+                    formData.append("folder", `${persBussines.nombre}/${persBussines.business}`);
+                    const response = await fetch(`https://api.cloudinary.com/v1_1/${signData.cloudname}/auto/upload`, {
+                        method: "POST",
+                        body: formData
+                    });
+                    const data = await response.json();
+                    dispatch(saveDataCloudinary({
+                        url_cloudinary: data.url,
+                        public_id: data.public_id,
+                        fileURL: image.fileURL
+                    }));
+                }
             }
         });
         
         // Esperamos a que todas las Promesas se resuelvan antes de continuar
         await Promise.all(promises).then(() => {
             setActivatedSubmitForm(true)
+            setProgressBar({
+                percentage:62,
+                modalProgress:true,
+                message:'Fin de la subida de Image'
+            })
         }); 
     };
 
-// if (status === "loading") {
-//     return <LoadingScreen />
-// }
 
 if (status === "unauthenticated") {
     return(
@@ -130,7 +177,7 @@ if (status === "unauthenticated") {
         </div>
     )
 }
-  
+
 return (
     <div>
         <div className='hidden mdx:block sticky top-0 z-10'>
@@ -158,7 +205,7 @@ return (
                         type="button" 
                         className="text-[1rem] focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                         onClick={handleSubmitBack}
-                    >
+                        >
                         Enviar
                     </button>
                 </div>
@@ -170,18 +217,26 @@ return (
                 <Form/>
             </div>
             <div className='flex items-center justify-center w-[70%] sm:relative smartphone:relative smartphone:w-full smartphone:mt-7'>
-                <div className='lg:h-full lg:w-[100%] lg:bottom-0 lg:relative mr-1 rounded-lg sm:absolute sm:w-[70%] sm:h-[20vh] 
-                sm:bottom-[1.5rem] smartphone:absolute smartphone:h-[20vh] smartphone:w-[70%] smartphone:bottom-[4rem]'>
+                <div className='lg:h-full lg:w-[100%] lg:bottom-0 lg:relative mr-1 rounded-lg 
+                hidden lg:block
+                smartphone:absolute smartphone:h-[20vh] smartphone:w-[70%] smartphone:bottom-[4rem]'
+                >
                     <FileInput images={inputForm.images}/>
                 </div>
-                <div className='flex h-full smartphone:w-[100%] smartphone:h-[85vh] smartphone:mb-[2rem] lg:max-w-[430px] md:w-full 
+                <div className='flex h-full smartphone:w-[100%] smartphone:h-[100%] smartphone:mb-[2rem] lg:max-w-[430px] md:w-full 
                 sm:w-[85%] ml-1'>
                     <BusinessSubComponent
                         inputForm={inputForm}
-                    />
+                        />
                 </div>
             </div>
         </div>
+        <WarningModal message={message}/>
+        <LoadFormBusiness
+            percentaje={progressBar.percentage}
+            modal={progressBar.modalProgress}
+            message={progressBar.message}
+        />
     </div>
   )
 }

@@ -4,6 +4,6 @@ const {uploadSignature,uploadDestroy} = require('../cloudinary/controller/upload
 const cloudinaryRouter = express.Router()
 
 cloudinaryRouter.post('/signuploadform', uploadSignature)
-cloudinaryRouter.post('/destroy/',uploadDestroy)
+cloudinaryRouter.delete('/destroy',uploadDestroy)
 
 module.exports = cloudinaryRouter

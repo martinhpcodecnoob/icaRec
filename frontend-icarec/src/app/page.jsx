@@ -20,12 +20,14 @@ const IndexPage = () => {
   const router = useRouter()
   const [isLoginOpen, setLoginOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [hidden, setHidden] = useState('hidden')
   const { data: session, status } = useSession()  
 
   if( session){
     console.log("sesion user", session)
   }
   useEffect(() => {
+    window.scroll(0,0)
     if (session?.user?.isRegistered === false) {
       router.push('/newUser')
     } else {
@@ -53,6 +55,7 @@ const IndexPage = () => {
 
   const handleCreateBusiness = () => {
     router.push('/mybusiness')
+    setIsLoading(true)
   } 
 
   const handleUpdateUserAccount = () => {
@@ -107,23 +110,22 @@ const IndexPage = () => {
             {isLoginOpen && <Login1 onClose={handleCloseLogin} />}
           </div>
         </div>
-        <div>
-          <DefaultCarousels/>
-          <AdBanner
-            data-ad-slot="2597718181"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          />
-          <div className='flex justify-center items-center text-2xl pt-2'>¿En que te puedo ayudar?</div>
-          <Searchbar/>
-          <Cardsup/>
-          <div id='cardDown'>
-            <Cardsdown/>
-          </div>
+<div>
+        <DefaultCarousels/>
+        <AdBanner
+          data-ad-slot="2597718181"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
+        <div className='flex justify-center items-center text-2xl pt-2'>¿En que te puedo ayudar?</div>
+        <Searchbar/>
+        <Cardsup/>
+        <div id='cardDown'>
+          <Cardsdown hidden={hidden} setHidden={setHidden}/>
         </div>
       </div>
-    )
-  
+    </div>
+  )
 }
 
 export default IndexPage
