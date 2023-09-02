@@ -2,7 +2,7 @@ const User = require("../models/User")
 
 const get_user = async(req,res) => {
     try {
-        const {name} = req.query
+        const {name} = req.body
         if (!name) {
           return res.status(400).json({
               found: false,

@@ -31,8 +31,10 @@ export const createBusiness = createAsyncThunk(
                     })
                 })
             })
-
             const data= await response.json()
+            if (data.errors) {
+                throw Error(`Error al crear: ${data.message}`)
+            }
             return data
         } catch (error) {
             throw error
@@ -40,6 +42,30 @@ export const createBusiness = createAsyncThunk(
     }
 )
 
+export const destroyCloudinary = createAsyncThunk(
+    'destroyCloudinary',
+    async(publicId) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/cloudinary/destroy`,{
+                method:'DELETE',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({
+                    publicId
+                })
+            })
+
+            const data = await response.json()
+            if (data.errorBolean) {
+                throw Error(`Error :${data.message}`)
+            }
+            return data
+        } catch (error) {
+            throw error
+        }
+    }
+)
 
 export const Slice = createSlice({
     name:"preview_values",
@@ -47,8 +73,16 @@ export const Slice = createSlice({
         latCurrent:"",
         logCurrent:"",
         inputForm:{},
-        loading:false,
-        error:null
+        stateCreate:{
+            loading:false,
+            error:null
+        },
+        stateDestroy:{
+            fulfilled:'',
+            loading:false,
+            error:null
+        },
+        fileLimit:""
     },
     reducers:{
         saveLoaction:(state, action) => {
@@ -72,7 +106,12 @@ export const Slice = createSlice({
         removeImageOfRedux:(state,action) => {
             const image=action.payload
             const arrayImages = state.inputForm.images
-            const newArrayImages = arrayImages.filter(img => image !== img)
+            const newArrayImages = arrayImages.filter(img => {
+                if (img.url_cloudinary !== "") {
+                    return image !== img.url_cloudinary
+                }
+                return image !== img.fileURL
+            })
             state.inputForm.images=[...newArrayImages]
         },
         saveDataCloudinary:(state,action) => {
@@ -88,22 +127,43 @@ export const Slice = createSlice({
                 return objImage
             })
             state.inputForm.images=[...newArrayImages]
+        },
+        saveLimitMessage:(state,action) => {
+            const message = action.payload
+            state.fileLimit=message
         }
     },
     extraReducers:(builder) =>{
         builder
             .addCase(createBusiness.fulfilled, (state,action) =>{
-            state.loading = false;
-
+                state.stateCreate.loading = false;
             })
             .addCase(createBusiness.rejected, (state,action) => {
-                state.loading = false;
-                state.error = action.error.message
+                state.stateCreate.loading = false;
+                state.stateCreate.error = action.error.message
             })
             .addCase(createBusiness.pending, (state) =>{
-                state.loading = true
-                state.error = null
+                state.stateCreate.loading = true
+                state.stateCreate.error = null
+            })
+        builder
+            .addCase(destroyCloudinary.fulfilled, (state,action) =>{
+                state.stateDestroy.loading = false;
+                state.stateDestroy.fulfilled = action.payload.message
+            })
+            .addCase(destroyCloudinary.rejected, (state,action) => {
+                state.stateDestroy.loading = false
+                state.stateDestroy.error = action.error.message
+            })
+            .addCase(destroyCloudinary.pending, (state) => {
+                state.stateDestroy.loading = true
+                state.stateDestroy.error = null
+                state.stateDestroy.fulfilled = null
             })
     }
 })
-export const {saveLoaction,saveFormPreview,removeImageOfRedux,saveDataCloudinary} =Slice.actions
+export const {
+    saveLoaction,saveFormPreview,
+    removeImageOfRedux,saveDataCloudinary,
+    saveLimitMessage
+} = Slice.actions

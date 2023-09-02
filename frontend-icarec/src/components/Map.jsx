@@ -26,8 +26,8 @@ const Map = ({latProp,longProp,view}) => {
       setMarkerPosition({ lat, lng });
 
       // Mostrar la latitud y longitud en la consola
-      console.log('Latitud:', lat);
-      console.log('Longitud:', lng);
+      // console.log('Latitud:', lat);
+      // console.log('Longitud:', lng);
       dispatch(saveLoaction({
         latitude:lat,
         longitude:lng
@@ -40,8 +40,8 @@ const Map = ({latProp,longProp,view}) => {
       const lng = markerPosition.lng;
 
       // Mostrar la latitud y longitud en la consola
-      console.log('Latitud:', lat);
-      console.log('Longitud:', lng);
+      // console.log('Latitud:', lat);
+      // console.log('Longitud:', lng);
       dispatch(saveLoaction({
         latitude:lat,
         longitude:lng
