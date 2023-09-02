@@ -28,7 +28,6 @@ export default function CreateForm() {
     const [signData, setSignData] = useState("")
     const [activatedSubmitForm, setActivatedSubmitForm] = useState(false)
     const [progressBar, setProgressBar] = useState({percentage:0,modalProgress:false, message:''})
-    const [warningLimit, setWarningLimit] = useState(false)
     const persBussines={
         nombre:data?.user?.name.split(' ').join(''),
         business:inputForm?.name_business
