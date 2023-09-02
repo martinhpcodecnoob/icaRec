@@ -114,53 +114,6 @@ const create_user = async(req,res) =>{
     }
 }
 
-const update_user_by_account = async (req, res) => {
-  try {
-    const { accountId, cellphone, dni } = req.body
-
-    if (!accountId) {
-      return res.status(400).json({ updated: false, message: 'Account ID is required.' })
-    }
-
-    if (cellphone !== undefined && typeof cellphone !== 'sting') {
-      return res.status(400).json({ updated: false, message: 'The value of "cellphone" must be true or false.' })
-    }
-
-    if (dni !== undefined && typeof dni !== 'string') {
-      return res.status(400).json({ updated: false, message: 'The value of "dni" must be true or false.' })
-    }
-
-    const existingAccount = await Account.findById(accountId)
-    if (!existingAccount) {
-      return res.status(404).json({ message: "Account not found" })
-    }
-    const userId = existingAccount._doc.userId
-    const updateData = {}
-
-    if (cellphone !== undefined) {
-      updateData.cellphone = cellphone
-    }
-    
-    if (dni !== undefined) {
-      updateData.dni = dni
-    }
-
-    await User.findByIdAndUpdate(
-      userId,
-      updateData,
-      { new: true } // Devuelve la interacción actualizada en la respuesta en vez de usar el .save()
-    )
-
-    return res.status(200).json({ updated: true, message: "User updated successfully." })
-  } catch (error) {
-    return res.status(500).json({
-      updated: false,
-      message: "Error updating user",
-      error
-    })
-  }
-}
-
 const update_user = async (req, res) => {
   try {
     const { userId, cellphone, dni, sex } = req.body
@@ -221,5 +174,4 @@ module.exports = {
     create_user,
     get_user_by_id,
     update_user,
-    update_user_by_account,
 }

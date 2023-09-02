@@ -22,9 +22,6 @@ const IndexPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const { data: session, status } = useSession()  
 
-/*   if(session?.user?.newAccount){
-    router.push('/newUser')
-  } */
   if( session){
     console.log("sesion user", session)
   }

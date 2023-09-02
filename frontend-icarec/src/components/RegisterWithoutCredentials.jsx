@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { updateAccount, updateUser } from '../../utils/apiBackend'
 import { validationSchemaWithoutCredentials } from '../../utils/utils'
-import { getSession, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import ErrorScreen from './ErrorScreen'
 import { fetchCountries } from '../../utils/apiServices'
 
@@ -180,10 +180,10 @@ const RegisterWithoutCredentials = () => {
                   id="isFemale"
                   name="sex"
                   value="Mujer"
-                  className="rounded-md h-4 w-4 text-yellow-300"
+                  className="rounded-md h-4 w-4 text-[#f3ba1a]"
                   {...register('sex')}
                 />
-                <span className="ml-2">Mujer</span>
+                <span className="ml-2 text-[#100e80]">Mujer</span>
               </label>
               <label className="flex items-center cursor-pointer">
                 <input
@@ -191,10 +191,10 @@ const RegisterWithoutCredentials = () => {
                   id="isMale"
                   name="sex"
                   value="Hombre"
-                  className="rounded-md h-4 w-4 text-yellow-300"
+                  className="rounded-md h-4 w-4 text-[#f3ba1a]"
                   {...register('sex')}
                 />
-                <span className="ml-2">Hombre</span>
+                <span className="ml-2 text-[#100e80]">Hombre</span>
               </label>
             </div>
             {errors.sex && <p className="text-red-500">{errors.sex.message}</p>}

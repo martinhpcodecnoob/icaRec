@@ -66,7 +66,6 @@ const handler = NextAuth({
         if(account){
           currentAccountProvider = account.provider
         }
-        //ANTES DE HACER LA PETICION VERIFICAR EL ACCOUNT POR LA PROPIEDAD DE NEWUSER HABER SI ES TRUE O FALSE, REVISAR LA BASE DE DATOS
         if(currentUserEmail !== null && currentAccountProvider !== null){
           const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/verifyUserExistsWithoutCredentials?email=${currentUserEmail}&providerType=${currentAccountProvider}`, {
             method: 'GET',
@@ -76,12 +75,6 @@ const handler = NextAuth({
             
           })
           const data = await res.json()
-          /* if(data.newAccount ) {
-            account.nuevaPropAlcrear = data.isRegistered
-            account.newAccount = false
-            return true
-          } */
-          //Podria definir un if más para que a la segunda interacion del usuario actualizar el newAccount en la db
           if(data.found){
             const res = await updateAccount( data.userId, false, data.isRegistered )
             if (res.status === 200) { 
@@ -101,20 +94,8 @@ const handler = NextAuth({
             account.isRegistered = data.isRegistered
             return true
           }
-          /* else {
-            account.newAccount = true
-            account.isRegistered = false
-            return true
-          } */
         }
       },
-/*       async redirect({ url, baseUrl }) {
-        if (url.startsWith("/")) {
-          return '/registro1'
-        }
-        else if (new URL(url).origin === baseUrl) return url
-        return baseUrl
-      }, */
        async jwt({ token, account, user, trigger, session }) {
         if(trigger === 'update'){
           return {...token, ...session.user}
@@ -164,8 +145,7 @@ const handler = NextAuth({
         session.user.isRegistered = token.isRegistered
         session.user.token = token.userToken
         session.user.userId = token.userId
-         /* console.log("session, session: ", session)
-        console.log("session, token: ", token)   */
+        
         return session
       },
     },
