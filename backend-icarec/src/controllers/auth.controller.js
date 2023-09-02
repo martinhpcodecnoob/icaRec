@@ -67,6 +67,43 @@ async function register(req, res) {
   }
 }
 
+async function registerWithoutCredentials(req, res) {
+  try {
+    const { email, providerType, name, cellphone, dni } = req.body
+
+    const usersWithEmail = await User.find({ email })
+
+    if (!usersWithEmail) {
+      return res.status(404).json({ error: "User not found" })
+    }
+
+    const matchingUsers = []
+
+    for (const user of usersWithEmail) {
+      const account = await Account.findOne({ userId: user._id, provider: providerType })
+
+      if (account) {
+        matchingUsers.push(user)
+      }
+    }
+
+    if (matchingUsers.length === 0) {
+      return res.status(404).json({ error: "Account not found" })
+    }
+
+    const userToUpdate = matchingUsers[0]
+
+    userToUpdate.name = name
+    userToUpdate.cellphone = cellphone
+    userToUpdate.dni = dni
+    await userToUpdate.save()
+
+    res.status(200).json({ message: "User registered successfully." })
+  } catch (error) {
+    console.error("Error in registration:", error)
+    res.status(500).json({ error: "Error in registration." })
+  }
+}
 
 async function login(req, res) {
   try {
@@ -168,9 +205,50 @@ async function verifyRecoveryToken(req, res) {
   }
 }
 
+async function verifyUserExistsWithoutCredentials(req, res) {
+  try {
+    const { email, providerType } = req.query
+
+    const usersWithEmail = await User.find({ email })
+
+    if (!usersWithEmail) {
+      return res.status(404).json({ error: "User not found" })
+    }
+
+    const matchingUsersAccounts = []
+
+    for (const user of usersWithEmail) {
+      const account = await Account.findOne({ userId: user._id, provider: providerType })
+
+      if (account) {
+        matchingUsersAccounts.push(account)
+      }
+    }
+
+    if (matchingUsersAccounts.length === 0) {
+      return res.status(404).json({ found: false, error: "Account not found" })
+    }
+
+    const userAccount = matchingUsersAccounts[0]._doc
+    //cuidadop
+    const responseObj = { found: true, userId: userAccount.userId }
+
+    if ('newAccount' in userAccount) {
+      responseObj.newAccount = userAccount.newAccount
+    }
+    if ('isRegistered' in userAccount) {
+      responseObj.isRegistered = userAccount.isRegistered
+    }
+    return res.status(200).json(responseObj)
+  } catch (error) {
+    console.error("Error searching user account:", error)
+    res.status(500).json({ found: false, error: "Error searching user account" })
+  }
+}
+
 async function changePassword(req, res) {
   try {
-    const { userId, newPassword } = req.body;
+    const { userId, newPassword } = req.body
 
     const account = await Account.findOne({
       userId,
@@ -197,9 +275,11 @@ async function changePassword(req, res) {
 
 module.exports = {
   register,
+  registerWithoutCredentials,
   login,
   generateToken,
   generateRecoveryToken,
   verifyRecoveryToken,
+  verifyUserExistsWithoutCredentials,
   changePassword,
 }

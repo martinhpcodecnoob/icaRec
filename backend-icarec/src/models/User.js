@@ -19,6 +19,16 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    sex: {
+        type: String,
+        required: true,
+        validate: {
+            validator: function(value) {
+                return ['hombre', 'mujer'].includes(value.toLowerCase());
+            },
+            message: 'El sexo debe ser "hombre" o "mujer".'
+        }
+    },
     role: {
         type: [String],
         required: false,

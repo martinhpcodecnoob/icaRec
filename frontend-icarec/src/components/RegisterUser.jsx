@@ -2,11 +2,12 @@
 
 import React, { useEffect, useState } from 'react'
 import { useRouter } from "next/navigation"
+import { useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { fetchCountries } from '../../utils/apiServices'
-import { getContainerClasses, getHalfContainerClasses, getSelectClasses, getInputClasses } from '../../utils/responsiveUtils'
-import { validationSchema } from '../../utils/utils'
+import { getContainerClasses, getHalfContainerClasses, getSelectClasses, getInputClasses, getCompleteContainerClasses } from '../../utils/responsiveUtils'
+import { validationSchema, validationSchemaWithoutCredentials } from '../../utils/utils'
 import ErrorScreen from './ErrorScreen'
 import LoadingScreen from './LoadingScreen'
 
@@ -14,6 +15,7 @@ const RegisterUser = ({ providerType }) => {
 
   const router = useRouter()
 
+  const { data: session, status } = useSession()  
   const [isLoading, setIsLoading] = useState(true)
   const [countries, setCountries] = useState([])
   const [selectedCountry, setSelectedCountry] = useState("")
@@ -26,6 +28,7 @@ const RegisterUser = ({ providerType }) => {
   const [isEmailRegistered, setIsEmailRegistered] = useState(false)
   const [documentType, setdocumentType] = useState('default')
 
+  const completeContainerClasses = getCompleteContainerClasses()
   const containerClasses = getContainerClasses()
   const halfContainerClasses = getHalfContainerClasses()
   const selectClasses = getSelectClasses()
@@ -51,8 +54,16 @@ const RegisterUser = ({ providerType }) => {
     } 
   }
 
+  let resolver
+
+  if (providerType === "credentials") {
+    resolver = yupResolver(validationSchema);
+  } else {
+    resolver = yupResolver(validationSchemaWithoutCredentials);
+  }
+
   const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: yupResolver(validationSchema),
+    resolver: resolver,
   })
   
   const togglePasswordVisibility = () => {
@@ -62,36 +73,59 @@ const RegisterUser = ({ providerType }) => {
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword)
   }
-
+  
   const onSubmit = async (data) => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/register`, {
-       method: 'POST',
-       headers: {
-         'Content-Type':'application/json'
-       },
-       body: JSON.stringify({
-         name: data.nombreApellidos, 
-         cellphone: data.celular,
-         dni: data.numeroDocumento, 
-         email: data.correoElectronico, 
-         password: data.password,
-        }),
-      })
-
-      if (!res.ok) {
-        const errorData = await res.json()
-        if (res.status === 409 && errorData.error === "El correo electrónico ya está registrado.") {
-          setIsEmailRegistered(true)
-          return
-        } else {
-          throw new Error(errorData.error)
+    if(providerType === "credentials"){
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/register`, {
+         method: 'POST',
+         headers: {
+           'Content-Type':'application/json'
+         },
+         body: JSON.stringify({
+           name: data.nombreApellidos, 
+           cellphone: data.celular,
+           dni: data.numeroDocumento, 
+           email: data.correoElectronico, 
+           password: data.password,
+          }),
+        })
+  
+        if (!res.ok) {
+          const errorData = await res.json()
+          if (res.status === 409 && errorData.error === "El correo electrónico ya está registrado.") {
+            setIsEmailRegistered(true)
+            return
+          } else {
+            throw new Error(errorData.error)
+          }
         }
+        router.push("/")
+      } catch (error) {
+        console.error("Error en la solicitud fetch:", error)
+        return <ErrorScreen />
       }
-      router.push("/")
-    } catch (error) {
-      console.error("Error en la solicitud fetch:", error)
-      return <ErrorScreen />
+    }else{
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/registerWithoutCredentials`, {
+         method: 'PUT',
+         headers: {
+           'Content-Type':'application/json'
+         },
+         body: JSON.stringify({
+           email: session.user.email,
+           providerType, 
+           name: data.nombreApellidos, 
+           cellphone: data.celular,
+           dni: data.numeroDocumento, 
+          }),
+        })
+  //manejar los errores de solicitud
+        router.push("/")
+      } catch (error) {
+        console.error("Error en la solicitud fetch:", error)
+        return <ErrorScreen />
+      }
     }
   }
 
@@ -105,7 +139,7 @@ const RegisterUser = ({ providerType }) => {
         <h1 className="text-white text-4xl font-bold mb-8 w-full">
           <span className="bg-red-500 py-2 px-4 rounded">Regístrate</span>
         </h1>
-        <div className="mb-4">
+        <div className={completeContainerClasses}>
           <label htmlFor="nombreApellidos" className="block font-bold mb-2">
             Nombre y Apellidos
           </label>
@@ -194,6 +228,8 @@ const RegisterUser = ({ providerType }) => {
              {errors.celular && <p key="celularError" className="text-red-500">{errors.celular.message}</p>} 
           </div>
         </div>
+        {providerType === "credentials" ? (
+          <>
         <div className={containerClasses}>
           <div className={halfContainerClasses}>
             <label htmlFor="numeroDocumento" className="block font-bold mb-2">
@@ -243,7 +279,32 @@ const RegisterUser = ({ providerType }) => {
             )}
           </div>
         </div>
-        {providerType === undefined ? (
+          </>
+          ) : (
+            <div className={completeContainerClasses}>
+            <label htmlFor="numeroDocumento" className="block font-bold mb-2">
+              Numero de documento
+            </label>
+            <input
+              type="text"
+              id="numeroDocumento"
+              className={`
+                    ${
+                      inputClasses
+                    } 
+                    ${errors.numeroDocumento ? "border-red-500" : ""} 
+                    ${
+                      !errors.numeroDocumento && "border-green-500"
+                    }
+                  `}
+              placeholder={documentType === "default" ? `Ingresa el tipo de documento primero` : `Ingresa tu ${documentType} aquí`}
+              disabled={documentType === "default"}
+              {...register('numeroDocumento')}
+            />
+            {errors.numeroDocumento && <p key="numeroDocumentoError" className="text-red-500">{errors.numeroDocumento.message}</p>}
+          </div>
+            )}
+        {providerType === "credentials" ? (
           <>
         <div className={containerClasses}>
           <div className={halfContainerClasses}>

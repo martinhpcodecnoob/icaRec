@@ -1,3 +1,4 @@
+const Account = require("../models/Account")
 const User = require("../models/User")
 
 const get_user = async(req,res) => {
@@ -113,8 +114,64 @@ const create_user = async(req,res) =>{
     }
 }
 
+const update_user = async (req, res) => {
+  try {
+    const { userId, cellphone, dni, sex } = req.body
+    
+    if (!userId) {
+      return res.status(400).json({ updated: false, message: 'User ID is required.' })
+    }
+
+    if (cellphone === undefined ) {
+      return res.status(400).json({ updated: false, message: 'The value of "cellphone" must be a string' })
+    }
+
+    if (dni === undefined ) {
+      return res.status(400).json({ updated: false, message: 'The value of "dni" must be a string' })
+    }
+
+    if (sex === undefined ) {
+      return res.status(400).json({ updated: false, message: 'The value of "sex" must be a string' })
+    }
+
+    const existingUser = await User.findById(userId)
+    if (!existingUser) {
+      return res.status(404).json({ message: "User not found" })
+    }
+    const updateData = {}
+
+    if (cellphone !== undefined) {
+      updateData.cellphone = cellphone
+    }
+    
+    if (dni !== undefined) {
+      updateData.dni = dni
+    }
+
+    if (sex !== undefined) {
+      updateData.sex = sex
+    }
+
+    await User.findByIdAndUpdate(
+      userId,
+      updateData,
+      { new: true } 
+    )
+
+    return res.status(200).json({ updated: true, message: "User updated successfully." })
+  } catch (error) {
+    console.log("Update user error: ". error)
+    return res.status(500).json({
+      updated: false,
+      message: "Error updating user",
+      error
+    })
+  }
+}
+
 module.exports = {
     get_user,
     create_user,
     get_user_by_id,
+    update_user,
 }
