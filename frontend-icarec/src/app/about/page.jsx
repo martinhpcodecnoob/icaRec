@@ -1,13 +1,12 @@
 'use client'
 
+import Register from '@/components/Register/Register'
 import React from 'react'
 
 const IndexPage = () => {
 
   return (
-    <div>
-      <span>test page</span>
-    </div>
+    <Register />
   )
 }
 
