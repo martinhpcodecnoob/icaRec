@@ -2,17 +2,18 @@ import React from 'react'
 
 const PasswordRules = () => {
   return (
-    <div>
-        <span>
-            La contraseña debe contoner al menos:
-        </span>
-        <ul>
-            <li>Minimo 8 caracteres</li>
-            <li>1 mayuscula</li>
-            <li>1 minuscula</li>
-            <li>1 numero</li>
-            <li>Ningun espacio</li>
-        </ul></div>
+    <div className='justify-start w-full'>
+      <span className="text-gray-500 text-sm">
+        Debe usar al menos
+      </span>
+      <ul className="list-disc pl-5 text-gray-400 text-xs">
+        <li> Mínimo 8 caracteres</li>
+        <li> 1 mayúscula</li>
+        <li> 1 minúscula</li>
+        <li> 1 número</li>
+        <li> Ningún espacio</li>
+      </ul>
+    </div>
   )
 }
 

@@ -3,9 +3,9 @@ import { Controller } from 'react-hook-form'
 
 const PasswordSection = ({control, errors}) => {
   return (
-    <div className='w-full bg-sky-400'>
+    <div className='w-full'>
       <div>
-        <span>
+        <span className='text-[#100e80] font-semibold'>
           Contraseña
         </span>
         <Controller
@@ -15,15 +15,16 @@ const PasswordSection = ({control, errors}) => {
           render={({ field }) => (
             <input
               {...field}
-              className='w-full bg-red-500'
+              className='border rounded-full py-1 px-3 text-white bg-[#f3ba1a] w-full'
               type='password'
               name='password'
             />
           )}
         />
       </div>
+      {errors.password && <p className='text-red-500'>{errors.password.message}</p>}
       <div>
-        <span>
+        <span className='text-[#100e80] font-semibold'>
           Confirma tu contraseña
         </span>
         <Controller
@@ -33,14 +34,13 @@ const PasswordSection = ({control, errors}) => {
           render={({ field }) => (
             <input
               {...field}
-              className='w-full bg-red-500'
+              className='border rounded-full py-1 px-3 text-white bg-[#f3ba1a] w-full'
               type='password'
               name='confirmPassword'
             />
           )}
         />
       </div>
-      {errors.password && <p className='text-red-500'>{errors.password.message}</p>}
       {errors.confirmPassword && <p className='text-red-500'>{errors.confirmPassword.message}</p>}
     </div>
   )

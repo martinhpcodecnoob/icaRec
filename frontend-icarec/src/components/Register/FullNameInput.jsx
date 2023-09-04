@@ -14,7 +14,7 @@ const FullNameInput = ({ control, errors }) => {
         render={({ field }) => (
           <input
             {...field}
-            className='border rounded-full py-1 px-3 placeholder-white bg-[#f3ba1a] w-full'
+            className='border rounded-full py-1 px-3 text-white bg-[#f3ba1a] w-full'
             name='fullName'
           />
         )}

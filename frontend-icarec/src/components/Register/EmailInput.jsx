@@ -3,8 +3,8 @@ import { Controller } from 'react-hook-form'
 
 const EmailInput = ({ control, errors }) => {
   return (
-    <div className='w-full bg-green-300'>
-      <span>
+    <div className='w-full'>
+      <span className='text-[#100e80] font-semibold'>
         Correo Electronico
       </span>
       <div>
@@ -15,7 +15,7 @@ const EmailInput = ({ control, errors }) => {
         render={({ field }) => (
           <input
             {...field}
-            className='w-full bg-red-500'
+            className='border rounded-full py-1 px-3 placeholder-white text-white bg-[#f3ba1a] w-full'
             name='email'
           />
         )}

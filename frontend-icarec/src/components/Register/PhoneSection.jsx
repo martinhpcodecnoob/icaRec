@@ -4,7 +4,7 @@ import React, {useState, useEffect} from 'react'
 import { Controller } from 'react-hook-form'
 import { fetchCountries } from '../../../utils/apiServices'
 
-const PhoneSection = ({control, errors, setValue, getValues}) => {
+const PhoneSection = ({control, errors, setValue}) => {
 
   const [showPhoneInput, setshowPhoneInput] = useState(false)
   const [countries, setCountries] = useState([])
@@ -40,17 +40,17 @@ const PhoneSection = ({control, errors, setValue, getValues}) => {
   }
 
   return (
-    <div className='bg-blue-500 w-full'>
+    <div className='w-full'>
       <div className='grid grid-cols-10'>
       { showPhoneInput ? (
         <>
-          <div className='col-span-2'>
-            <span>             
+          <div className='col-span-2 px-3 py-1'>
+            <span className='text-[#100e80] font-semibold'>             
               Celular
             </span>
           </div>
           <div className='col-span-2 col-start-3'>
-            <button onClick={() => {
+            <button className='border rounded-full px-3 py-1 text-[#100e80] font-semibold bg-[#f3ba1a]' onClick={() => {
               setshowPhoneInput(false)
               setValue('phoneNumber', '')
               }}
@@ -67,8 +67,8 @@ const PhoneSection = ({control, errors, setValue, getValues}) => {
                   <input
                     {...field}
                     name='phoneNumber'
-                    className='w-full h-full bg-red-500'
-                    placeholder="Ingresa tu número de celular"
+                    className='border rounded-full py-1 px-2 placeholder-white text-white bg-[#f3ba1a] w-full'
+                    placeholder="Número de celular"
                   />
                 )}
               />
@@ -87,7 +87,7 @@ const PhoneSection = ({control, errors, setValue, getValues}) => {
               <select 
                 {...field}
                 name='phoneNumber'
-                className='w-full'
+                className='border rounded-full py-1 px-3 bg-[#f3ba1a] text-[#100e80] font-semibold w-full'
                 onChange={(e) => {
                   handleCountryChange(e)
                 }}
