@@ -3,7 +3,7 @@ import { Controller } from 'react-hook-form'
 
 const FullNameInput = ({ control, errors }) => {
   return (
-    <div className='flex flex-col w-full'>
+    <div className='flex flex-col w-full  mb-2'>
       <label className='text-[#100e80] font-semibold' htmlFor='fullName'>
         Nombre y Apellidos 
       </label>

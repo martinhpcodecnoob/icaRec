@@ -28,16 +28,16 @@ const IndexPage = () => {
   }
   useEffect(() => {
     window.scroll(0,0)
-    if (session?.user?.isRegistered === false) {
+    if (session?.user?.isRegistered === false && session.user.providerType !== 'credentials') {
       router.push('/newUser')
     } else {
       logPageView('landing_page')
     }
   }, [])
 
-   if (session?.user?.isRegistered === false) {
+  if (session?.user?.isRegistered === false && session.user.providerType !== 'credentials') {
     return <ErrorRegisterScreen />
-  } 
+  }  
 
   const handleOpenLogin = () => {
     logEvent('press_login_button')

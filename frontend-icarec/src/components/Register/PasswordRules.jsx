@@ -2,7 +2,7 @@ import React from 'react'
 
 const PasswordRules = () => {
   return (
-    <div className='justify-start w-full'>
+    <div className='justify-start w-full  mb-2'>
       <span className="text-gray-500 text-sm">
         Debe usar al menos
       </span>

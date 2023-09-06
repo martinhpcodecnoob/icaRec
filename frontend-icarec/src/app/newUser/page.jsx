@@ -1,14 +1,12 @@
 'use client'
 
 import React from 'react'
-import RegisterWithoutCredentials from '@/components/RegisterWithoutCredentials'
+import RegisterWC from '@/components/Register/RegisterWC'
 
 const IndexPage = () => {
    
     return (
-      <div>
-        <RegisterWithoutCredentials />
-      </div>
+        <RegisterWC />
     )
 }
 

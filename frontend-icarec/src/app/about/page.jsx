@@ -1,12 +1,12 @@
 'use client'
 
-import Register from '@/components/Register/Register'
+import RegisterWC from '@/components/Register/RegisterWC'
 import React from 'react'
 
 const IndexPage = () => {
 
   return (
-    <Register />
+    <RegisterWC />
   )
 }
 

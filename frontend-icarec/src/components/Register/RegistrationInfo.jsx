@@ -2,7 +2,7 @@ import React from 'react'
 
 const RegistrationInfo = ({title}) => {
     return (
-        <div className='flex flex-col w-full items-center'>
+        <div className='flex flex-col w-full items-center mb-2'>
             <h1 className='text-gray-600 text-lg font-semibold'> 
                 {title} 
             </h1>

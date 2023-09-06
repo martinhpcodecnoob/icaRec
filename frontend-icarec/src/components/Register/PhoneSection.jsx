@@ -13,7 +13,7 @@ const PhoneSection = ({control, errors, setValue}) => {
 
   const countriesOptions = (
     <>
-     <option value="">Selecciona un país</option>
+     <option value="default">Selecciona un país</option>
     {countries.map((country) => (
       <option key={country.code} value={country.code}>
         {country.name}
@@ -40,7 +40,7 @@ const PhoneSection = ({control, errors, setValue}) => {
   }
 
   return (
-    <div className='w-full'>
+    <div className='w-full mb-2'>
       <div className='grid grid-cols-10'>
       { showPhoneInput ? (
         <>
@@ -78,25 +78,30 @@ const PhoneSection = ({control, errors, setValue}) => {
           )}
         </>
       ) : (
-        <div className='col-span-10'>
-          <Controller 
-            name='phoneNumber'
-            control={control}
-            defaultValue=''
-            render={({field}) => (
-              <select 
-                {...field}
-                name='phoneNumber'
-                className='border rounded-full py-1 px-3 bg-[#f3ba1a] text-[#100e80] font-semibold w-full'
-                onChange={(e) => {
-                  handleCountryChange(e)
-                }}
-              >
-                {countriesOptions}
-              </select>
-            )}
-            />
-        </div>
+        <>
+          <div className='col-span-10'>
+            <Controller 
+              name='phoneNumber'
+              control={control}
+              defaultValue=""
+              render={({field}) => (
+                <select 
+                  {...field}
+                  name='phoneNumber'
+                  className='border rounded-full py-1 px-3 bg-[#f3ba1a] text-[#100e80] font-semibold w-full'
+                  onChange={(e) => {
+                    handleCountryChange(e)
+                  }}
+                >
+                  {countriesOptions}
+                </select>
+              )}
+              />
+          </div>
+          {errors.selectedCountry && !showPhoneInput && (
+            <p className='col-span-10 text-red-500'>Selecciona un país</p>
+          )}
+        </>
         )
       }
       </div>

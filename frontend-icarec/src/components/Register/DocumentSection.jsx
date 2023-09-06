@@ -24,7 +24,7 @@ const DocumentSection = ({control, errors, setValue, getValues}) => {
   }
 
   return (
-    <div className='w-full'>
+    <div className='w-full mb-2'>
       <span className='text-[#100e80] font-semibold'>Tipo de documento: </span>
       <div className='grid grid-cols-4'>
         {showDocumentTypeInput ? (

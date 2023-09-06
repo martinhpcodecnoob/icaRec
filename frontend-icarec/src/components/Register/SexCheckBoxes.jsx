@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form'
 
 const SexCheckBoxes = ({ control, errors }) => {
   return (
-    <div className='flex flex-col w-full justify-center'>
+    <div className='flex flex-col w-full justify-center mb-2'>
       <div className='flex flex-row w-full justify-around'>
         <div className='flex flex-row items-center'>
           <label className='text-[#100e80] font-semibold' htmlFor='Hombre'>

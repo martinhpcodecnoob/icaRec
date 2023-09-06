@@ -38,6 +38,9 @@ export const validationSchema = Yup.object().shape({
   })
 
 export const validationSchemaWithoutCredentials = Yup.object().shape({
+  documentType: Yup.string()
+    .notOneOf(['default'], 'Selecciona un tipo de documento')
+    .required('El tipo de documento es obligatorio'),
   documentNumber: Yup.number()
     .integer('El número de documento debe ser un número entero')
     .positive('El número de documento debe ser positivo')

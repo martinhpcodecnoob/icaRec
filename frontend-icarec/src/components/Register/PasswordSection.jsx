@@ -3,8 +3,8 @@ import { Controller } from 'react-hook-form'
 
 const PasswordSection = ({control, errors}) => {
   return (
-    <div className='w-full'>
-      <div>
+    <div className='w-full  mb-2'>
+      <div className='mb-2'>
         <span className='text-[#100e80] font-semibold'>
           Contraseña
         </span>
@@ -23,7 +23,7 @@ const PasswordSection = ({control, errors}) => {
         />
       </div>
       {errors.password && <p className='text-red-500'>{errors.password.message}</p>}
-      <div>
+      <div className='mb-2'>
         <span className='text-[#100e80] font-semibold'>
           Confirma tu contraseña
         </span>

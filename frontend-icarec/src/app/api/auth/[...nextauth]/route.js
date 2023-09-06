@@ -39,8 +39,8 @@ const handler = NextAuth({
               'Content-Type':'application/json'
             },
             body: JSON.stringify({
-              email: credentials?.email,
-              password: credentials?.password,
+              email: credentials.email,
+              password: credentials.password,
             }),
           })
           const data = await res.json()
@@ -76,6 +76,7 @@ const handler = NextAuth({
           })
           const data = await res.json()
           if(data.found){
+            console.log("Primera condicional del data found")
             const res = await updateAccount( data.userId, false, data.isRegistered )
             if (res.status === 200) { 
               account.newAccount = false
@@ -86,10 +87,12 @@ const handler = NextAuth({
           }
 
           if(!data.found){
+            console.log("Segunda condicional del data found")
             account.newAccount = true
             account.isRegistered = false
             return true
           } else {
+            console.log("Tercera condicional del data found")
             account.newAccount = data.newAccount
             account.isRegistered = data.isRegistered
             return true
@@ -104,14 +107,14 @@ const handler = NextAuth({
           token.providerType = account.provider
           token.newAccount = account.newAccount
           token.isRegistered = account.isRegistered
-          token.userId = user.id
-
-          console.log("token, token: ", token)        
+          
+          /* console.log("token, token: ", token)        
           console.log("token, account: ", account)
-          console.log("token, user: ", user)  
-
+          console.log("token, user: ", user)  */ 
+          
           if (account.type === 'credentials') {
             if(user && user?._id){
+              token.userId = user._id
               const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateToken/${user._id}`, {
                 method: 'POST',
                 headers: {
@@ -123,7 +126,7 @@ const handler = NextAuth({
             }
           }else {
             if(token?.sub){
-
+              token.userId = token.sub
               const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateToken/${token.sub}`, {
                 method: 'POST',
                 headers: {

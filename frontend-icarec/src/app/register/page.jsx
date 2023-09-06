@@ -1,10 +1,10 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import RegisterUser from '@/components/RegisterUser'
 import { logPageView } from '../../../utils/utils'
 import Head from 'next/head'
 import LoadingScreen from '@/components/LoadingScreen'
+import RegisterUser from '@/components/Register/Register'
 
 const Register = () => {
 
@@ -26,7 +26,7 @@ const Register = () => {
         <title>Tiendas é Registro</title>
         <meta name="description" content="Registro de las tiendas é" />
     </Head>
-    <RegisterUser providerType={session?.user?.providerType}/>
+      <RegisterUser />
     </>
   )
 }

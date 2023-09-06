@@ -118,3 +118,28 @@ export const checkIfTokenIsValid = async (token) => {
       }
     }
   }
+
+  export const registerUser = async (name, cellphone, dni, email, password, sex) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, cellphone, dni, email, password, sex }),
+      })
+  
+      const data = await response.json()
+  
+      return {
+        status: response.status, 
+        data: data,
+      }
+    } catch (error) {
+      console.error("Error del servidor al crear al usuario", error)
+      return {
+        status: 500, 
+        error: "Error del servidor al crear al usuario",
+      }
+    }
+  }
