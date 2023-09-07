@@ -31,6 +31,7 @@ const Register = () => {
   useEffect(() => {
       handleSubmit(onSubmit)()
     }, [])
+
   const { handleSubmit, control, formState: { errors }, setValue, getValues } = useForm({
       resolver: yupResolver(validationSchema),
   })
