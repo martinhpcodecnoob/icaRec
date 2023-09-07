@@ -25,7 +25,7 @@ const ExternalLogin = ({ open, close }) => {
     }
 
     return (
-      <Popup isOpen={open} onClose={close}>
+      <Popup isOpen={open} onClose={close} zIndex={50}>
         <div className="flex items-center justify-center h-full">
           <div className='flex flex-col'>
             <Title title={"Inicio Sesión"} />

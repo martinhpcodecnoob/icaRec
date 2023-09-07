@@ -1,7 +1,6 @@
 import React from 'react'
 
 const EmailButton = ({content, onOpenLogin }) => {
-
     return (
         <>
         <button

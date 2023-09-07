@@ -62,6 +62,12 @@ export const validationLogin = Yup.object().shape({
     .required('Ingrese su correo electrónico'),
 })
 
+export const validationForgotPassword = Yup.object().shape({
+  email: Yup.string()
+    .email('Ingrese un correo electrónico válido')
+    .required('Ingrese su correo electrónico'),
+})
+
 export const logPageView = (pageName) => {
   if (typeof window !== 'undefined') {
       const pagePath = window.location.pathname

@@ -8,7 +8,7 @@ const Title = ({ title }) => {
           src="/next.svg"
           alt="Logo Kuskana Amarillo"
           className="mx-auto bg"
-          style={{ maxWidth: '150px' }} // Ajusta el tamaño del logo según tus necesidades
+          style={{ maxWidth: '150px' }} 
         />
       </div>
       {title && (

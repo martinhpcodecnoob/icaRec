@@ -3,20 +3,19 @@
 import React, { useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux';
 
 import Popup from './Popup'
 import EmailInput from './EmailInput'
 import Title from './Title'
 import PasswordInput from './PasswordInput'
 import CustomCheckbox from './CustomCheckbox'
-import Register from './Register'
-import { closeModal3, openModal2 } from '@/redux/Slices/popupSlice'
-import { useDispatch } from 'react-redux';
 
+import { closeModal3, openModal2, openModal4 } from '@/redux/Slices/popupSlice'
 import { validationLogin } from '../../../utils/utils'
 
 const Login = ({open, close}) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   
@@ -25,33 +24,41 @@ const Login = ({open, close}) => {
   })
   
   const onSubmit = async(data) => {
+
     setIsSubmitting(true)
-    //const {sex, fullName, documentNumber, phoneNumber, email, password} = data
 
     try {
       
     } catch (error) {
      
     }finally {
+
       setIsSubmitting(false)
+
     }
   }
 
   const handleOpenModal2 = () => {
-    dispatch(openModal2()); // Abre el modal 3 (Login)
-  };
+    dispatch(openModal2())
+    close()
+  }
+
+  const handleOpenModal4 = () => {
+    dispatch(openModal4())
+    close()
+  }
 
   const handleCloseModal3 = () => {
-    dispatch(closeModal3()); // Cierra el modal 2 (Register)
-    close(); // Cierra el modal actual
-  };
+    dispatch(closeModal3())
+    close()
+  }
 
   return (
-    <Popup isOpen={open} onClose={handleCloseModal3}>
+    <Popup isOpen={open} onClose={handleCloseModal3} zIndex={51}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex items-center justify-center h-full">
         <div className='flex flex-col'>
           <Title />
-          <EmailInput control={control} errors={errors}/>
+          <EmailInput control={control} errors={errors} name="loginEmail"/> 
           <PasswordInput />
           <CustomCheckbox label={"Mantener sesion iniciada"}/>
           <button 
@@ -60,8 +67,8 @@ const Login = ({open, close}) => {
           >
             Inicio Sesion
           </button>
-          <button 
-            /* onClick={openForgotPassword} */
+          <button
+             onClick={handleOpenModal4} 
             className='text-[#100e80] font-semibold'
             type="button"
           >
