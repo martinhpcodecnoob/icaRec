@@ -37,9 +37,8 @@ const Register = ({ open, close }) => {
     return (
       <Popup isOpen={open} onClose={handleCloseRegister} onCloseAll={handleCloseAllPopups} zIndex={52}>
         <BackButton onClick={handleCloseRegister}/>
-        <div className="flex items-center justify-center h-full">
-          <div className='flex flex-col'>
-            <button onClick={handleCloseRegister}>Atras</button>
+        <div className="flex flex-col items-center justify-center h-full">
+          <div className='flex flex-col w-full'>
             <Title title={"Regístrate"} />
             <GoogleButton content={"Registrate con Google"} />
             <FacebookButton content={"Registrate con Facebook"} />
@@ -47,7 +46,7 @@ const Register = ({ open, close }) => {
               content={"Crear mi cuenta"} 
               onOpenLogin={handleCreateAccount}
             />
-            <p className='text-center block text-gray-500 text-sm'>¿Ya tienes una cuenta?</p>
+            <p className='text-center block text-gray-500 text-sm mt-4'>¿Ya tienes una cuenta?</p>
             <button
               onClick={handleOpenLogin}
               className='text-[#100e80] font-semibold mb-2'

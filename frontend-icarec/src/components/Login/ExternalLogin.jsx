@@ -36,8 +36,8 @@ const ExternalLogin = ({ open, close }) => {
     return (
       <Popup isOpen={open} onClose={handleCloseExternalLogin} onCloseAll={handleCloseAllPopups} zIndex={50}>
         <BackButton onClick={handleCloseExternalLogin}/>
-        <div className="flex items-center justify-center h-full">
-          <div className='flex flex-col'>
+        <div className="flex flex-col items-center justify-center h-full">
+          <div className='flex flex-col w-full'>
             <Title title={"Inicio Sesión"} />
             <GoogleButton content={"Continuar con Google"} />
             <FacebookButton content={"Continuar con Facebook"} />

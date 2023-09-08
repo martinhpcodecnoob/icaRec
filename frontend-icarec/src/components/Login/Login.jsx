@@ -61,14 +61,14 @@ const Login = ({open, close}) => {
   return (
     <Popup isOpen={open} onClose={handleCloseLogin} onCloseAll={handleCloseAllPopups} zIndex={51}>
       <BackButton onClick={handleCloseLogin}/>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex items-center justify-center h-full">
-        <div className='flex flex-col'>
-          <Title />
+      <form onSubmit={handleSubmit(onSubmit)} className="flex justify-center h-full">
+        <div className='flex flex-col items-center justify-center w-full'>
+          <Title/>
           <EmailInput control={control} errors={errors} name="loginEmail"/> 
           <PasswordInput />
           <CustomCheckbox label={"Mantener sesion iniciada"}/>
           <button 
-            className='border rounded-full py-1 px-3 bg-[#f3ba1a] text-white w-full mb-2' 
+            className='border rounded-full py-1 px-3 bg-[#f3ba1a] text-white w-3/4 mb-2' 
             type='submit'
           >
             Inicio Sesion
@@ -80,7 +80,7 @@ const Login = ({open, close}) => {
           >
             He olvidado mi contraseña
           </button>
-          <p className='text-center block text-gray-500 text-sm'>¿Todavia no tienes cuenta?</p>
+          <p className='text-center text-gray-500 text-sm'>¿Todavia no tienes cuenta?</p>
           <button 
             onClick={handleOpenRegister}
             className='text-[#100e80] font-semibold mb-2'

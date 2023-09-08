@@ -9,7 +9,7 @@ const EmailInput = ({ control, errors, name }) => {
     <>
       <div className="flex flex-col w-full items-center">
         <div className="flex w-3/4">
-        <label className="text-gray-500 text-sm font-bold mb-2 text-start">Email</label>
+        <label className="text-gray-500 text-sm font-bold text-start mb-2">Email</label>
         </div>
         <Controller
           name={name}

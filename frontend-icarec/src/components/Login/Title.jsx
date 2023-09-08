@@ -2,7 +2,7 @@ import React from 'react'
 
 const Title = ({ title }) => {
   return (
-    <div className="text-center">
+    <div className="text-center w-full">
       <div className="mb-6">
         <img
           src="/next.svg"
@@ -12,7 +12,7 @@ const Title = ({ title }) => {
         />
       </div>
       {title && (
-        <div className="text-black font-semibold mb-2">
+        <div className="text-black font-semibold mb-6">
           {title}
         </div>
       )}
