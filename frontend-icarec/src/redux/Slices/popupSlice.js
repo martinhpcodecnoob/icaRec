@@ -1,50 +1,63 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
-  isModal1Open: false,
-  isModal2Open: false,
-  isModal3Open: false,
-  isModal4Open: false,
+  isExternalLoginOpen: false,
+  isRegisterOpen: false,
+  isLoginOpen: false,
+  isForgotPasswordOpen: false,
 }
 
 export const popupSlice = createSlice({
   name: "popup",
   initialState,
   reducers: {
-    openModal1: (state) => {
-      state.isModal1Open = true
+    //External Login
+    openExternalLogin: (state) => {
+      state.isExternalLoginOpen = true
     },
-    closeModal1: (state) => {
-      state.isModal1Open = false
+    closeExternalLogin: (state) => {
+      state.isExternalLoginOpen = false
     },
-    openModal2: (state) => {
-      state.isModal2Open = true
+    //Register
+    openRegister: (state) => {
+      state.isRegisterOpen = true
     },
-    closeModal2: (state) => {
-      state.isModal2Open = false
+    closeRegister: (state) => {
+      state.isRegisterOpen = false
     },
-    openModal3: (state) => {
-      state.isModal3Open = true
+    //Login
+    openLogin: (state) => {
+      state.isLoginOpen = true
     },
-    closeModal3: (state) => {
-      state.isModal3Open = false
+    closeLogin: (state) => {
+      state.isLoginOpen = false
     },
-    openModal4: (state) => {
-      state.isModal4Open = true
+    //Forgot Password
+    openForgotPassword: (state) => {
+      state.isForgotPasswordOpen = true
     },
-    closeModal4: (state) => {
-      state.isModal4Open = false
+    closeForgotPassword: (state) => {
+      state.isForgotPasswordOpen = false
     },
+
+    closeAllPopups: (state) => {
+      state.isExternalLoginOpen = false
+      state.isRegisterOpen = false
+      state.isLoginOpen = false
+      state.isForgotPasswordOpen = false
+    }
   },
 })
 
 export const {
-  openModal1,
-  closeModal1,
-  openModal2,
-  closeModal2,
-  openModal3,
-  closeModal3,
-  openModal4,
-  closeModal4,
+
+  openExternalLogin,
+  closeExternalLogin,
+  openRegister,
+  closeRegister,
+  openLogin,
+  closeLogin,
+  openForgotPassword,
+  closeForgotPassword,
+  closeAllPopups,
 } = popupSlice.actions

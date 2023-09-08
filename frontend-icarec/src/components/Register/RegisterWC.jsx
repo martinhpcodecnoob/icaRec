@@ -19,6 +19,7 @@ import { updateAccount, updateUser } from '../../../utils/apiBackend'
 
 import 'react-toastify/dist/ReactToastify.css'
 
+//Registrer With Out Credentials => {google, facebook, ...}
 const RegisterWC = () => {
 
   const router = useRouter()

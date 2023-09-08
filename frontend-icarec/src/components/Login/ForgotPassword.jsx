@@ -7,14 +7,15 @@ import { useRouter } from "next/navigation"
 import { useDispatch } from 'react-redux'
 
 import Popup from './Popup'
+import BackButton from './BackButton'
 import Title from './Title'
 import EmailInput from './EmailInput'
 
-import { openModal3, closeModal4 } from '@/redux/Slices/popupSlice'
+import { openLogin, closeForgotPassword, closeAllPopups } from '@/redux/Slices/popupSlice'
 import { validationForgotPassword } from '../../../utils/utils'
 
 const ForgotPassword = ({ open, close }) => {
-    
+
     const router = useRouter()
     const dispatch = useDispatch()
   
@@ -32,24 +33,28 @@ const ForgotPassword = ({ open, close }) => {
       }
     }
 
-    const handleCloseModal4 = () => {
-      dispatch(closeModal4())
+    const handleCloseForgotPassword = () => {
+      dispatch(closeForgotPassword())
       close()
     }
   
-    const handleOpenModal3 = () => {
-      dispatch(openModal3())
+    const handleOpenLogin = () => {
+      dispatch(openLogin())
     }
+
+    const handleCloseAllPopups = () => {
+        dispatch(closeAllPopups());
+      }
   
     return (
-      <Popup isOpen={open} onClose={handleCloseModal4} zIndex={54}>
+      <Popup isOpen={open} onClose={handleCloseForgotPassword} onCloseAll={handleCloseAllPopups} zIndex={54}>
+        <BackButton onClick={handleCloseForgotPassword}/>
         <form onSubmit={handleSubmit(onSubmit)} className="flex items-center justify-center h-full">
           <div className='flex flex-col'>
-            <button onClick={handleCloseModal4}>Atras</button>
             <Title title={"Restablecer tu contraseña"} />
             <EmailInput control={control} errors={errors} name="email"/>
             <button
-              onClick={handleOpenModal3}
+              onClick={handleOpenLogin}
               className='text-[#100e80] font-semibold mb-2'
             >
               Enviar Enlace

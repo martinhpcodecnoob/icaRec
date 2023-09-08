@@ -6,47 +6,49 @@ import ExternalLogin from '@/components/Login/ExternalLogin'
 import Login from '@/components/Login/Login'
 import Register from '@/components/Login/Register'
 import ForgotPassword from '@/components/Login/ForgotPassword'
-import { openModal1,
-  closeModal1,
-  closeModal2,
-  closeModal3,
-  closeModal4
+import { openExternalLogin,
+  closeExternalLogin,
+  closeRegister,
+  closeLogin,
+  closeForgotPassword,
  } from '@/redux/Slices/popupSlice'
 
 const IndexPage = () => {
+
   const dispatch = useDispatch()
-  const isModal1Open = useSelector((state) => state.popup.isModal1Open)
-  const isModal2Open = useSelector((state) => state.popup.isModal2Open)
-  const isModal3Open = useSelector((state) => state.popup.isModal3Open)
-  const isModal4Open = useSelector((state) => state.popup.isModal4Open)
 
-  const handleOpenModal1 = () => {
-    dispatch(openModal1())
+  const isExternalLoginOpen = useSelector((state) => state.popup.isExternalLoginOpen)
+  const isRegisterOpen = useSelector((state) => state.popup.isRegisterOpen)
+  const isLoginOpen = useSelector((state) => state.popup.isLoginOpen)
+  const isForgotPasswordOpen = useSelector((state) => state.popup.isForgotPasswordOpen)
+
+  const handleOpenExternalLogin = () => {
+    dispatch(openExternalLogin())
   }
 
-  const handleCloseModal1 = () => {
-    dispatch(closeModal1())
+  const handleCloseExternalLogin = () => {
+    dispatch(closeExternalLogin())
   }
 
-  const handleCloseModal2 = () => {
-    dispatch(closeModal2())
+  const handleCloseRegister = () => {
+    dispatch(closeRegister())
 
   }
-  const handleCloseModal3 = () => {
-    dispatch(closeModal3())
+  const handleCloseLogin = () => {
+    dispatch(closeLogin())
   }
 
-  const handleCloseModal4 = () => {
-    dispatch(closeModal4())
+  const handleCloseForgotPassword = () => {
+    dispatch(closeForgotPassword())
   }
 
   return (
     <div>
-      <ExternalLogin open={isModal1Open} close={handleCloseModal1} />
-      <Register open={isModal2Open} close={handleCloseModal2} />
-      <ForgotPassword open={isModal4Open} close={handleCloseModal4}/>
-      <Login open={isModal3Open} close={handleCloseModal3} /> 
-      <button onClick={handleOpenModal1}>Abrir Modal 1</button>
+      <ExternalLogin open={isExternalLoginOpen} close={handleCloseExternalLogin} />
+      <Register open={isRegisterOpen} close={handleCloseRegister} />
+      <Login open={isLoginOpen} close={handleCloseLogin} /> 
+      <ForgotPassword open={isForgotPasswordOpen} close={handleCloseForgotPassword}/>
+      <button onClick={handleOpenExternalLogin}>Abrir Login Externo</button>
     </div>
   )
 }

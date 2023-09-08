@@ -2,13 +2,17 @@
 
 import React from 'react'
 
-const Popup = ({ children, isOpen, onClose, zIndex }) => {
+const Popup = ({ children, isOpen, onClose, onCloseAll, zIndex }) => {
 
   const handleClickOutside = (event) => {
     if (isOpen && event.target.classList.contains('popup-overlay')) {
-      closePopup()
+      if (onCloseAll) {
+        onCloseAll();
+      } else if (onClose) {
+        onClose();
+      }
     }
-  }
+  };
   
   const closePopup = () => {
     if (onClose) {

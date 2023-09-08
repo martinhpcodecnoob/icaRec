@@ -5,20 +5,20 @@ import { useRouter } from "next/navigation"
 import { useDispatch } from 'react-redux'
 
 import Popup from './Popup'
+import BackButton from './BackButton'
 import Title from './Title'
 import GoogleButton from './GoogleButton'
 import FacebookButton from './FacebookButton'
 import EmailButton from './EmailButton'
 
-import { closeModal2, openModal3 } from '@/redux/Slices/popupSlice'
-
+import { closeRegister, openLogin, closeAllPopups } from '@/redux/Slices/popupSlice'
 
 const Register = ({ open, close }) => {
     const router = useRouter()
     const dispatch = useDispatch()
   
-    const handleCloseModal2 = () => {
-      dispatch(closeModal2())
+    const handleCloseRegister = () => {
+      dispatch(closeRegister())
       close()
     }
   
@@ -26,15 +26,20 @@ const Register = ({ open, close }) => {
       router.push('/register')
     }
 
-    const handleOpenModal3 = () => {
-      dispatch(openModal3())
+    const handleOpenLogin = () => {
+      dispatch(openLogin())
+    }
+
+    const handleCloseAllPopups = () => {
+      dispatch(closeAllPopups());
     }
   
     return (
-      <Popup isOpen={open} onClose={handleCloseModal2} zIndex={52}>
+      <Popup isOpen={open} onClose={handleCloseRegister} onCloseAll={handleCloseAllPopups} zIndex={52}>
+        <BackButton onClick={handleCloseRegister}/>
         <div className="flex items-center justify-center h-full">
           <div className='flex flex-col'>
-            <button onClick={handleCloseModal2}>Atras</button>
+            <button onClick={handleCloseRegister}>Atras</button>
             <Title title={"Regístrate"} />
             <GoogleButton content={"Registrate con Google"} />
             <FacebookButton content={"Registrate con Facebook"} />
@@ -44,7 +49,7 @@ const Register = ({ open, close }) => {
             />
             <p className='text-center block text-gray-500 text-sm'>¿Ya tienes una cuenta?</p>
             <button
-              onClick={handleOpenModal3}
+              onClick={handleOpenLogin}
               className='text-[#100e80] font-semibold mb-2'
             >
               Inicia sesión

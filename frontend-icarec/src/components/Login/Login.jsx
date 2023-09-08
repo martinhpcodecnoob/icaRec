@@ -3,15 +3,16 @@
 import React, { useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux'
 
 import Popup from './Popup'
+import BackButton from './BackButton'
 import EmailInput from './EmailInput'
 import Title from './Title'
 import PasswordInput from './PasswordInput'
 import CustomCheckbox from './CustomCheckbox'
 
-import { closeModal3, openModal2, openModal4 } from '@/redux/Slices/popupSlice'
+import { closeLogin, openRegister, openForgotPassword, closeAllPopups } from '@/redux/Slices/popupSlice'
 import { validationLogin } from '../../../utils/utils'
 
 const Login = ({open, close}) => {
@@ -38,23 +39,28 @@ const Login = ({open, close}) => {
     }
   }
 
-  const handleOpenModal2 = () => {
-    dispatch(openModal2())
+  const handleOpenRegister = () => {
+    dispatch(openRegister())
     close()
   }
 
-  const handleOpenModal4 = () => {
-    dispatch(openModal4())
+  const handleOpenForgotPassword = () => {
+    dispatch(openForgotPassword())
     close()
   }
 
-  const handleCloseModal3 = () => {
-    dispatch(closeModal3())
+  const handleCloseLogin = () => {
+    dispatch(closeLogin())
     close()
+  }
+
+  const handleCloseAllPopups = () => {
+    dispatch(closeAllPopups());
   }
 
   return (
-    <Popup isOpen={open} onClose={handleCloseModal3} zIndex={51}>
+    <Popup isOpen={open} onClose={handleCloseLogin} onCloseAll={handleCloseAllPopups} zIndex={51}>
+      <BackButton onClick={handleCloseLogin}/>
       <form onSubmit={handleSubmit(onSubmit)} className="flex items-center justify-center h-full">
         <div className='flex flex-col'>
           <Title />
@@ -68,7 +74,7 @@ const Login = ({open, close}) => {
             Inicio Sesion
           </button>
           <button
-             onClick={handleOpenModal4} 
+             onClick={handleOpenForgotPassword} 
             className='text-[#100e80] font-semibold'
             type="button"
           >
@@ -76,7 +82,7 @@ const Login = ({open, close}) => {
           </button>
           <p className='text-center block text-gray-500 text-sm'>¿Todavia no tienes cuenta?</p>
           <button 
-            onClick={handleOpenModal2}
+            onClick={handleOpenRegister}
             className='text-[#100e80] font-semibold mb-2'
             type="button"
           >
