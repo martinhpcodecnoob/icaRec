@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, {useState} from 'react'
 import { useDispatch } from 'react-redux'
 
 import Popup from './Popup'
@@ -15,48 +15,59 @@ import { openLogin, openRegister, closeExternalLogin, closeAllPopups} from '@/re
 
 
 const ExternalLogin = ({ open, close }) => {
-    const dispatch = useDispatch()
-  
-    const handleOpenLogin = () => {
-      dispatch(openLogin())
-    }
 
-    const handleOpenRegister = () => {
-      dispatch(openRegister())
-    }
+  const dispatch = useDispatch()
+  const [isChecked, setIsChecked] = useState(false)
 
-    const handleCloseExternalLogin = () => {
-      dispatch(closeExternalLogin())
-    }
-
-    const handleCloseAllPopups = () => {
-      dispatch(closeAllPopups());
-    }
-
-    return (
-      <Popup isOpen={open} onClose={handleCloseExternalLogin} onCloseAll={handleCloseAllPopups} zIndex={50}>
-        <BackButton onClick={handleCloseExternalLogin}/>
-        <div className="flex flex-col items-center justify-center h-full">
-          <div className='flex flex-col w-full'>
-            <Title title={"Inicio Sesión"} />
-            <GoogleButton content={"Continuar con Google"} />
-            <FacebookButton content={"Continuar con Facebook"} />
-            <EmailButton 
-                content={"Continuar con mi cuenta"} 
-                onOpenLogin={handleOpenLogin} 
-            />
-            <CustomCheckbox label={"Acepto los términos y condiciones de Kuskana.com y la Política de privacidad"} />
-            <p className='text-center text-gray-500 text-sm'>¿Todavía no tienes una cuenta?</p>
-            <button
-              onClick={handleOpenRegister} 
-              className='text-[#100e80] font-semibold mb-2'
-            >
-              Crear cuenta
-            </button>
-          </div>
-        </div>
-      </Popup>
-    )
+  const handleOpenLogin = () => {
+    dispatch(openLogin())
   }
+
+  const handleOpenRegister = () => {
+    dispatch(openRegister())
+  }
+
+  const handleCloseExternalLogin = () => {
+    dispatch(closeExternalLogin())
+  }
+
+  const handleCloseAllPopups = () => {
+    dispatch(closeAllPopups());
+  }
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked)
+  }
+
+  return (
+    <Popup isOpen={open} onClose={handleCloseExternalLogin} onCloseAll={handleCloseAllPopups} zIndex={50}>
+      <BackButton onClick={handleCloseExternalLogin}/>
+      <div className="flex flex-col items-center justify-center h-full">
+        <div className='flex flex-col w-full'>
+          <Title title={"Inicio Sesión"} />
+          <GoogleButton content={"Continuar con Google"} />
+          <FacebookButton content={"Continuar con Facebook"} />
+          <EmailButton 
+              content={"Continuar con mi cuenta"} 
+              onOpenLogin={handleOpenLogin}
+              disabled={!isChecked}
+          />
+          <CustomCheckbox 
+            label={"Acepto los términos y condiciones de Kuskana.com y la Política de privacidad"} 
+            isChecked={isChecked}
+            onChange={handleCheckboxChange}
+          />
+          <p className='text-center text-gray-500 text-sm'>¿Todavía no tienes una cuenta?</p>
+          <button
+            onClick={handleOpenRegister} 
+            className='text-[#100e80] font-semibold mb-2'
+          >
+            Crear cuenta
+          </button>
+        </div>
+      </div>
+    </Popup>
+  )
+}
 
 export default ExternalLogin

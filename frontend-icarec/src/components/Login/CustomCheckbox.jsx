@@ -2,7 +2,7 @@ import React from 'react'
 
 const CustomCheckbox = ({ label, isChecked, onChange }) => {
   return (
-    <label className="flex items-center justify-center w-full">
+    <label className="flex items-center justify-center w-full mb-2">
       <input
         type="checkbox"
         checked={isChecked}

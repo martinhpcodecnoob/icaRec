@@ -60,6 +60,8 @@ export const validationLogin = Yup.object().shape({
   email: Yup.string()
     .email('Ingrese un correo electrónico válido')
     .required('Ingrese su correo electrónico'),
+  password: Yup.string()
+    .required('Ingrese su contraseña'),
 })
 
 export const validationForgotPassword = Yup.object().shape({
