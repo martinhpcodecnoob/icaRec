@@ -43,24 +43,41 @@ const ForgotPassword = ({ open, close }) => {
     }
 
     const handleCloseAllPopups = () => {
-        dispatch(closeAllPopups());
+        dispatch(closeAllPopups())
       }
   
     return (
       <Popup isOpen={open} onClose={handleCloseForgotPassword} onCloseAll={handleCloseAllPopups} zIndex={54}>
         <BackButton onClick={handleCloseForgotPassword}/>
         <form onSubmit={handleSubmit(onSubmit)} className="flex items-center justify-center h-full">
-          <div className='flex flex-col'>
+          <div className='flex flex-col items-center'>
             <Title title={"Restablecer tu contraseña"} />
+            <div className='text-center mb-2'>
+                <p className='text-gray-500 text-sm'>
+                    <span className="text-black font-semibold">Ingrese el correo electrónico</span> que utilizó
+                </p>
+                <p className=' text-gray-500 text-sm'>
+                  al registrarse para recuperar su contraseña. 
+                </p>
+                <p className='text-gray-500 text-sm'>
+                    Recibira un enlace de <span className="text-black font-semibold">restablecimiento de contraseña</span>
+                </p>
+            </div>
             <EmailInput control={control} errors={errors} name="email"/>
             <button
               onClick={handleOpenLogin}
-              className='text-[#100e80] font-semibold mb-2'
+              className='border rounded-full py-1 px-3 bg-[#100e80] text-white w-3/4 mb-2'
             >
               Enviar Enlace
             </button>
-            <p className='text-center block text-gray-500 text-sm'>¿Si necesitas ayuda?</p>
-            <p className='text-center block text-blue-500 text-sm'>contacta con nuestro equipo de soporte</p>
+            <div className='text-center mb-2'>
+                <p className=' text-gray-500 text-sm'>
+                    ¿Si necesitas ayuda? 
+                </p>
+                <p className='text-gray-500 text-sm'>
+                    <span className="text-[#100e80] font-semibold">contacta con nuestro equipo de soporte</span>
+                </p>
+            </div>
           </div>
         </form>
       </Popup>

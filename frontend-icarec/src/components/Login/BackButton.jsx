@@ -2,7 +2,7 @@ import React from 'react'
 
 const BackButton = ({ onClick }) => {
   return (
-    <button className='p-2' onClick={onClick}>
+    <button className='absolute p-4' onClick={onClick}>
       Atrás
     </button>
   )
