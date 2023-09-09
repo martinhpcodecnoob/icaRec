@@ -55,14 +55,20 @@ export const checkIfTokenIsValid = async (token) => {
         },
         body: JSON.stringify({ email }),
       })
-      
-      const data = await response.json()
+      /* const data = await response.json()
       if(response.ok){
         return {message: data.message}
       }else {
         console.error("Error al generar el token de recuperación:", data.error)
         return { error: data.message }
+      } */
+      const data = await response.json()
+  
+      return {
+        status: response.status, 
+        data: data,
       }
+
     } catch (error) {
       console.error("Error al generar el token de recuperacion:", error)
       return false

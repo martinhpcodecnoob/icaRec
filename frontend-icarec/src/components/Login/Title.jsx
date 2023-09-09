@@ -5,10 +5,10 @@ const Title = ({ title }) => {
     <div className="text-center w-full">
       <div className="mb-6">
         <img
-          src="/next.svg"
+          src="/kuskana_amarillo.svg"
           alt="Logo Kuskana Amarillo"
           className="mx-auto bg"
-          style={{ maxWidth: '150px' }} 
+          style={{ maxWidth: '200px' }} 
         />
       </div>
       {title && (

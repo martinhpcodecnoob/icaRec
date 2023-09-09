@@ -13,7 +13,7 @@ const EmailButton = ({content, onOpenLogin, disabled }) => {
               className='mr-2'
               alt="Mail Logo"
 
-              style={{ width: '16px', height: '16px' }}
+              style={{ width: '18px', height: '18px' }}
             />
             <span className='w-full'>
               {content}

@@ -45,19 +45,17 @@ const ExternalLogin = ({ open, close }) => {
       <div className="flex flex-col items-center justify-center h-full">
         <div className='flex flex-col w-full'>
           <Title title={"Inicio Sesión"} />
-          <GoogleButton content={"Continuar con Google"} />
-          <FacebookButton content={"Continuar con Facebook"} />
+          <GoogleButton 
+            content={"Continuar con Google"} 
+          />
+          <FacebookButton 
+            content={"Continuar con Facebook"} 
+          />
           <EmailButton 
               content={"Continuar con mi cuenta"} 
               onOpenLogin={handleOpenLogin}
-              disabled={!isChecked}
-          />
-          <CustomCheckbox 
-            label={"Acepto los términos y condiciones de Kuskana.com y la Política de privacidad"} 
-            isChecked={isChecked}
-            onChange={handleCheckboxChange}
-          />
-          <p className='text-center text-gray-500 text-sm'>¿Todavía no tienes una cuenta?</p>
+          />         
+          <p className='text-center text-gray-400 text-sm'>¿Todavía no tienes una cuenta?</p>
           <button
             onClick={handleOpenRegister} 
             className='text-[#100e80] font-semibold mb-2'

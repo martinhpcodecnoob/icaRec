@@ -2,7 +2,7 @@ import React from 'react'
 
 const BackButton = ({ onClick }) => {
   return (
-    <button className='absolute p-4' onClick={onClick}>
+    <button className='absolute font-semibold text-[#100e80] p-4' onClick={onClick}>
       Atrás
     </button>
   )

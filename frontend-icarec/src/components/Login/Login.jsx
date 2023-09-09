@@ -38,8 +38,6 @@ const Login = ({open, close}) => {
         password: data.password,
         redirect: false, 
       })
-      console.log("Info de la response de signIn: ", signInResponse)
-
       if(signInResponse.error){
         if(signInResponse.error === "CredentialsSignin") {
           setError("Usuario o contraseña inválidos")
@@ -49,11 +47,10 @@ const Login = ({open, close}) => {
       }else{
         router.push("/")
       }
-     /*  if(signInResponse.status === 200){
-        router.push("/")
-      } */
     } catch (error) {
-      console.error("Error de inicio de sesión:", error);
+      //Probablemente tenga que poner una pantalla de error aqui
+      setError(error.message)
+      console.error("Error de inicio de sesión:", error)
     }finally {
       setIsSubmitting(false)
     }
@@ -86,25 +83,19 @@ const Login = ({open, close}) => {
           <Title/>
           <EmailInput control={control} errors={errors} name="email"/>
           {error && (
-            <div className="text-red-500 text-sm text-center mb-4">{error}</div>
+            <div className="text-red-500 text-sm text-center mb-2">{error}</div>
           )} 
           <PasswordInput control={control} errors={errors} name="password"/>
           <CustomCheckbox label={"Mantener sesion iniciada"}/>
           <LoginButton isSubmitting={isSubmitting}/>
-          {/* <button 
-            className='border rounded-full py-1 px-3 bg-[#f3ba1a] text-white w-3/4 mb-2' 
-            type='submit'
-          >
-            Inicio Sesion
-          </button> */}
           <button
             onClick={handleOpenForgotPassword} 
-            className='text-[#100e80] font-semibold'
+            className='text-[#100e80] font-semibold mb-4'
             type="button"
           >
             He olvidado mi contraseña
           </button>
-          <p className='text-center text-gray-500 text-sm'>¿Todavia no tienes cuenta?</p>
+          <p className='text-center text-gray-400 text-sm'>¿Todavia no tienes cuenta?</p>
           <button 
             onClick={handleOpenRegister}
             className='text-[#100e80] font-semibold mb-2'

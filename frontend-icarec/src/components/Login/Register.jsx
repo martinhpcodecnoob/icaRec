@@ -1,6 +1,7 @@
 'use client'
 
-import React from 'react'
+import React, {useState} from 'react'
+import Link from 'next/link'
 import { useRouter } from "next/navigation"
 import { useDispatch } from 'react-redux'
 
@@ -12,26 +13,29 @@ import FacebookButton from './FacebookButton'
 import EmailButton from './EmailButton'
 
 import { closeRegister, openLogin, closeAllPopups } from '@/redux/Slices/popupSlice'
+import CustomCheckbox from './CustomCheckbox'
 
 const Register = ({ open, close }) => {
     const router = useRouter()
-    const dispatch = useDispatch()
-  
+    const dispatch = useDispatch()  
+    const [isChecked, setIsChecked] = useState(false)
+
     const handleCloseRegister = () => {
       dispatch(closeRegister())
       close()
     }
-  
+
     const handleCreateAccount = () => {
       router.push('/register')
-    }
-
+    } 
     const handleOpenLogin = () => {
       dispatch(openLogin())
-    }
-
+    } 
     const handleCloseAllPopups = () => {
-      dispatch(closeAllPopups());
+      dispatch(closeAllPopups())
+    } 
+    const handleCheckboxChange = (event) => {
+      setIsChecked(event.target.checked)
     }
   
     return (
@@ -40,13 +44,36 @@ const Register = ({ open, close }) => {
         <div className="flex flex-col items-center justify-center h-full">
           <div className='flex flex-col w-full'>
             <Title title={"Regístrate"} />
-            <GoogleButton content={"Registrate con Google"} />
-            <FacebookButton content={"Registrate con Facebook"} />
+            <GoogleButton 
+              content={"Registrate con Google"}
+              disabled={!isChecked}
+            />
+            <FacebookButton 
+              content={"Registrate con Facebook"}
+              disabled={!isChecked}
+            />
             <EmailButton 
               content={"Crear mi cuenta"} 
               onOpenLogin={handleCreateAccount}
+              disabled={!isChecked}
             />
-            <p className='text-center block text-gray-500 text-sm mt-4'>¿Ya tienes una cuenta?</p>
+            <CustomCheckbox 
+              label={
+                <div>
+                  Acepto los términos y condiciones de{' '}
+                  <span className="font-bold cursor-pointer text-gray-500 hover:underline">
+                    <Link href="/">Kuskana.com</Link>
+                  </span>{' '}
+                  y la{' '}
+                  <span className="font-bold cursor-pointer text-gray-500 hover:underline">
+                    <Link href="/politicadeprivacidad">Política de privacidad</Link>
+                  </span>
+                </div>
+              } 
+              isChecked={isChecked}
+              onChange={handleCheckboxChange}
+            />
+            <p className='text-center block text-gray-400 text-sm mt-4'>¿Ya tienes una cuenta?</p>
             <button
               onClick={handleOpenLogin}
               className='text-[#100e80] font-semibold mb-2'

@@ -30,7 +30,7 @@ const Popup = ({ children, isOpen, onClose, onCloseAll, zIndex }) => {
         ></div>
         <div
           className="popup-content bg-white rounded-lg shadow-lg"
-          style={{ zIndex: zIndex ? zIndex + 1 : 51, width: '350px', height: '500px' }}
+          style={{ zIndex: zIndex ? zIndex + 1 : 51, width: '350px', height: '550px' }}
         >
           {children}
         </div>

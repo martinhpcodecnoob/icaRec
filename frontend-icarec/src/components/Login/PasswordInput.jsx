@@ -7,9 +7,9 @@ const PasswordInput = ({ control, errors, name }) => {
 
   return (
     <>
-    <div className='flex flex-col w-full items-center'>
+    <div className='flex flex-col w-full items-center mb-2'>
       <div className="flex w-3/4">
-        <label className="text-gray-500 text-sm font-bold text-start mb-2">Password</label>
+        <label className="text-gray-400 text-sm font-bold text-start mb-2">Password</label>
       </div>
       <Controller
           name={name}
