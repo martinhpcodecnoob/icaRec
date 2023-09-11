@@ -41,8 +41,6 @@ const Login = ({open, close}) => {
       if(signInResponse.error){
         if(signInResponse.error === "CredentialsSignin") {
           setError("Usuario o contraseña inválidos")
-        } else {
-          setError("Error de inicio de sesión:")
         }
       }else{
         router.push("/")

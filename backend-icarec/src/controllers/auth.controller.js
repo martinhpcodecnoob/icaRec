@@ -27,18 +27,9 @@ async function register(req, res) {
   try {
     const { name, cellphone, dni, email, password, sex } = req.body
 
-    const credentialsAccounts = await Account.find({provider: 'credentials'})
+    const user = await User.findOne({ email })
 
-    let isExistingUser = false
-    for (const account of credentialsAccounts) {
-      const user = await User.findById(account.userId)
-      if (user && user.email === email) {
-        isExistingUser = true
-        break
-      }
-    }
-
-    if (isExistingUser) {
+    if (user) {
       return res.status(409).json({ error: "El correo electrónico ya está registrado." })
     }
 

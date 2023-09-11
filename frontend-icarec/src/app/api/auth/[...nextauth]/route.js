@@ -20,7 +20,7 @@ const handler = NextAuth({
   providers: [
       GoogleProvider({
         clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-        clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET
+        clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
       }),
       FacebookProvider({
         clientId: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID,
@@ -52,12 +52,23 @@ const handler = NextAuth({
         }
       })
     ],
+    pages: {
+      signIn:'/',
+    },
     session: {
       strategy: "jwt",
     },
     callbacks: {
       async signIn({ user, account, profile, email, credentials }) {
         //Definir propiedades al momento de crear la cuenta, una vez creada las propiedades no se modifican a no ser que entremos y modifiquemos la base de datos
+        /* console.log("singIn user: ", user)
+        console.log("singIn account: ", account)
+        console.log("singIn profile: ", profile)
+        console.log("singIn email: ", email)
+        console.log("singIn credentials: ", credentials) */
+       if(!user){
+        return false
+       }
         let currentUserEmail = null
         let currentAccountProvider = null
         if(user){
@@ -76,7 +87,6 @@ const handler = NextAuth({
           })
           const data = await res.json()
           if(data.found){
-            console.log("Primera condicional del data found")
             const res = await updateAccount( data.userId, false, data.isRegistered )
             if (res.status === 200) { 
               account.newAccount = false
@@ -87,12 +97,10 @@ const handler = NextAuth({
           }
 
           if(!data.found){
-            console.log("Segunda condicional del data found")
             account.newAccount = true
             account.isRegistered = false
             return true
           } else {
-            console.log("Tercera condicional del data found")
             account.newAccount = data.newAccount
             account.isRegistered = data.isRegistered
             return true
