@@ -27,7 +27,7 @@ const Cardsup = () => {
     if (sizeScreen.width < 768 && sizeScreen.width > 0 ) {
         return(
             <div className="flex items-center my-2">
-            <div className="py-4 px-4 mx-auto bg-stone-300 rounded-lg flex items-center justify-evenly">      
+            <div className="py-4 px-4 mx-auto bg-[#100E80] rounded-lg flex items-center justify-evenly">      
                 <div className="w-72 h-48 z-0">
                     <Carousel leftControl="L" rightControl="R">
                         <div className="flex h-full items-center justify-center bg-gray-400 dark:bg-gray-700 dark:text-white">
@@ -49,7 +49,7 @@ const Cardsup = () => {
     if (sizeScreen.width >= 768 && sizeScreen.width > 0 ) {
         return (
             <div className="flex items-center my-2">
-                <div className="py-4 px-4 mx-auto bg-stone-300 rounded-lg flex items-center justify-evenly">      
+                <div className="py-4 px-4 mx-auto bg-[#100E80] rounded-lg flex items-center justify-evenly">      
                             <div className="grid gap-5 xl:grid-cols-4 md:grid-cols-2">
                                 <div className="w-72 h-48 bg-stone-50 relative rounded-lg">
                                     <img 

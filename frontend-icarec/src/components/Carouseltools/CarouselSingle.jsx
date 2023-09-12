@@ -71,6 +71,7 @@ export default function CarouselSingle({imageSlides,hidden}) {
         }
         setCurrentIndex(imagesChanges.length-2)
     }
+    console.log("Este es el indice de lsa imagenes",currentIndex);
     return (
         <div className='w-full px-4 sm:px-0 smartphone:px-0 sm:h-full relative group'>
             {
@@ -80,6 +81,7 @@ export default function CarouselSingle({imageSlides,hidden}) {
                         alt={`imageSlide${currentIndex}`}
                         width={1000}
                         height={1000}
+                        onLoad={(e) => console.log("CArgando imagen")}
                         className={`w-full lg:h-[84.2vh] sm:h-[22vh] smartphone:h-[27vh] rounded-2xl object-center object-cover duration-500`}
                     />
                 ) : null

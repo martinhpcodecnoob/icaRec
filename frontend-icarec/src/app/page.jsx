@@ -10,8 +10,8 @@ import Searchbar from '../components/Searchbar'
 import Cardsup from '@/components/Cards/Cardsup'
 import Cardsdown from '@/components/Cards/Cardsdown'
 import LoadingScreen from '@/components/LoadingScreen'
-import detodologo from '../../public/detodologo.png'
-import detodologo2 from '../../public/detodologo2.png'
+import detodologo from '../../public/kuskanazul.svg'
+import detodologo2 from '../../public/kuskanalogo.svg'
 import { logPageView, logEvent } from '../../utils/utils'
 import AdBanner from '@/components/AdBanner'
 import ErrorRegisterScreen from '@/components/ErrorRegisterScreen'
@@ -70,9 +70,9 @@ const IndexPage = () => {
       <div>
         <div className='flex justify-between items-center p-4'>
           <Image
-            src={detodologo}
+            src={detodologo2}
             alt='logo'
-            className='h-[1.7rem] w-[9rem]'
+            className='h-[3rem] w-[3rem]'
           />
           <div className='flex justify-center items-center lgx:hidden'>
             <p>Descubre un mundo de oportunidades con un clic!</p>
@@ -85,7 +85,10 @@ const IndexPage = () => {
             )}
             {session && (
             <div className='flex space-x-6 px-4 items-center'>
-              <p className='justify-center'>Bienvenido! {session.user.name}</p>
+              <div>
+                <p>Bienvenido! </p>
+                <p>{session.user.name}</p>
+              </div>
               {session.user.providerType === "credentials" ? (
                 <>
                   <Button color="failure" onClick={handleCreateBusiness}>

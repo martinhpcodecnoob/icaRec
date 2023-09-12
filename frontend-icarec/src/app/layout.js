@@ -49,7 +49,7 @@ export default function RootLayout({ children }) {
       </head>
  
           <ProvidersRedux>
-            <body className={raleway.className}>
+            <body className={`${raleway.className} bg-[#FFF8EE]`}>
               <NextAuthProvider>
                 {children}
               </NextAuthProvider>

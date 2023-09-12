@@ -24,7 +24,7 @@ export default function Cardsdown({hidden, setHidden}) {
     return (
         <div className='flex flex-col justify-center items-center'>
             <LinkScroll activeClass="active" to="down" spy={true} smooth={true} offset={-30} duration={500}>
-                <FaAngleDown className='text-3xl text-red-600'/>
+                <FaAngleDown className='text-3xl text-[#F3BA1A]'/>
             </LinkScroll>
             <div className='grid gap-5 2xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2' id='down'>
                 <ModalHome activated={hidden} closeVisualModal={visualModal}/>
@@ -32,7 +32,7 @@ export default function Cardsdown({hidden, setHidden}) {
                     resultTestCards.map((e,i) =>(
                         <div 
                             key={i} 
-                            className='relative w-[11.25rem] md:w-60 h-[7.5rem] md:h-40 bg-red-400 rounded-lg shadow-red hover:rotate-6 duration-700 hover:shadow-xl'
+                            className='relative w-[11.25rem] md:w-60 h-[7.5rem] md:h-40 bg-[#FAE3A3] rounded-lg hover:rotate-6 duration-700 hover:shadow-2xl hover:shadow-[#100E80]'
                             onClick={visualModal}
                         >
                             <div className='absolute md:left-[187px] left-2 md:top-[5px] top-2'>

@@ -1,6 +1,7 @@
 export default function Skeleton() {
+    
     return (
-        <div className="flex flex-col w-full h-full bg-red-100 p-4 rounded-lg border-4 border-gray-400">
+        <div className="flex flex-col w-full h-full bg-[#FAE3A3] p-4 rounded-lg">
             <div role="status" className="space-y-2.5 animate-pulse sm:w-full smartphone:w-full">
                 <div className="flex items-center w-full space-x-2">
                     <div className="h-5 bg-gray-200 rounded-full dark:bg-gray-700 w-32"></div>
@@ -68,8 +69,8 @@ export default function Skeleton() {
                 <span className="sr-only">Loading...</span>
             </div>
             
-            <div className="hidden lgx:block w-full h-full mt-[2rem]">
-                <div className="animate-pulse flex items-center justify-center w-full h-full bg-red-300 rounded-lg">
+            <div className="hidden lgx:block w-full h-full smartphone:h-[13rem] mt-[2rem]">
+                <div className="animate-pulse flex items-center justify-center w-full h-full bg-[#f3ba1a] rounded-lg">
                     <svg
                     className="w-10 h-10 text-gray-200 dark:text-gray-600"
                     aria-hidden="true"

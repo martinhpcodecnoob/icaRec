@@ -13,11 +13,11 @@ export default function LoadFormBusiness({percentaje,modal,message}) {
             <div id="large-modal" tabIndex="-1" className={`fixed ${hidden} flex items-center justify-center bottom-10 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%)] max-h-full`}>
                 <div className="relative w-full max-w-4xl max-h-full">
                     {/* <!-- Modal content --> */}
-                    <div className="relative bg-red-300 rounded-lg shadow dark:bg-gray-700">
+                    <div className="relative bg-[#F3BA1A] rounded-lg shadow dark:bg-gray-700">
                         {/* <!-- Modal body --> */}
                         <div className="p-2 space-y-6">
                             <Progress
-                                color='red'
+                                color='blue'
                                 labelProgress
                                 labelText
                                 progress={percentaje}

@@ -120,7 +120,7 @@ const Map = ({latProp, longProp, view}) => {
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={userLocation || markerPosition || { lat: -14, lng: -79 }}
-          zoom={7}
+          zoom={10}
           onClick={handleMarkeyClic}
         >
           {markerPosition && (

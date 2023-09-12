@@ -17,7 +17,7 @@ export default function EtiquetasScroll({input,setInput}) {
             {
             input.list_service.map((service, i) => (
                 <div className='flex bg-slate-300 rounded-lg mb-1 mr-1' key={i}>
-                    <div className='mx-2'>{service}</div>
+                    <div className='mx-2 text-center'>{service}</div>
                     <button type='button' onClick={() => handleRemoveService(i)}
                         className='text-red-600 text-[1.3rem]'
                     >

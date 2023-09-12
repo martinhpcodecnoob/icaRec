@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import BusinessSubComponent from '@/components/BusinessSubComponent'
 import FileInput from '@/components/Formbussiness/Fileinput'
 import Form from '@/components/Formbussiness/Form'
-import detodologo from '../../../public/detodologo.png'
+import detodologo from '../../../public/kuskanazul.svg'
 import detodologo2 from '../../../public/detodologo2.png'
 import { logPageView } from '../../../utils/utils'
 import { useSession } from 'next-auth/react'
@@ -17,6 +17,7 @@ import { signResponseCloudinary } from '../../../utils/apiCloudinary'
 import { createBusiness, saveDataCloudinary, saveLimitMessage } from '@/redux/Slices/slicePreview'
 import LoadFormBusiness from '@/components/Formbussiness/LoadFormBusiness'
 import WarningModal from '@/components/Formbussiness/WarningModal'
+import Link from 'next/link'
 
 export default function CreateForm() {
     
@@ -25,7 +26,6 @@ export default function CreateForm() {
     const message = useSelector(state => state.preview.fileLimit)
     const dispatch = useDispatch()
     const {data,status} = useSession();
-    const [signData, setSignData] = useState("")
     const [activatedSubmitForm, setActivatedSubmitForm] = useState(false)
     const [progressBar, setProgressBar] = useState({percentage:0,modalProgress:false, message:''})
     const persBussines={
@@ -37,14 +37,14 @@ export default function CreateForm() {
         logPageView('business_form')
     }, [])
     
-    useEffect(() => {
-        console.log("persBussines:  ",persBussines.nombre,persBussines.business, status);
-        if (status === "authenticated" && persBussines.nombre && persBussines.business) {
-            signResponseCloudinary(persBussines.nombre, persBussines.business)
-            .then(data => setSignData(data))
+    // useEffect(() => {
+    //     console.log("persBussines:  ",persBussines.nombre,persBussines.business, status);
+    //     // if (status === "authenticated" && persBussines.nombre && persBussines.business) {
+    //     //     signResponseCloudinary(persBussines.nombre, persBussines.business)
+    //     //     .then(data => setSignData(data))
             
-        }
-    }, [inputForm])
+    //     // }
+    // }, [inputForm])
     
     useEffect(() => {
         if (activatedSubmitForm) {
@@ -61,6 +61,7 @@ export default function CreateForm() {
     }, [activatedSubmitForm])
 
     useEffect(() => {
+        //Este cierra el progress bar al llegar al 100
         if (progressBar.percentage === 100) {
             setTimeout(() => {
                 setProgressBar({
@@ -116,19 +117,26 @@ export default function CreateForm() {
             modalProgress:true,
             message:`Subiendo ${numberImages.length} imagen${numberImages.length === 1 ? '':'es'}`
         })
+
+        let data2 = {}
+        if (status === "authenticated" && persBussines.nombre && persBussines.business) {
+            data2 = await signResponseCloudinary(persBussines.nombre, persBussines.business)
+        }
+        console.log(data2);
         // Usamos map para crear un array de Promesas
         const promises = imageURLarray.map(async (image,i) => {
             if (image.url_cloudinary === '') {
                 const file = await convertURLtofile(image.fileURL);
+                console.log(data2.apiKey);
                 if (file) {
                     const formData = new FormData();
                     formData.append('file', file);
-                    formData.append('api_key', signData.apiKey);
-                    formData.append("timestamp", signData.timestamp);
-                    formData.append("signature", signData.signature);
+                    formData.append('api_key', data2.apiKey);
+                    formData.append("timestamp", data2.timestamp);
+                    formData.append("signature", data2.signature);
                     formData.append("eager", "c_pad,h_300,w_400|c_crop,h_200,w_260");
                     formData.append("folder", `${persBussines.nombre}/${persBussines.business}`);
-                    const response = await fetch(`https://api.cloudinary.com/v1_1/${signData.cloudname}/auto/upload`, {
+                    const response = await fetch(`https://api.cloudinary.com/v1_1/${data2.cloudname}/auto/upload`, {
                         method: "POST",
                         body: formData
                     });
@@ -181,17 +189,25 @@ if (status === "unauthenticated") {
 return (
     <div>
         <div className='hidden mdx:block sticky top-0 z-10'>
-            <div className='flex items-center justify-center p-2 mb-2 bg-slate-500'>
-                <Image alt='logo' src={detodologo2}
-                    className='h-[40%] w-[40%]'/>
+            <div className='flex items-center justify-around p-2 mb-2 bg-[#FFF8EE]'>
+                <Image alt='logo' src={detodologo}
+                    className='h-[30%] w-[30%] smartphone:h-[40%] smartphone:w-[40%]'/>
+
+                <button 
+                    type="button" 
+                    className="flex text-[1rem] focus:outline-none text-[#100E80]  bg-[#f3ba1a] hover:bg-[#FAE3A3] focus:ring-4 focus:ring-blue-400 font-bold rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    onClick={handleSubmitBack}
+                >
+                    Enviar
+                </button>
             </div>
         </div>
         <div className='hidden md:block'>
             <div className='flex items-center p-6'>
-                <button className='w-32 h-6 relative'>
+                <Link href={'/'} className='w-32 h-6 relative'>
                     <Image alt='logo' src={detodologo}
                         className='h-full w-full'/>
-                </button>
+                </Link>
                 <div className='flex justify-center w-full'>
                     <div className='flex items-center text-[21px]'>
                         ¡Descubre un mundo de oportunidades con un click!
@@ -203,7 +219,7 @@ return (
                 <div>
                     <button 
                         type="button" 
-                        className="text-[1rem] focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                        className="text-[1rem] focus:outline-none text-[#100E80]  bg-[#f3ba1a] hover:bg-[#FAE3A3] focus:ring-4 focus:ring-blue-400 font-bold rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         onClick={handleSubmitBack}
                         >
                         Enviar
@@ -237,6 +253,10 @@ return (
             modal={progressBar.modalProgress}
             message={progressBar.message}
         />
+        <div 
+            className='fixed inset-0 flex bg-[#fff8ee] bg-opacity-50 items-center justify-center -z-50'
+        >
+        </div>
     </div>
-  )
+)
 }

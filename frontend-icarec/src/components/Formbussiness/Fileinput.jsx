@@ -12,7 +12,7 @@ export default function FileInput({images=[], hiddenRemove=''}) {
   }
   return (
     <>
-      <div className="animate-pulse flex items-center justify-center w-full h-full bg-red-300 rounded-lg">
+      <div className="animate-pulse flex items-center justify-center lgx:h-[10rem] w-full h-full bg-[#F3BA1A] rounded-lg">
         <svg
           className="w-10 h-10 text-gray-200 dark:text-gray-600"
           aria-hidden="true"

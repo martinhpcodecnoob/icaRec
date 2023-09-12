@@ -12,10 +12,10 @@ const BusinessSubComponent = ({inputForm}) => {
   return (
     <>
     {Object.keys(inputForm).length !== 0 ? (
-    <div className="scrolbar w-full h-full bg-red-100 p-3 rounded-lg border-4 border-gray-400 lg:pt-10">
-      <h2 className="text-center mb-4 font-bold text-[2rem]">{inputForm.name_business}</h2>
+    <div className="scrolbar w-full h-full bg-[#FFF8EE] p-3 lg:pt-10">
+      <h2 className="text-center mb-4 font-bold text-[2rem] text-[#F3BA1A]">{inputForm.name_business}</h2>
       <div className="flex justify-center my-4">
-        <button className="bg-red-500 text-white py-2 px-4 rounded w-2/3">
+        <button className="bg-[#100E80] text-white py-1 px-4 rounded w-2/3">
           Recomiendame
         </button>
       </div>
@@ -30,33 +30,33 @@ const BusinessSubComponent = ({inputForm}) => {
         <p className='ml-2'>{inputForm.geo_business}</p>
       </div>
       <div className='flex justify-center items-center pb-2'>
-        <Link className='px-2' href={inputForm.facebook} target='_blank'>
+        <Link className={`px-2 ${inputForm.facebook === "" ?'hidden':''}`} href={inputForm.facebook} target='_blank'>
           <FaFacebook className='text-blue-600 text-[2rem]'/>
         </Link>
-        <Link className='px-2' href={`https://wa.me/51${inputForm.cellphone}`} target='_blank'>
+        <Link className={`px-2 ${inputForm.cellphone === "" ?'hidden':''}`} href={`https://wa.me/51${inputForm.cellphone}`} target='_blank'>
           <IoLogoWhatsapp className='text-green-400 text-[2rem]'/>
         </Link>
-        <a className='px-2' href={`tel:${inputForm.cellphone}`} target='_blank'>
+        <a className={`px-2 ${inputForm.cellphone === "" ?'hidden':''}`} href={`tel:${inputForm.cellphone}`} target='_blank'>
           <BsFillTelephoneOutboundFill className='text-[2rem]'/>
         </a>
-        <Link className='px-2' href={`${inputForm.name_web}`} target='_blank'>
+        <Link className={`px-2 ${inputForm.name_web === "" ?'hidden':''}`} href={`${inputForm.name_web}`} target='_blank'>
           <TfiWorld className='text-[2rem]'/>
         </Link>
-        <Link className='px-2' href={''}>
+        <Link className={`px-2`} href={''}>
           <FaShareAlt className='text-[2rem]'/>
         </Link>
       </div>
-      <div className='flex-col items-center p-4 sm:h-[25%] smartphone:h-[12rem] overflow-auto scrolbar'>
+      <div className='flex-col items-center p-4 sm:max-h-[10rem] smartphone:max-h-[12rem] overflow-auto scrolbar'>
         <div className="grid grid-cols-2">
           <p className="font-bold">Horarios:</p>
-          <p>{inputForm.schedule}</p>
+          <p className={`bg-[#F3BA1A] flex justify-center text-center rounded-lg text-white ${inputForm.schedule === "" ?'hidden':''}`}>{inputForm.schedule}</p>
         </div>
         <div className="grid grid-cols-2">
           <p className="font-bold">Servicios:</p>
           <div className="col-span-1">
             <div className="w-full">
               {inputForm.list_service.map((service, index) => (
-                <p key={index} className="inline-block bg-gray-500 rounded-lg text-white py-1 px-2 m-1">{service}</p>
+                <p key={index} className="text-center inline-block bg-blue-800 rounded-lg text-white py-1 px-2 m-1">{service}</p>
                 ))}
             </div>
           </div>
