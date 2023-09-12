@@ -12,7 +12,7 @@ export default function Form() {
     const initialValues = {
         name_business:"",
         geo_business:"",
-        ruc:"",
+        description:"",
         cellphone:"",
         facebook:"",
         name_web:"",
@@ -27,7 +27,7 @@ export default function Form() {
     const toastError ={
         name_business:"No superar los 50 caracteres",
         geo_business:"No superar los 100 caracteres",
-        ruc:"No superar los 500 caracteres",
+        description:"No superar los 500 caracteres",
         cellphone:"Debe ser un numero o no mas de 9 caracteres",
         schedule:"No debe superar los 100 caracteres",
         addServices:"El servicio supera los 40 caracteres",
@@ -107,7 +107,7 @@ export default function Form() {
             return
         }
 
-        if (name === 'ruc' && value.length <= 500) {
+        if (name === 'description' && value.length <= 500) {
             setInput((prevState) => ({
                 ...prevState,
                 [name]: value
@@ -247,25 +247,25 @@ export default function Form() {
                     <Map view={true}/>
                 </div>
             </div>
+            <div className="relative z-0 w-full mb-3 group">
+                <textarea
+                    type="text"
+                    name="description"
+                    id="description"
+                    value={input.description}
+                    onChange={handleImputChange}
+                    className="block py-2.5 pl-2 px-0 w-full h-auto text-sm text-gray-900 bg-[#f3ba1a] border-0 rounded-[1rem] border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer scrolbar"
+                    placeholder=" "
+                    autoComplete="off"
+                />
+                <label
+                    htmlFor="description"
+                    className="left-3 peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-2 z-10 origin-[0] peer-focus:left-0 peer-focus:text-black peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                    Descripcion
+                </label>
+            </div>
             <div className="grid md:grid-cols-2 md:gap-6 smartphone:grid-cols-2 smartphone:gap-6">
-                <div className="relative z-0 w-full mb-3 group">
-                    <input
-                        type="text"
-                        name="ruc"
-                        id="ruc"
-                        value={input.ruc}
-                        onChange={handleImputChange}
-                        className="block py-2.5 px-0 w-full h-9 text-sm text-gray-900 bg-[#f3ba1a] border-0 rounded-[1rem] border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                        placeholder=" "
-                        autoComplete="off"
-                    />
-                    <label
-                        htmlFor="ruc"
-                        className="left-3 peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-2 z-10 origin-[0] peer-focus:left-0 peer-focus:text-black peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                    >
-                        RUC
-                    </label>
-                </div>
                 <div className="relative z-0 w-full mb-3 group">
                     <input
                         type="text"
@@ -284,25 +284,25 @@ export default function Form() {
                         Celular
                     </label>
                 </div>
-            </div>
-            <div className="relative z-0 w-full mb-3 group">
-                <input
-                    type="url"
-                    name="facebook"
-                    id="facebook"
-                    value={input.facebook}
-                    onChange={handleImputChange}
-                    onBlur={handleUrlBlur}
-                    className="block py-2.5 px-0 w-full h-9 text-sm text-gray-900 bg-[#f3ba1a] border-0 rounded-[1rem] border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    autoComplete="off"
-                />
-                <label
-                    htmlFor="facebook"
-                    className="left-3 peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-2 z-10 origin-[0] peer-focus:left-0 peer-focus:text-black peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                    Facebook
-                </label>
+                <div className="relative z-0 w-full mb-3 group">
+                    <input
+                        type="url"
+                        name="facebook"
+                        id="facebook"
+                        value={input.facebook}
+                        onChange={handleImputChange}
+                        onBlur={handleUrlBlur}
+                        className="block py-2.5 px-0 w-full h-9 text-sm text-gray-900 bg-[#f3ba1a] border-0 rounded-[1rem] border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        placeholder=" "
+                        autoComplete="off"
+                    />
+                    <label
+                        htmlFor="facebook"
+                        className="left-3 peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-2 z-10 origin-[0] peer-focus:left-0 peer-focus:text-black peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    >
+                        Facebook
+                    </label>
+                </div>
             </div>
             <div className="relative z-0 w-full mb-3 group">
                 <input
