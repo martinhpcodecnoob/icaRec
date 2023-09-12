@@ -1,7 +1,8 @@
 'use client'
+
 import React, { useState, useEffect } from 'react'
-import { useRouter } from "next/navigation"
-import { useSession, signIn, signOut } from 'next-auth/react'
+import { useRouter, useSearchParams } from "next/navigation"
+import { useSession, signOut } from 'next-auth/react'
 import Login1 from '../components/Login1'
 import Image from 'next/image'
 import { Button } from 'flowbite-react'
@@ -15,29 +16,52 @@ import detodologo2 from '../../public/kuskanalogo.svg'
 import { logPageView, logEvent } from '../../utils/utils'
 import AdBanner from '@/components/AdBanner'
 import ErrorRegisterScreen from '@/components/ErrorRegisterScreen'
+import { useDispatch } from 'react-redux';
+import { openExternalLogin } from '@/redux/Slices/popupSlice'
+import PopupContainer from '@/components/Login/PopupContainer'
+import { ToastContainer, toast } from 'react-toastify'
+
+import 'react-toastify/dist/ReactToastify.css'
 
 const IndexPage = () => {
+
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const dispatch = useDispatch()
+
+  const { data: session, status } = useSession()  
+
+  const error = searchParams.get('error')
   const [isLoginOpen, setLoginOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [hidden, setHidden] = useState('hidden')
-  const { data: session, status } = useSession()  
 
   if( session){
     console.log("sesion user", session)
   }
   useEffect(() => {
+
+    if (error === 'OAuthAccountNotLinked') {
+      toast.error('Ya tienes una cuenta creada con ese correo.', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000, 
+      })
+       router.replace('/')  
+    }
+
     window.scroll(0,0)
-    if (session?.user?.isRegistered === false) {
+
+    if (session?.user?.isRegistered === false && session.user.providerType !== 'credentials') {
       router.push('/newUser')
     } else {
       logPageView('landing_page')
     }
+    
   }, [])
 
-   if (session?.user?.isRegistered === false) {
+  if (session?.user?.isRegistered === false && session.user.providerType !== 'credentials') {
     return <ErrorRegisterScreen />
-  } 
+  }  
 
   const handleOpenLogin = () => {
     logEvent('press_login_button')
@@ -52,6 +76,10 @@ const IndexPage = () => {
     setIsLoading(true)
     signOut()
   } 
+
+  const openLogin = () => {
+    dispatch(openExternalLogin())
+  }
 
   const handleCreateBusiness = () => {
     router.push('/mybusiness')
@@ -68,6 +96,7 @@ const IndexPage = () => {
 
     return (
       <div>
+        <ToastContainer/>
         <div className='flex justify-between items-center p-4'>
           <Image
             src={detodologo2}
@@ -79,7 +108,7 @@ const IndexPage = () => {
           </div>
           <div className='flex justify-center items-center'>
             {!session && (
-              <Button color="failure" onClick={handleOpenLogin}>
+              <Button color="failure" onClick={openLogin}>
                 Login
               </Button>
             )}
@@ -127,6 +156,7 @@ const IndexPage = () => {
           <Cardsdown hidden={hidden} setHidden={setHidden}/>
         </div>
       </div>
+      <PopupContainer />
     </div>
   )
 }

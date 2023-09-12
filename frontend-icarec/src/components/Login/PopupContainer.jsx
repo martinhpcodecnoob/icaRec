@@ -2,18 +2,13 @@
 
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import ExternalLogin from '@/components/Login/ExternalLogin'
-import Login from '@/components/Login/Login'
-import Register from '@/components/Login/Register'
-import ForgotPassword from '@/components/Login/ForgotPassword'
-import { openExternalLogin,
-  closeExternalLogin,
-  closeRegister,
-  closeLogin,
-  closeForgotPassword,
- } from '@/redux/Slices/popupSlice'
+import ExternalLogin from './ExternalLogin'
+import Login from './Login'
+import Register from './Register'
+import ForgotPassword from './ForgotPassword'
+import { closeExternalLogin, closeForgotPassword, closeLogin, closeRegister } from '@/redux/Slices/popupSlice'
 
-const IndexPage = () => {
+const PopupContainer = () => {
 
   const dispatch = useDispatch()
 
@@ -22,18 +17,14 @@ const IndexPage = () => {
   const isLoginOpen = useSelector((state) => state.popup.isLoginOpen)
   const isForgotPasswordOpen = useSelector((state) => state.popup.isForgotPasswordOpen)
 
-  const handleOpenExternalLogin = () => {
-    dispatch(openExternalLogin())
-  }
-
   const handleCloseExternalLogin = () => {
     dispatch(closeExternalLogin())
   }
 
   const handleCloseRegister = () => {
     dispatch(closeRegister())
-
   }
+
   const handleCloseLogin = () => {
     dispatch(closeLogin())
   }
@@ -46,11 +37,10 @@ const IndexPage = () => {
     <div>
       <ExternalLogin open={isExternalLoginOpen} close={handleCloseExternalLogin} />
       <Register open={isRegisterOpen} close={handleCloseRegister} />
-      <Login open={isLoginOpen} close={handleCloseLogin} /> 
-      <ForgotPassword open={isForgotPasswordOpen} close={handleCloseForgotPassword}/>
-      <button onClick={handleOpenExternalLogin}>Abrir Login Externo</button>
+      <Login open={isLoginOpen} close={handleCloseLogin} />
+      <ForgotPassword open={isForgotPasswordOpen} close={handleCloseForgotPassword} />
     </div>
   )
 }
 
-export default IndexPage
+export default PopupContainer

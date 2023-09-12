@@ -55,14 +55,20 @@ export const checkIfTokenIsValid = async (token) => {
         },
         body: JSON.stringify({ email }),
       })
-      
-      const data = await response.json()
+      /* const data = await response.json()
       if(response.ok){
         return {message: data.message}
       }else {
         console.error("Error al generar el token de recuperación:", data.error)
         return { error: data.message }
+      } */
+      const data = await response.json()
+  
+      return {
+        status: response.status, 
+        data: data,
       }
+
     } catch (error) {
       console.error("Error al generar el token de recuperacion:", error)
       return false
@@ -115,6 +121,31 @@ export const checkIfTokenIsValid = async (token) => {
       return {
         status: 500, 
         error: "Error del servidor al actualizar el usuario",
+      }
+    }
+  }
+
+  export const registerUser = async (name, cellphone, dni, email, password, sex) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, cellphone, dni, email, password, sex }),
+      })
+  
+      const data = await response.json()
+  
+      return {
+        status: response.status, 
+        data: data,
+      }
+    } catch (error) {
+      console.error("Error del servidor al crear al usuario", error)
+      return {
+        status: 500, 
+        error: "Error del servidor al crear al usuario",
       }
     }
   }

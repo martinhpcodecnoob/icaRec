@@ -15,6 +15,9 @@ const RegisterWithoutCredentials = () => {
   const router = useRouter()
   //borre el status, para probar si todo el flujo esta bien
   const { data: session, update } = useSession()  
+  if(session){
+    console.log(session)
+  }
 
   const [countries, setCountries] = useState([])
   const [countryCode, setCountryCode] = useState('')

@@ -32,9 +32,10 @@ const businessSchema = new Schema({
             required:false
         }
     },
-    RUC: {
+    description: {
         type: String,
-        required: false
+        maxlength: 500,
+        required: false,
     },
     cellphone: {
         type: String,

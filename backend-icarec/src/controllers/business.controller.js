@@ -64,7 +64,7 @@ const create_business = async(req,res) =>{
             business_name, 
             business_location, 
             location_coordinates,
-            RUC, 
+            description, 
             cellphone, 
             facebook,
             website,
@@ -77,7 +77,7 @@ const create_business = async(req,res) =>{
             business_name, 
             business_location, 
             location_coordinates,
-            RUC, 
+            description, 
             cellphone,
             facebook,
             website,
@@ -101,8 +101,8 @@ const create_business = async(req,res) =>{
  
 const delete_business = async (req, res) => {
     try {
-      const { businessId } = req.params
       const user = req.user
+      const { businessId } = req.body
   
       const deletedBusiness = await Business.findOneAndDelete({
         _id: businessId,
@@ -118,13 +118,15 @@ const delete_business = async (req, res) => {
   
       user.businesses = user.businesses.filter(
         (business) => business._id.toString() !== businessId
-      );
+      )
+
       await user.save()
   
       return res.status(200).json({
         deleted: true,
-        business: deletedBusiness
-      });
+        business: deletedBusiness.business_name
+      })
+
     } catch (error) {
       return res.status(500).json({
         deleted: false,
@@ -136,9 +138,8 @@ const delete_business = async (req, res) => {
 
   const update_business = async (req, res) => {
     try {
-      const { businessId } = req.params
       const user = req.user
-      const updates = req.body
+      const { businessId, updates } = req.body
   
       const updatedBusiness = await Business.findOneAndUpdate(
         {
@@ -204,5 +205,6 @@ module.exports = {
     get_all_businesses,
     create_business,
     get_all_business_services,
+    delete_business,
     update_business,
 }

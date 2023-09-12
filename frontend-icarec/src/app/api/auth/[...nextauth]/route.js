@@ -20,7 +20,7 @@ const handler = NextAuth({
   providers: [
       GoogleProvider({
         clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-        clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET
+        clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
       }),
       FacebookProvider({
         clientId: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID,
@@ -39,8 +39,8 @@ const handler = NextAuth({
               'Content-Type':'application/json'
             },
             body: JSON.stringify({
-              email: credentials?.email,
-              password: credentials?.password,
+              email: credentials.email,
+              password: credentials.password,
             }),
           })
           const data = await res.json()
@@ -52,12 +52,23 @@ const handler = NextAuth({
         }
       })
     ],
+    pages: {
+      signIn:'/',
+    },
     session: {
       strategy: "jwt",
     },
     callbacks: {
       async signIn({ user, account, profile, email, credentials }) {
         //Definir propiedades al momento de crear la cuenta, una vez creada las propiedades no se modifican a no ser que entremos y modifiquemos la base de datos
+        /* console.log("singIn user: ", user)
+        console.log("singIn account: ", account)
+        console.log("singIn profile: ", profile)
+        console.log("singIn email: ", email)
+        console.log("singIn credentials: ", credentials) */
+       if(!user){
+        return false
+       }
         let currentUserEmail = null
         let currentAccountProvider = null
         if(user){
@@ -104,14 +115,14 @@ const handler = NextAuth({
           token.providerType = account.provider
           token.newAccount = account.newAccount
           token.isRegistered = account.isRegistered
-          token.userId = user.id
-
-          console.log("token, token: ", token)        
+          
+          /* console.log("token, token: ", token)        
           console.log("token, account: ", account)
-          console.log("token, user: ", user)  
-
+          console.log("token, user: ", user)  */ 
+          
           if (account.type === 'credentials') {
             if(user && user?._id){
+              token.userId = user._id
               const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateToken/${user._id}`, {
                 method: 'POST',
                 headers: {
@@ -123,7 +134,7 @@ const handler = NextAuth({
             }
           }else {
             if(token?.sub){
-
+              token.userId = token.sub
               const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateToken/${token.sub}`, {
                 method: 'POST',
                 headers: {

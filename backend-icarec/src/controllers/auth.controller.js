@@ -25,20 +25,11 @@ async function generateToken(req, res){
 
 async function register(req, res) {
   try {
-    const { name, cellphone, dni, email, password } = req.body
+    const { name, cellphone, dni, email, password, sex } = req.body
 
-    const credentialsAccounts = await Account.find({provider: 'credentials'})
+    const user = await User.findOne({ email })
 
-    let isExistingUser = false
-    for (const account of credentialsAccounts) {
-      const user = await User.findById(account.userId)
-      if (user && user.email === email) {
-        isExistingUser = true
-        break
-      }
-    }
-
-    if (isExistingUser) {
+    if (user) {
       return res.status(409).json({ error: "El correo electrónico ya está registrado." })
     }
 
@@ -49,13 +40,15 @@ async function register(req, res) {
       cellphone, 
       dni,
       email,
+      sex
     })
 
     const newAccount = new Account({
       userId: newUser,
       password: hashedPassword,
+      newAccount: true,
+      isRegistered: true
     })
-
 
     await newUser.save()
     await newAccount.save()
@@ -108,6 +101,7 @@ async function registerWithoutCredentials(req, res) {
 async function login(req, res) {
   try {
     const { email, password } = req.body
+    /* console.log("valores de email y password: ", email, password)
 
     const credentialsAccounts = await Account.find({ provider: 'credentials' })
 
@@ -123,6 +117,28 @@ async function login(req, res) {
 
     const passwordMatch = await bcrypt.compare(password, matchedAccount.account.password);
     if (!passwordMatch) {
+      return res.status(401).json({ error: "Credenciales inválidas." })
+    }
+
+    res.status(200).json({ message: "Inicio de sesión exitoso.", user: matchedAccount.user }) */
+    const matchingAccounts = await Account.find({ provider: 'credentials' })
+
+    if (matchingAccounts.length === 0) {
+      return res.status(404).json({ error: "Usuario no encontrado." })
+    }
+
+    // Buscar el usuario correspondiente a cada cuenta de credenciales
+    const userAccounts = await Promise.all(matchingAccounts.map(async (account) => {
+      const user = await User.findById(account.userId)
+      return { user, account }
+    }))
+
+    // Verificar si alguna cuenta coincide con la contraseña proporcionada
+    const matchedAccount = userAccounts.find(({ account }) => {
+      return bcrypt.compareSync(password, account.password)
+    })
+
+    if (!matchedAccount) {
       return res.status(401).json({ error: "Credenciales inválidas." })
     }
 
