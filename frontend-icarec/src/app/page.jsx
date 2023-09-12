@@ -46,7 +46,7 @@ const IndexPage = () => {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 3000, 
       })
-      router.replace('/')
+       router.replace('/')  
     }
 
     window.scroll(0,0)

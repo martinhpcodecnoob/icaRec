@@ -8,6 +8,6 @@ businessRouter.post("/createBusiness/:userId", checkUserExistence, validateUserS
 businessRouter.get("/getBusiness", BC.get_business)
 businessRouter.get("/getAllBusiness", BC.get_all_businesses)
 businessRouter.get("/getAllBusinessServices", BC.get_all_business_services)
-
-businessRouter.put('/updateBusiness/:userId/:businessId',checkUserExistence, BC.update_business)
+businessRouter.delete('/deleteBusiness/:userId',checkUserExistence, BC.delete_business)
+businessRouter.put('/updateBusiness/:userId',checkUserExistence, BC.update_business)
 module.exports= businessRouter
