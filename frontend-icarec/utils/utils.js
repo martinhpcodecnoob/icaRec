@@ -24,6 +24,8 @@ export const validationSchema = Yup.object().shape({
     .positive('El celular debe ser positivo')
     .typeError('El celular es obligatorio')
     .required('El celular es obligatorio'),
+  phoneCode: Yup.number()
+    .required('El codigo de pais es requerido'),
   email: Yup.string()
     .email('Ingresa un correo electrónico válido').required('El correo electrónico es obligatorio'),
   password: Yup.string()

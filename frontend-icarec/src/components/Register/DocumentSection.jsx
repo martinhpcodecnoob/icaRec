@@ -11,7 +11,6 @@ const DocumentSection = ({control, errors, setValue, getValues}) => {
     <>
       <option value="default">Tipo de documento</option>
       <option value="DNI">DNI</option>
-      <option value="RUC">RUC</option> 
     </>
   )
 
