@@ -27,6 +27,7 @@ const Register = ({ open, close }) => {
 
     const handleCreateAccount = () => {
       router.push('/register')
+      dispatch(closeAllPopups())
     } 
     const handleOpenLogin = () => {
       dispatch(openLogin())

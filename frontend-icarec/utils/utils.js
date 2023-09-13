@@ -2,11 +2,11 @@ import * as Yup from 'yup'
 
 export const validationSchema = Yup.object().shape({
   fullName: Yup
-  .string()
-  .required('El nombre y apellidos son obligatorios')
-  .test('es-nombre-apellido', 'Debe ser un nombre y apellido válido', (value) => {
-    const regex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s']+$/   
-    return regex.test(value)
+    .string()
+    .required('El nombre y apellidos son obligatorios')
+    .test('es-nombre-apellido', 'Debe ser un nombre y apellido válido', (value) => {
+      const regex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s']+$/   
+      return regex.test(value)
   }),
   sex: Yup.string()
     .oneOf(['Hombre', 'Mujer'], 'Debes seleccionar una opción de género.')
@@ -15,16 +15,17 @@ export const validationSchema = Yup.object().shape({
     .notOneOf(['default'], 'Selecciona un tipo de documento')
     .required('El tipo de documento es obligatorio'),
   documentNumber: Yup.number()
-      .integer('El número de documento debe ser un número entero')
-      .positive('El número de documento debe ser positivo')
-      .typeError('El número de documento es obligatorio')
-      .required('El número de documento es obligatorio'),
+    .integer('El número de documento debe ser un número entero')
+    .positive('El número de documento debe ser positivo')
+    .typeError('El número de documento es obligatorio')
+    .required('El número de documento es obligatorio'),
   phoneNumber: Yup.number()
-  .integer('El celular debe ser un número entero')
-  .positive('El celular debe ser positivo')
-  .typeError('El celular es obligatorio')
-  .required('El celular es obligatorio'),
-  email: Yup.string().email('Ingresa un correo electrónico válido').required('El correo electrónico es obligatorio'),
+    .integer('El celular debe ser un número entero')
+    .positive('El celular debe ser positivo')
+    .typeError('El celular es obligatorio')
+    .required('El celular es obligatorio'),
+  email: Yup.string()
+    .email('Ingresa un correo electrónico válido').required('El correo electrónico es obligatorio'),
   password: Yup.string()
     .min(8, 'La contraseña debe tener al menos 8 caracteres')
      .matches(
@@ -51,6 +52,8 @@ export const validationSchemaWithoutCredentials = Yup.object().shape({
     .positive('El celular debe ser positivo')
     .typeError('El celular es obligatorio')
     .required('El celular es obligatorio'),
+  phoneCode: Yup.number()
+    .required('El codigo de pais es requerido'),
   sex: Yup.string()
     .oneOf(['Mujer', 'Hombre'], 'Debes seleccionar una opción de género.')
     .required('Debes seleccionar tu sexo.'),

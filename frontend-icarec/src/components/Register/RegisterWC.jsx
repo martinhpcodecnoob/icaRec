@@ -37,9 +37,10 @@ const RegisterWC = () => {
 
     setIsSubmitting(true)
 
-    const {sex, documentNumber, phoneNumber} = data
+    const {sex, documentNumber, phoneNumber, phoneCode} = data
+    const fullPhoneNumber = `+${phoneCode} ${phoneNumber}`
     try {
-        const updateUserResponse = await updateUser(session.user.userId, phoneNumber, documentNumber, sex)
+        const updateUserResponse = await updateUser(session.user.userId, fullPhoneNumber, documentNumber, sex)
         if(updateUserResponse.status === 200){
           await updateAccount( session.user.userId, session.user.newAccount, true)
           await update({...session, user: {...session?.user, isRegistered: true}})
@@ -72,7 +73,7 @@ const RegisterWC = () => {
       <form className='flex flex-col justify-center items-center sm:w-1/2 md:w-1/4' onSubmit={handleSubmit(onSubmit)}>
         <RegistrationInfo title={"Ya casi terminamos"}/>
         <DocumentSection control={control} errors={errors} setValue={setValue} getValues={getValues} />
-        <PhoneSection control={control} errors={errors} setValue={setValue} />
+        <PhoneSection control={control} errors={errors} setValue={setValue} getValues={getValues}/>
         <SexCheckBoxes control={control} errors={errors} setValue={setValue} getValues={getValues} />
         <RegistrationButton isSubmitting={isSubmitting} />
       </form>        

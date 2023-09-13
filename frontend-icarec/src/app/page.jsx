@@ -20,6 +20,7 @@ import { useDispatch } from 'react-redux';
 import { openExternalLogin } from '@/redux/Slices/popupSlice'
 import PopupContainer from '@/components/Login/PopupContainer'
 import { ToastContainer, toast } from 'react-toastify'
+import RegisterScreen from '@/components/Screens/RegisterScreen'
 
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -60,7 +61,7 @@ const IndexPage = () => {
   }, [])
 
   if (session?.user?.isRegistered === false && session.user.providerType !== 'credentials') {
-    return <ErrorRegisterScreen />
+    return router.push('/newUser')
   }  
 
   const handleOpenLogin = () => {
