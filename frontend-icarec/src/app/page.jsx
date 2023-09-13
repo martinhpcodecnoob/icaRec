@@ -24,6 +24,7 @@ import RegisterScreen from '@/components/Screens/RegisterScreen'
 
 import 'react-toastify/dist/ReactToastify.css'
 import Popbuttons from '@/components/Modals/Popbuttons'
+import { getServices } from '@/redux/Slices/sliceLanding'
 
 const IndexPage = () => {
 
@@ -42,7 +43,7 @@ const IndexPage = () => {
     console.log("sesion user", session)
   }
   useEffect(() => {
-
+    dispatch(getServices())
     if (error === 'OAuthAccountNotLinked') {
       toast.error('Ya tienes una cuenta creada con ese correo.', {
         position: toast.POSITION.TOP_CENTER,
