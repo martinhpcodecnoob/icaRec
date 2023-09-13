@@ -80,7 +80,7 @@ const Register = () => {
         <SexCheckBoxes control={control} errors={errors} setValue={setValue} getValues={getValues} />
         <FullNameInput control={control} errors={errors} />
         <DocumentSection control={control} errors={errors} setValue={setValue} getValues={getValues} />
-        <PhoneSection control={control} errors={errors} setValue={setValue} />
+        <PhoneSection control={control} errors={errors} setValue={setValue} getValues={getValues}/>
         <EmailInput control={control} errors={errors}/>
         <PasswordSection control={control} errors={errors} />
         <PasswordRules/>

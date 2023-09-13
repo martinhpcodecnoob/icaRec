@@ -23,8 +23,8 @@ const Register = () => {
   return (
     <>
     <Head>
-        <title>Tiendas é Registro</title>
-        <meta name="description" content="Registro de las tiendas é" />
+      <title>Tiendas é Registro</title>
+      <meta name="description" content="Registro de las tiendas é" />
     </Head>
       <RegisterUser />
     </>

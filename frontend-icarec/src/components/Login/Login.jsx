@@ -43,7 +43,7 @@ const Login = ({open, close}) => {
           setError("Usuario o contraseña inválidos")
         }
       }else{
-        router.push("/")
+        dispatch(closeAllPopups())
       }
     } catch (error) {
       //Probablemente tenga que poner una pantalla de error aqui
@@ -70,7 +70,7 @@ const Login = ({open, close}) => {
   }
 
   const handleCloseAllPopups = () => {
-    dispatch(closeAllPopups());
+    dispatch(closeAllPopups())
   }
 
   return (

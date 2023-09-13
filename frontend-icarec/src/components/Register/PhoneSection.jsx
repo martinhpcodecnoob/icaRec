@@ -4,7 +4,7 @@ import React, {useState, useEffect} from 'react'
 import { Controller } from 'react-hook-form'
 import { fetchCountries } from '../../../utils/apiServices'
 
-const PhoneSection = ({control, errors, setValue}) => {
+const PhoneSection = ({control, errors, setValue, getValues}) => {
 
   const [showPhoneInput, setshowPhoneInput] = useState(false)
   const [countries, setCountries] = useState([])
@@ -34,7 +34,13 @@ const PhoneSection = ({control, errors, setValue}) => {
     const selectedCountry = countries.find((country) => country.name === countryName)
     if (selectedCountry) {
       setSelectedCountry(selectedCode)
-      setCountryCode(`+${selectedCountry.callingCodes[0]}`)
+      // Usamos la función de devolución de llamada para asegurarnos de que countryCode se actualice inmediatamente
+      setCountryCode((prevCountryCode) => {
+        const newCountryCode = `+${selectedCountry.callingCodes[0]}`
+        setValue('phoneCode', newCountryCode)
+        return newCountryCode
+      })
+  
       setshowPhoneInput(true)
     } 
   }
@@ -52,6 +58,7 @@ const PhoneSection = ({control, errors, setValue}) => {
           <div className='col-span-2 col-start-3'>
             <button className='border rounded-full px-3 py-1 text-[#100e80] font-semibold bg-[#f3ba1a]' onClick={() => {
               setshowPhoneInput(false)
+              setValue('phoneCode', '')
               setValue('phoneNumber', '')
               }}
             >
@@ -67,7 +74,7 @@ const PhoneSection = ({control, errors, setValue}) => {
                   <input
                     {...field}
                     name='phoneNumber'
-                    className='border rounded-full py-1 px-2 placeholder-white text-white bg-[#f3ba1a] w-full'
+                    className='border rounded-full py-1 px-3 placeholder-white text-white bg-[#f3ba1a] w-full'
                     placeholder="Número de celular"
                   />
                 )}
