@@ -22,6 +22,7 @@ import PopupContainer from '@/components/Login/PopupContainer'
 import { ToastContainer, toast } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
+import Popbuttons from '@/components/Modals/Popbuttons'
 
 const IndexPage = () => {
 
@@ -118,25 +119,12 @@ const IndexPage = () => {
                 <p>Bienvenido! </p>
                 <p>{session.user.name}</p>
               </div>
-              {session.user.providerType === "credentials" ? (
+              {session.user.providerType? (
                 <>
-                  <Button color="failure" onClick={handleCreateBusiness}>
-                    Crear Negocio
-                  </Button>
-                  <Button color="failure" onClick={handleSignOut}>
-                    Sign out
-                  </Button>
+                  <Popbuttons viewPopover={true} creeateBusinness={handleCreateBusiness} closeSession={handleSignOut}/>
                 </>
-              ) : (
-                <>
-                <Button color="failure" onClick={handleUpdateUserAccount}>
-                  Rellenar Datos
-                </Button>
-                <Button color="failure" onClick={handleSignOut}>
-                Sign out
-              </Button>
-              </>
-              )}
+              ) : null
+              }
             </div>
             )}
             {isLoginOpen && <Login1 onClose={handleCloseLogin} />}

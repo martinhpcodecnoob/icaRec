@@ -6,8 +6,9 @@ import { IoLogoWhatsapp } from "react-icons/io";
 import { FaFacebook,FaShareAlt } from "react-icons/fa";
 import { BsFillTelephoneOutboundFill } from "react-icons/bs";
 import { TfiWorld } from "react-icons/tfi";
+import Popover from './Formbussiness/Popover';
 
-const BusinessSubComponent = ({inputForm}) => {
+const BusinessSubComponent = ({inputForm,showButton=true}) => {
   
   return (
     <>
@@ -61,13 +62,22 @@ const BusinessSubComponent = ({inputForm}) => {
             </div>
           </div>
         </div>
-        <div className='grid grid-cols-2'>
-          <p className="font-bold">RUC:</p>
-          <p>{inputForm.ruc}</p>
-        </div>
       </div>
       <div className='lg:hidden'>
         <Map latProp={inputForm.location.lat} longProp={inputForm.location.long}/>
+      </div>
+      <div className='flex items-center justify-center'>
+        <button 
+          className={`${showButton ? '':'hidden'} text-[1rem] focus:outline-none text-[#100E80]  bg-[#f3ba1a] hover:bg-[#FAE3A3] focus:ring-4 focus:ring-blue-400 font-bold rounded-lg text-sm px-5 py-2.5 mt-4`}
+        >
+          Ver mas
+        </button>
+        <Popover 
+          viewPopover={showButton ? false:true}
+          titleButton={'Ver mas'}
+          title={'Boton te redigira a su web personalizada despues de crear el Negocio (Descripcion)'}
+          description={inputForm.description}
+        />
       </div>
     </div>
     ) : <Skeleton />}

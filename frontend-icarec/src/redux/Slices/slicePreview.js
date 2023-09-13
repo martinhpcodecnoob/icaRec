@@ -17,7 +17,7 @@ export const createBusiness = createAsyncThunk(
                         latitude: userForm.business.location.lat,
                         longitude: userForm.business.location.long
                     },
-                    RUC: userForm.business.ruc, 
+                    description: userForm.business.description, 
                     cellphone: userForm.business.cellphone, 
                     facebook: userForm.business.facebook,
                     website: userForm.business.name_web,
