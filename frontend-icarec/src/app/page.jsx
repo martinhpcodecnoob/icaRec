@@ -11,19 +11,16 @@ import Searchbar from '../components/Searchbar'
 import Cardsup from '@/components/Cards/Cardsup'
 import Cardsdown from '@/components/Cards/Cardsdown'
 import LoadingScreen from '@/components/LoadingScreen'
-import detodologo from '../../public/kuskanazul.svg'
 import detodologo2 from '../../public/kuskanalogo.svg'
 import { logPageView, logEvent } from '../../utils/utils'
 import AdBanner from '@/components/AdBanner'
-import ErrorRegisterScreen from '@/components/ErrorRegisterScreen'
 import { useDispatch } from 'react-redux';
 import { openExternalLogin } from '@/redux/Slices/popupSlice'
 import PopupContainer from '@/components/Login/PopupContainer'
 import { ToastContainer, toast } from 'react-toastify'
-import RegisterScreen from '@/components/Screens/RegisterScreen'
+import Popbuttons from '@/components/Modals/Popbuttons'
 
 import 'react-toastify/dist/ReactToastify.css'
-import Popbuttons from '@/components/Modals/Popbuttons'
 
 const IndexPage = () => {
 

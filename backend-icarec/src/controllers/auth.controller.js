@@ -120,31 +120,29 @@ async function registerWithoutCredentials(req, res) {
 
 async function login(req, res) {
   try {
-    const { email, password } = req.body
-    const matchingAccounts = await Account.find({ provider: 'credentials' })
+    const { email, password } = req.body;
 
-    if (matchingAccounts.length === 0) {
+    const user = await User.findOne({ email })
+
+    if (!user) {
       return res.status(404).json({ error: "Usuario no encontrado." })
     }
 
-    // Buscar el usuario correspondiente a cada cuenta de credenciales
-    const userAccounts = await Promise.all(matchingAccounts.map(async (account) => {
-      const user = await User.findById(account.userId)
-      return { user, account }
-    }))
+    const account = await Account.findOne({ userId: user._id, provider: 'credentials' })
 
-    // Verificar si alguna cuenta coincide con la contraseña proporcionada
-    const matchedAccount = userAccounts.find(({ account }) => {
-      return bcrypt.compareSync(password, account.password)
-    })
+    if (!account) {
+      return res.status(404).json({ error: "La cuenta del usuario no fue encontrada." })
+    }
 
-    if (!matchedAccount) {
+    const passwordMatch = bcrypt.compareSync(password, account.password)
+
+    if (!passwordMatch) {
       return res.status(401).json({ error: "Credenciales inválidas." })
     }
 
-    res.status(200).json({ message: "Inicio de sesión exitoso.", user: matchedAccount.user })
+    res.status(200).json({ message: "Inicio de sesión exitoso.", user })
   } catch (error) {
-    console.error("Error en el inicio de sesión:", error);
+    console.error("Error en el inicio de sesión:", error)
     res.status(500).json({ error: "Error en el inicio de sesión." })
   }
 }

@@ -1,13 +1,13 @@
 'use client'
 
 import React from 'react'
-import { useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 
 const IndexPage = () => {
   const { data: session, status } = useSession()  
   return (
     <div>
-      <button className='items-center' onClick={() => { console.log("Datos de la session: ", session) }}>
+      <button className='items-center' onClick={() => { signOut() }}>
         Session
       </button>
     </div>

@@ -62,9 +62,7 @@ const handler = NextAuth({
     },
     callbacks: {
       async signIn({ user, account, credentials}) {
-        console.log("Se hace el signIn con los siguientes datos:", user)
-        console.log("Se hace el signIn con los siguientes datos 2:", account)
-        console.log("Credentials en el signin: ",credentials )
+
        if(!user){
         return false
        }
@@ -77,7 +75,6 @@ const handler = NextAuth({
           currentAccountProvider = account.provider
         } */
         if(user && account){
-          console.log("El user email: ", user.email)
           const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/verifyUserExistsWithoutCredentials?email=${user.email}&providerType=${account.provider}`, {
             method: 'GET',
             headers: {
@@ -125,19 +122,19 @@ const handler = NextAuth({
                 },
               })
               const data = await res.json()
-              token.userToken = data.token
+              token.userToken = data.accessToken
             }
           }else {
             if(token?.sub){
               token.userId = token.sub
-              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateToken/${token.sub}`, {
+              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateAccessAndRefreshTokens/${token.sub}`, {
                 method: 'POST',
                 headers: {
                   'Content-Type':'application/json'
                 },
               })
               const data = await res.json()
-              token.userToken = data.token
+              token.userToken = data.accessToken
             }
           }  
         }
