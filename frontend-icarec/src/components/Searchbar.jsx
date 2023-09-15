@@ -17,8 +17,6 @@ const Searchbar = () => {
     const hidePopover = () => {
         setVisible(false);
     };
-    
-    const availableWords = ['servicio 1', 'servicio 21', 'servicio 22', 'servicio 23', 'servicio 5', 'servicio 6', 'servicio 7']
 
     const handleInputChange = (event) => {
         const value = event.target.value
@@ -32,7 +30,6 @@ const Searchbar = () => {
         }
         showPopover()
     }
-    console.log("Este es el inputValue ",inputValue);
 
     return (
         <div className='flex items-center'>

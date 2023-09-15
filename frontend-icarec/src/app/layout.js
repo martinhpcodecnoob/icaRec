@@ -4,7 +4,7 @@ import { Raleway } from 'next/font/google'
 import Script from "next/script";
 import ProvidersRedux from "@/redux/provider";
 import { NextAuthProvider } from "@/components/SesionProvider";
- 
+
 const raleway = Raleway({ subsets: ['latin'] })
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
@@ -15,8 +15,9 @@ export const metadata = {
   title: 'Tiendas é',
   description: 'Somos tiendas é',
 }
- 
-export default function RootLayout({ children }) {
+
+
+export default async function RootLayout({ children }) {
 
   return (
     <html lang="es">
@@ -44,14 +45,13 @@ export default function RootLayout({ children }) {
           data-ad-client={GOOGLE_ADS_ID}
           async="true"
           strategy="beforeInteractive"
-           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
         />
       </head>
- 
           <ProvidersRedux>
             <body className={`${raleway.className} bg-[#FFF8EE]`}>
               <NextAuthProvider>
-                {children}
+                  {children}
               </NextAuthProvider>
             </body>
           </ProvidersRedux>

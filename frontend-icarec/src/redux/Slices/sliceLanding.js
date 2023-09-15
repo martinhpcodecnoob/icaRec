@@ -5,26 +5,46 @@ export const getServices = createAsyncThunk(
     async() => {
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/business/getAllBusinessServices`)
-            const dataServices = await response.json()
-            return dataServices
+            const dataBusiness = await response.json()
+            return dataBusiness
         } catch (error) {
-            console.log("Error en los servicios ",error);
+            console.log("Error en los  ",error);
             throw error
         }
     }
 )
 
+// export const getTotalBusiness = createAsyncThunk(
+//     'getTotalBusiness',
+//     async() => {
+//         try {
+//             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/business/getAllBusinessServices`)
+//             const dataServices = await response.json()
+//             return dataServices
+//         } catch (error) {
+            
+//         }
+//     }
+// )
+
 export const Landing = createSlice({
     name:'slice_landing',
     initialState:{
         services:[],
+        selectService:'',
         stateServices:{
             loading:false,
             error:null
-        }
+        },
+        bussiness:[]
     },
     reducers:{
-
+        extractServices:(state,action) => {
+            state.selectService = action.payload
+        },
+        extractAllBusiness:(state,action) => {
+            state.bussiness = action.payload
+        }
     },
     extraReducers:(builder) => {
         builder
@@ -41,3 +61,5 @@ export const Landing = createSlice({
             })
     }
 })
+
+export const {extractServices,extractAllBusiness} = Landing.actions

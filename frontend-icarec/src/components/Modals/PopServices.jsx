@@ -1,13 +1,20 @@
 'use client'
+import { extractServices } from '@/redux/Slices/sliceLanding';
 import React, { useState } from 'react';
 import { usePopper } from 'react-popper';
+import { useDispatch } from 'react-redux';
 
 export default function PopServices({children,referenceElement,showPopover,hidePopover,visible,suggestions,inputValue}) {
     const [popperElement, setPopperElement] = useState(null);
+    const dispatch = useDispatch()
     const { styles, attributes } = usePopper(referenceElement, popperElement, {
       placement: 'bottom', // Puedes ajustar la posición según tus necesidades
     });
 
+    const captureSelect = (e) => {
+        const {textContent} = e.target
+        dispatch(extractServices(textContent))
+    }
     return (
     <div className={`flex flex-col justify-center items-center`}>
         <div className="relative w-full">
@@ -23,13 +30,18 @@ export default function PopServices({children,referenceElement,showPopover,hideP
             >
                 <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                     <li className={inputValue?'hidden':''}>
-                        <a href="#" className="block px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Escribe algo</a>
+                        <button className="w-full flex justify-normal px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Escribe algo</button>
                     </li>
                     {suggestions.map((suggestion, index) =>{
                         if (inputValue) {
                             return(
                                 <li key={index}>
-                                    <a href="#" className="block px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">{suggestion}</a>
+                                    <button
+                                        onClick={captureSelect}
+                                        className="w-full flex justify-normal px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]"
+                                    >
+                                        {suggestion}
+                                    </button>
                                 </li>
                             )
                         }

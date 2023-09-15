@@ -2,14 +2,14 @@ import React from 'react'
 import BusinessSubComponent from '../BusinessSubComponent'
 import FileInput from '../Formbussiness/Fileinput'
 
-export default function ModalHome({activated, closeVisualModal}) {
+export default function ModalHome({activated=false, closeVisualModal,images,inputForm,children}) {
 
     return (
         <>
             {/* <!-- Extra Large Modal --> */}
             <div 
                 tabIndex="-1" 
-                className={`flex items-center justify-center fixed top-0 left-0 right-0 z-50 ${activated} w-full p-2 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%)] max-h-full`}
+                className={`flex items-center justify-center fixed top-0 left-0 right-0 z-50 ${activated ? "":"hidden"} w-full p-2 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%)] max-h-full`}
             >
                 <div className="relative w-full max-w-7xl max-h-full">
                     {/* <!-- Modal content --> */}
@@ -33,17 +33,12 @@ export default function ModalHome({activated, closeVisualModal}) {
                         {/* <!-- Modal body --> */}
                         <div className="flex smartphone:p-0 p-4">
                             <div className='hidden lg:block w-full h-[50rem] lg:mr-1'>
-                                <FileInput images={[]} hiddenRemove='hidden'/>
+                                <FileInput images={images} hiddenRemove='hidden'/>
                             </div>
                             <div className='lg:w-[70%] h-[50rem] lg:ml-1 sm:w-full smartphone:w-full'>
-                                <BusinessSubComponent inputForm={[]}/>
+                                <BusinessSubComponent inputForm={inputForm}/>
                             </div>
                         </div>
-                        {/* <!-- Modal footer -->
-                        <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                            <button data-modal-hide="extralarge-modal" type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
-                            <button data-modal-hide="extralarge-modal" type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
-                        </div> */}
                     </div>
                 </div>
 
@@ -53,6 +48,7 @@ export default function ModalHome({activated, closeVisualModal}) {
                 >
                 </div>
             </div>
+            {children}
         </>
     )
 }
