@@ -57,6 +57,7 @@ const handler = NextAuth({
     },
     session: {
       strategy: "jwt",
+      maxAge: 900,
     },
     callbacks: {
       async signIn({ user, account, profile, email, credentials }) {
@@ -150,7 +151,8 @@ const handler = NextAuth({
         return token
       }, 
       async session({ session, token, user }) {
-        
+        console.log("Info de la sesssion: ", session)
+        session.expires
         session.user.providerType = token.providerType 
         session.user.newAccount = token.newAccount 
         session.user.isRegistered = token.isRegistered

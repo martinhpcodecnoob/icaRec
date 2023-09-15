@@ -8,7 +8,7 @@ function generateAuthToken(userId) {
     try {
         const payload = { sub: userId }
         //Debo encontrar la manera de que el token dure el mismo tiempo de la sesion
-        const options = { expiresIn: '1h' }
+        const options = { expiresIn: '2h' }
         const token = jwt.sign(payload, process.env.SECRET, options)
         return {token}
       } catch (error) {

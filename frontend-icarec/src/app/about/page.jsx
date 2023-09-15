@@ -1,13 +1,16 @@
 'use client'
 
 import React from 'react'
-import RegisterScreen from '@/components/Screens/RegisterScreen'
+import { useSession } from 'next-auth/react'
 
 const IndexPage = () => {
-
+  const { data: session, status } = useSession()  
   return (
-    <RegisterScreen />
+    <div>
+      <button className='items-center' onClick={() => { console.log("Datos de la session: ", session) }}>
+        Session
+      </button>
+    </div>
   )
 }
-
 export default IndexPage
