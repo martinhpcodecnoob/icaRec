@@ -61,12 +61,6 @@ const handler = NextAuth({
     },
     callbacks: {
       async signIn({ user, account, profile, email, credentials }) {
-        //Definir propiedades al momento de crear la cuenta, una vez creada las propiedades no se modifican a no ser que entremos y modifiquemos la base de datos
-        /* console.log("singIn user: ", user)
-        console.log("singIn account: ", account)
-        console.log("singIn profile: ", profile)
-        console.log("singIn email: ", email)
-        console.log("singIn credentials: ", credentials) */
        if(!user){
         return false
        }
@@ -115,12 +109,7 @@ const handler = NextAuth({
         if (account) {
           token.providerType = account.provider
           token.newAccount = account.newAccount
-          token.isRegistered = account.isRegistered
-          
-          /* console.log("token, token: ", token)        
-          console.log("token, account: ", account)
-          console.log("token, user: ", user)  */ 
-          
+          token.isRegistered = account.isRegistered      
           if (account.type === 'credentials') {
             if(user && user?._id){
               token.userId = user._id
@@ -151,8 +140,6 @@ const handler = NextAuth({
         return token
       }, 
       async session({ session, token, user }) {
-        console.log("Info de la sesssion: ", session)
-        session.expires
         session.user.providerType = token.providerType 
         session.user.newAccount = token.newAccount 
         session.user.isRegistered = token.isRegistered
