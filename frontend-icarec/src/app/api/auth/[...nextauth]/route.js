@@ -33,6 +33,7 @@ const handler = NextAuth({
           password: { label: "Password", type: "password", placeholder: "Contraseña ..." }
         },
         async authorize(credentials, req) {
+          console.log("El valor de credentials: ", credentials)
           const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/login`, {
             method: 'POST',
             headers: {
@@ -60,20 +61,24 @@ const handler = NextAuth({
       maxAge: 900,
     },
     callbacks: {
-      async signIn({ user, account, profile, email, credentials }) {
+      async signIn({ user, account, credentials}) {
+        console.log("Se hace el signIn con los siguientes datos:", user)
+        console.log("Se hace el signIn con los siguientes datos 2:", account)
+        console.log("Credentials en el signin: ",credentials )
        if(!user){
         return false
        }
-        let currentUserEmail = null
+        /* let currentUserEmail = null
         let currentAccountProvider = null
         if(user){
           currentUserEmail = user.email
         }
         if(account){
           currentAccountProvider = account.provider
-        }
-        if(currentUserEmail !== null && currentAccountProvider !== null){
-          const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/verifyUserExistsWithoutCredentials?email=${currentUserEmail}&providerType=${currentAccountProvider}`, {
+        } */
+        if(user && account){
+          console.log("El user email: ", user.email)
+          const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/verifyUserExistsWithoutCredentials?email=${user.email}&providerType=${account.provider}`, {
             method: 'GET',
             headers: {
               'Content-Type':'application/json'
@@ -113,7 +118,7 @@ const handler = NextAuth({
           if (account.type === 'credentials') {
             if(user && user?._id){
               token.userId = user._id
-              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateToken/${user._id}`, {
+              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateAccessAndRefreshTokens/${user._id}`, {
                 method: 'POST',
                 headers: {
                   'Content-Type':'application/json'

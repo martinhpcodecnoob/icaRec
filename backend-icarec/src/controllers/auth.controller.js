@@ -8,17 +8,37 @@ const Account = require('../models/Account')
 const { generateAuthToken, sendEmailWithResend } = require("../utils/utils")
 const { EmailPasswordRecoveryHTML } = require("../utils/templates")
 
-async function generateToken(req, res){
+const {SECRET, REFRESH_SECRET} = process.env
+const ACCESS_TOKEN_EXPIRATION = '1h'
+const REFRESH_TOKEN_EXPIRATION = '1w'
+
+async function generateAccessAndRefreshTokens(req, res){
   try {
     const user = req.user
-    const result = generateAuthToken(user._id.toString())
-    if (result.error) {
-      return res.status(500).json({ error: result.error })
+    const userId = user._id.toString()
+    const generateAccessToken = generateAuthToken(userId, ACCESS_TOKEN_EXPIRATION, SECRET)
+    const generateRefreshToken = generateAuthToken(userId, REFRESH_TOKEN_EXPIRATION, REFRESH_SECRET)
+
+    if (generateAccessToken.error || generateRefreshToken.error) {
+      return res.status(500).json({ error: "Error al generar el token." })
     }
-    const token = result.token
-    res.status(200).json({ message: "Token Creado", token })
+
+    const accessToken = generateAccessToken.token
+    const refreshToken = generateRefreshToken.token
+
+    const updatedAccount = await Account.findOneAndUpdate(
+      { userId: userId },
+      { refreshToken: refreshToken },
+      { new: true } 
+    )
+
+    if (!updatedAccount) {
+      return res.status(500).json({ error: "No se pudo actualizar el token de actualizacion de la cuenta." })
+    }
+
+    res.status(200).json({ message: "Tokens creados", accessToken })
   } catch (error) {
-    console.error("Error en el generate Token:", error)
+    console.error("Error en el generateToken:", error)
     res.status(500).json({ error: "Error al generar el token." })
   }
 }
@@ -101,26 +121,6 @@ async function registerWithoutCredentials(req, res) {
 async function login(req, res) {
   try {
     const { email, password } = req.body
-    /* console.log("valores de email y password: ", email, password)
-
-    const credentialsAccounts = await Account.find({ provider: 'credentials' })
-
-    const userAccounts = await Promise.all(credentialsAccounts.map(async (account) => {
-      const user = await User.findById(account.userId)
-      return { user, account }
-    }))
-
-    const matchedAccount = userAccounts.find(({ user }) => user.email === email)
-    if (!matchedAccount) {
-      return res.status(404).json({ error: "Usuario no encontrado." })
-    }
-
-    const passwordMatch = await bcrypt.compare(password, matchedAccount.account.password);
-    if (!passwordMatch) {
-      return res.status(401).json({ error: "Credenciales inválidas." })
-    }
-
-    res.status(200).json({ message: "Inicio de sesión exitoso.", user: matchedAccount.user }) */
     const matchingAccounts = await Account.find({ provider: 'credentials' })
 
     if (matchingAccounts.length === 0) {
@@ -293,7 +293,7 @@ module.exports = {
   register,
   registerWithoutCredentials,
   login,
-  generateToken,
+  generateAccessAndRefreshTokens,
   generateRecoveryToken,
   verifyRecoveryToken,
   verifyUserExistsWithoutCredentials,

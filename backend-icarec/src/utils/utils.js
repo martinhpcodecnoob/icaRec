@@ -4,12 +4,11 @@
  const RESEND_API_KEY = process.env.RESEND_API_KEY
  const resend = new Resend(RESEND_API_KEY)
 
-function generateAuthToken(userId) {
+function generateAuthToken( userId, expires, secret ) {
     try {
         const payload = { sub: userId }
-        //Debo encontrar la manera de que el token dure el mismo tiempo de la sesion
-        const options = { expiresIn: '2h' }
-        const token = jwt.sign(payload, process.env.SECRET, options)
+        const options = { expiresIn: expires }
+        const token = jwt.sign(payload, secret, options)
         return {token}
       } catch (error) {
         console.error("Error al generar el token:", error)
@@ -17,7 +16,6 @@ function generateAuthToken(userId) {
       }
     }
     
-
 async function sendEmailWithResend({ from, to, subject, html }) {
   try {
     await resend.emails.send({

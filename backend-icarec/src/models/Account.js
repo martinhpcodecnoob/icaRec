@@ -30,6 +30,10 @@ const accountSchema = new Schema({
         type: Schema.Types.Boolean,
         default: false
     },
+    refreshToken: {
+        type: String,
+        default: null
+    },
     passwordResetToken: {
         type: String,
         default: null
