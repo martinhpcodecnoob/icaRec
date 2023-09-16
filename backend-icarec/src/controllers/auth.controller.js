@@ -9,7 +9,7 @@ const { generateAuthToken, sendEmailWithResend } = require("../utils/utils")
 const { EmailPasswordRecoveryHTML } = require("../utils/templates")
 
 const {SECRET, REFRESH_SECRET} = process.env
-const ACCESS_TOKEN_EXPIRATION = '15m'
+const ACCESS_TOKEN_EXPIRATION = '5m'
 const REFRESH_TOKEN_EXPIRATION = '1w'
 
 async function generateAccessAndRefreshTokens(req, res){
@@ -49,6 +49,7 @@ async function renewAccessToken(req, res){
 
     const decodedAccessToken = jwt.verify(accessToken, SECRET)
     if (!decodedAccessToken || !decodedAccessToken.sub) {
+      console.log("Token de acceso inválido o expirado.")
       return res.status(401).json({ error: "Token de acceso inválido o expirado." })
     }
 
@@ -57,16 +58,18 @@ async function renewAccessToken(req, res){
     const account = await Account.findOne({ userId })
 
     if (!account || !account.refreshToken) {
+      console.log("No se encontró una cuenta válida para el usuario.")
       return res.status(401).json({ error: "No se encontró una cuenta válida para el usuario." })
     }
 
     const decodedRefreshToken = jwt.verify(account.refreshToken, REFRESH_SECRET)
 
     if (!decodedRefreshToken || decodedRefreshToken.sub !== userId) {
+      console.log("Token de actualización inválido.")
       return res.status(401).json({ error: "Token de actualización inválido." })
     }
 
-    const newAccessToken = jwt.sign({ userId }, SECRET, { expiresIn: ACCESS_TOKEN_EXPIRATION });
+    const newAccessToken = jwt.sign({ sub: userId }, SECRET, { expiresIn: ACCESS_TOKEN_EXPIRATION });
 
     res.status(200).json({ accessToken: newAccessToken })
   } catch (error) {

@@ -1,24 +1,25 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
+import { useSession, getSession } from 'next-auth/react'
 import { getTokenExpirationTime } from '../../utils/utils'
 import { regenerateAccessToken } from '../../utils/apiBackend'
 
 const TokenRenewal = () => {
 
-    const INTERVAL_IN_SECONDS = (10) * 1000
+    const INTERVAL_IN_SECONDS = (5) * 1000
     //El tiempo debe ser menor que la expiracion del token
-    const TIME_BEFORE_EXPIRATION_IN_MINUTES = (5) * 60
+    const TIME_BEFORE_EXPIRATION_IN_MINUTES = (1) * 60
 
-    const { data: session, update } = useSession()
+     const { data: session, update } = useSession() 
     const [intervalDuration, setIntervalDuration] = useState(INTERVAL_IN_SECONDS)
     const [tokenExpiration, setTokenExpiration] = useState(0)
     const [isFirstRun, setIsFirstRun] = useState(true)
   
     useEffect(() => {
       const checkTokenExpiration = async () => {
-        const accessToken = session?.user?.token
+
+        let accessToken = session?.user?.token
   
         if (accessToken) {
           if (isFirstRun) {
@@ -38,12 +39,13 @@ const TokenRenewal = () => {
         console.log("tokenExpiration: ", tokenExpiration)
         if ( tokenExpiration <= TIME_BEFORE_EXPIRATION_IN_MINUTES && !isFirstRun ) {
           try {
-            const regenerateAccessTokenResponse = await regenerateAccessToken(session.user.token) 
+            let regenerateAccessTokenResponse = await regenerateAccessToken(session.user.token) 
             if (regenerateAccessTokenResponse.status === 200) {
                 const newToken = regenerateAccessTokenResponse.data.accessToken
                 const newExpireTime = await getTokenExpirationTime(newToken)
                 if (newExpireTime > TIME_BEFORE_EXPIRATION_IN_MINUTES) {
-                    await update({...session, user: {...session?.user, token: newToken}})
+                    console.log("Se actualiza la session con el nuevo token:", newToken)
+                    await update({...session, user: {...session?.user, newToken}})
                     setTokenExpiration(newExpireTime)
                     setIsFirstRun(false) 
                   }
@@ -63,7 +65,7 @@ const TokenRenewal = () => {
       }, intervalDuration)
   
       return () => clearInterval(intervalId)
-    }, [session, tokenExpiration, intervalDuration, isFirstRun])
+    }, [ session, tokenExpiration, intervalDuration, isFirstRun])
   
     return null
   }

@@ -106,6 +106,12 @@ const handler = NextAuth({
       },
        async jwt({ token, account, user, trigger, session }) {
         if(trigger === 'update'){
+          console.log("datos de s:",session)
+          console.log("datos de t:",token)
+          if(session.user.newToken){
+            console.log("Dentro del new token")
+            token.userToken = session.user.newToken
+          }
           return {...token, ...session.user}
         }
         if (account) {

@@ -8,7 +8,10 @@ const IndexPage = () => {
   return (
     <div>
       <button className='items-center' onClick={() => { signOut() }}>
-        Session
+        Cerrar Session
+      </button>
+      <button className='items-center' onClick={() => { console.log("Data Session:", session) }}>
+        Session DATA
       </button>
     </div>
   )
