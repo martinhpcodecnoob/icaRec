@@ -11,17 +11,17 @@ export default function ModalHome({activated=false, closeVisualModal,images,inpu
                 tabIndex="-1" 
                 className={`flex items-center justify-center fixed top-0 left-0 right-0 z-50 ${activated ? "":"hidden"} w-full p-2 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%)] max-h-full`}
             >
-                <div className="relative w-full max-w-7xl max-h-full">
+                <div className="relative w-full max-w-7xl max-h-full smartphone:max-h-[70rem] smartphone:mb-4 mt-[1rem] smartphone:mt-[6rem]">
                     {/* <!-- Modal content --> */}
-                    <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <div className="relative bg-[#FAE3A3] rounded-lg shadow">
                         {/* <!-- Modal header --> */}
-                        <div className="flex items-center justify-between p-2 border-b rounded-t dark:border-gray-600">
-                            <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                        <div className="flex items-center justify-between p-2 border-b rounded-t">
+                            <h3 className="text-xl font-medium text-gray-900">
                                 Extra Large modal
                             </h3>
                             <button 
                                 type="button" 
-                                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center"
                                 onClick={closeVisualModal}
                             >
                                 <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -35,8 +35,8 @@ export default function ModalHome({activated=false, closeVisualModal,images,inpu
                             <div className='hidden lg:block w-full h-[50rem] lg:mr-1'>
                                 <FileInput images={images} hiddenRemove='hidden'/>
                             </div>
-                            <div className='lg:w-[70%] h-[50rem] lg:ml-1 sm:w-full smartphone:w-full'>
-                                <BusinessSubComponent inputForm={inputForm}/>
+                            <div className='lg:w-[70%] smartphone:max-h-[70rem] sm:h-[50rem] lg:ml-1 sm:w-full smartphone:w-full smartphone:mb-5'>
+                                <BusinessSubComponent inputForm={inputForm} hiddenRemove='hidden'/>
                             </div>
                         </div>
                     </div>

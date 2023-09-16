@@ -1,26 +1,9 @@
 import { FaAngleDown } from "react-icons/fa";
 import { Link as LinkScroll } from 'react-scroll';
-import { useEffect } from "react";
 
 import CardSingle from "./CardSingle";
 
-export default function Cardsdown({hidden, setHidden, bussinessAll}) {
-    // const createNumberArray = (num) =>{
-    //     const numberArray=[]
-    //     for (let i = 1; i <= num; i++) {
-    //         numberArray.push(i)
-    //     }
-    //     return numberArray
-    // }
-    // const resultTestCards = createNumberArray(30)
-
-    const visualModal = () => {
-        if (hidden === 'hidden') {
-            setHidden('')
-        }else{
-            setHidden('hidden')
-        }
-    }    
+export default function Cardsdown({bussinessAll}) {
 
     return (
         <div className='flex flex-col justify-center items-center'>

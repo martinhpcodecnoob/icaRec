@@ -2,7 +2,7 @@ import LandingPage from './LandingPage'
 
 export async function getAllBusiness(){
   try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/business/getAllBusiness`,{cache:'no-store'})
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/business/getAllBusiness`)
       const business = response.json()
       return business
   } catch (error) {

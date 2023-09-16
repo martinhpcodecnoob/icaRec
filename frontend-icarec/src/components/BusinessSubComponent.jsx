@@ -8,7 +8,7 @@ import { BsFillTelephoneOutboundFill } from "react-icons/bs";
 import { TfiWorld } from "react-icons/tfi";
 import Popover from './Formbussiness/Popover';
 
-const BusinessSubComponent = ({inputForm,showButton=true}) => {
+const BusinessSubComponent = ({inputForm,showButton=true,hiddenRemove=''}) => {
   const website = inputForm.name_web?inputForm.name_web:inputForm.website
   const services = inputForm.list_service ? inputForm.list_service : inputForm.services
   return (
@@ -38,7 +38,7 @@ const BusinessSubComponent = ({inputForm,showButton=true}) => {
         />
       </div>
       <div className='sm:w-[100%] lg:hidden'>
-        <FileInput images={inputForm.images}/>
+        <FileInput images={inputForm.images} hiddenRemove={hiddenRemove}/>
       </div>
       <div className='my-2 flex items-center justify-center'>
         <p className='font-bold'>Ubicacion: </p>

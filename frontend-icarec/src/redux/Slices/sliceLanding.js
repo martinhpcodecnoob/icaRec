@@ -14,19 +14,6 @@ export const getServices = createAsyncThunk(
     }
 )
 
-// export const getTotalBusiness = createAsyncThunk(
-//     'getTotalBusiness',
-//     async() => {
-//         try {
-//             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/business/getAllBusinessServices`)
-//             const dataServices = await response.json()
-//             return dataServices
-//         } catch (error) {
-            
-//         }
-//     }
-// )
-
 export const Landing = createSlice({
     name:'slice_landing',
     initialState:{

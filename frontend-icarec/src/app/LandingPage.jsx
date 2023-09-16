@@ -40,7 +40,6 @@ const LandingPage = ({dataBusiness}) => {
     const error = searchParams.get('error')
     const [isLoginOpen, setLoginOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [hidden, setHidden] = useState('hidden')
 
     if( session){
         console.log("sesion user", session)
@@ -146,7 +145,7 @@ const LandingPage = ({dataBusiness}) => {
             <Searchbar/>
             <Cardsup/>
             <div id='cardDown'>
-            <Cardsdown hidden={hidden} setHidden={setHidden} bussinessAll={businessAll}/>
+            <Cardsdown bussinessAll={businessAll}/>
             </div>
         </div>
         <PopupContainer />
