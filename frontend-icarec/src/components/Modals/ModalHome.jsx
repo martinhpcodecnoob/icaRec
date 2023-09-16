@@ -1,6 +1,8 @@
 import React from 'react'
 import BusinessSubComponent from '../BusinessSubComponent'
 import FileInput from '../Formbussiness/Fileinput'
+import kuskanaazul from '../../../public/kuskanazul.svg'
+import Image from 'next/image'
 
 export default function ModalHome({activated=false, closeVisualModal,images,inputForm,children}) {
 
@@ -17,7 +19,8 @@ export default function ModalHome({activated=false, closeVisualModal,images,inpu
                         {/* <!-- Modal header --> */}
                         <div className="flex items-center justify-between p-2 border-b rounded-t">
                             <h3 className="text-xl font-medium text-gray-900">
-                                Extra Large modal
+                                <Image alt='logo' src={kuskanaazul}
+                                        className='h-[2rem] w-[8rem]'/>
                             </h3>
                             <button 
                                 type="button" 
