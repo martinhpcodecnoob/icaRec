@@ -33,6 +33,7 @@ const handler = NextAuth({
           password: { label: "Password", type: "password", placeholder: "Contraseña ..." }
         },
         async authorize(credentials, req) {
+          console.log("El valor de credentials: ", credentials)
           const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/login`, {
             method: 'POST',
             headers: {
@@ -57,28 +58,24 @@ const handler = NextAuth({
     },
     session: {
       strategy: "jwt",
+      maxAge: 900,
     },
     callbacks: {
-      async signIn({ user, account, profile, email, credentials }) {
-        //Definir propiedades al momento de crear la cuenta, una vez creada las propiedades no se modifican a no ser que entremos y modifiquemos la base de datos
-        /* console.log("singIn user: ", user)
-        console.log("singIn account: ", account)
-        console.log("singIn profile: ", profile)
-        console.log("singIn email: ", email)
-        console.log("singIn credentials: ", credentials) */
+      async signIn({ user, account, credentials}) {
+
        if(!user){
         return false
        }
-        let currentUserEmail = null
+        /* let currentUserEmail = null
         let currentAccountProvider = null
         if(user){
           currentUserEmail = user.email
         }
         if(account){
           currentAccountProvider = account.provider
-        }
-        if(currentUserEmail !== null && currentAccountProvider !== null){
-          const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/verifyUserExistsWithoutCredentials?email=${currentUserEmail}&providerType=${currentAccountProvider}`, {
+        } */
+        if(user && account){
+          const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/verifyUserExistsWithoutCredentials?email=${user.email}&providerType=${account.provider}`, {
             method: 'GET',
             headers: {
               'Content-Type':'application/json'
@@ -109,40 +106,41 @@ const handler = NextAuth({
       },
        async jwt({ token, account, user, trigger, session }) {
         if(trigger === 'update'){
+          console.log("datos de s:",session)
+          console.log("datos de t:",token)
+          if(session.user.newToken){
+            console.log("Dentro del new token")
+            token.userToken = session.user.newToken
+          }
           return {...token, ...session.user}
         }
         if (account) {
           token.providerType = account.provider
           token.newAccount = account.newAccount
-          token.isRegistered = account.isRegistered
-          
-          /* console.log("token, token: ", token)        
-          console.log("token, account: ", account)
-          console.log("token, user: ", user)  */ 
-          
+          token.isRegistered = account.isRegistered      
           if (account.type === 'credentials') {
             if(user && user?._id){
               token.userId = user._id
-              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateToken/${user._id}`, {
+              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateAccessAndRefreshTokens/${user._id}`, {
                 method: 'POST',
                 headers: {
                   'Content-Type':'application/json'
                 },
               })
               const data = await res.json()
-              token.userToken = data.token
+              token.userToken = data.accessToken
             }
           }else {
             if(token?.sub){
               token.userId = token.sub
-              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateToken/${token.sub}`, {
+              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateAccessAndRefreshTokens/${token.sub}`, {
                 method: 'POST',
                 headers: {
                   'Content-Type':'application/json'
                 },
               })
               const data = await res.json()
-              token.userToken = data.token
+              token.userToken = data.accessToken
             }
           }  
         }
@@ -150,7 +148,6 @@ const handler = NextAuth({
         return token
       }, 
       async session({ session, token, user }) {
-        
         session.user.providerType = token.providerType 
         session.user.newAccount = token.newAccount 
         session.user.isRegistered = token.isRegistered

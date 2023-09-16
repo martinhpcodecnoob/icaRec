@@ -40,9 +40,10 @@ const Register = () => {
 
     setIsSubmitting(true)
 
-    const {sex, fullName, documentNumber, phoneNumber, email, password} = data
+    const {sex, fullName, documentNumber, phoneNumber, phoneCode, email, password} = data
+    const fullPhoneNumber = `+${phoneCode} ${phoneNumber}`
     try {
-      const registerUserResponse = await registerUser(fullName, phoneNumber, documentNumber, email, password, sex)
+      const registerUserResponse = await registerUser(fullName, fullPhoneNumber, documentNumber, email, password, sex)
       if(registerUserResponse.status === 200){
         const signInResponse = await signIn("credentials", {
           email:email,
