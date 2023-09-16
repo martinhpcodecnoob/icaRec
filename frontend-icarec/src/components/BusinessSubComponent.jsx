@@ -8,27 +8,41 @@ import { BsFillTelephoneOutboundFill } from "react-icons/bs";
 import { TfiWorld } from "react-icons/tfi";
 import Popover from './Formbussiness/Popover';
 
-const BusinessSubComponent = ({inputForm,showButton=true}) => {
-  
+const BusinessSubComponent = ({inputForm,showButton=true,hiddenRemove=''}) => {
+  const website = inputForm.name_web?inputForm.name_web:inputForm.website
+  const services = inputForm.list_service ? inputForm.list_service : inputForm.services
   return (
     <>
     {Object.keys(inputForm).length !== 0 ? (
     <div className="scrolbar w-full h-full bg-[#FFF8EE] p-3 lg:pt-10">
-      <h2 className="text-center mb-4 font-bold text-[2rem] text-[#F3BA1A]">{inputForm.name_business}</h2>
+      <h2 className="text-center mb-4 font-bold text-[2rem] text-[#F3BA1A]">{inputForm.name_business ? inputForm.name_business:inputForm.business_name}</h2>
       <div className="flex justify-center my-4">
         <button className="bg-[#100E80] text-white py-1 px-4 rounded w-2/3">
           Recomiendame
         </button>
       </div>
       <div className='lgx:hidden'>
-        <Map latProp={inputForm.location.lat} longProp={inputForm.location.long}/>
+        <Map 
+          latProp={
+                  inputForm.location?.lat ? 
+                    inputForm.location.lat 
+                      : 
+                    +inputForm.location_coordinates.latitude
+              } 
+          longProp={
+                  inputForm.location?.long ?
+                    inputForm.location.long
+                      :
+                    +inputForm.location_coordinates.longitude
+          }
+        />
       </div>
       <div className='sm:w-[100%] lg:hidden'>
-        <FileInput images={inputForm.images}/>
+        <FileInput images={inputForm.images} hiddenRemove={hiddenRemove}/>
       </div>
       <div className='my-2 flex items-center justify-center'>
         <p className='font-bold'>Ubicacion: </p>
-        <p className='ml-2'>{inputForm.geo_business}</p>
+        <p className='ml-2'>{inputForm.geo_business ? inputForm.geo_business:inputForm.business_location}</p>
       </div>
       <div className='flex justify-center items-center pb-2'>
         <Link className={`px-2 ${inputForm.facebook === "" ?'hidden':''}`} href={inputForm.facebook} target='_blank'>
@@ -40,7 +54,7 @@ const BusinessSubComponent = ({inputForm,showButton=true}) => {
         <a className={`px-2 ${inputForm.cellphone === "" ?'hidden':''}`} href={`tel:${inputForm.cellphone}`} target='_blank'>
           <BsFillTelephoneOutboundFill className='text-[2rem]'/>
         </a>
-        <Link className={`px-2 ${inputForm.name_web === "" ?'hidden':''}`} href={`${inputForm.name_web}`} target='_blank'>
+        <Link className={`px-2 ${website===undefined ?'hidden':''}`} href={`${inputForm.name_web}`} target='_blank'>
           <TfiWorld className='text-[2rem]'/>
         </Link>
         <Link className={`px-2`} href={''}>
@@ -56,7 +70,7 @@ const BusinessSubComponent = ({inputForm,showButton=true}) => {
           <p className="font-bold">Servicios:</p>
           <div className="col-span-1">
             <div className="w-full">
-              {inputForm.list_service.map((service, index) => (
+              {services.map((service, index) => (
                 <p key={index} className="text-center inline-block bg-blue-800 rounded-lg text-white py-1 px-2 m-1">{service}</p>
                 ))}
             </div>
@@ -64,7 +78,20 @@ const BusinessSubComponent = ({inputForm,showButton=true}) => {
         </div>
       </div>
       <div className='lg:hidden'>
-        <Map latProp={inputForm.location.lat} longProp={inputForm.location.long}/>
+      <Map 
+          latProp={
+                  inputForm.location?.lat ? 
+                    inputForm.location.lat 
+                      : 
+                    +inputForm.location_coordinates.latitude
+              } 
+          longProp={
+                  inputForm.location?.long ?
+                    inputForm.location.long
+                      :
+                    +inputForm.location_coordinates.longitude
+          }
+        />
       </div>
       <div className='flex items-center justify-center'>
         <button 

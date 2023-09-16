@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { BsChevronCompactLeft, BsChevronCompactRight} from 'react-icons/bs';
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { useDispatch } from "react-redux";
+import defaultImage from '../../../public/no_image.svg'
 // import imageDefault from '../../../public/defaultImage.jpg'
 
 export default function CarouselSingle({imageSlides,hidden}) {
@@ -71,13 +72,12 @@ export default function CarouselSingle({imageSlides,hidden}) {
         }
         setCurrentIndex(imagesChanges.length-2)
     }
-    console.log("Este es el indice de lsa imagenes",currentIndex);
     return (
         <div className='w-full px-4 sm:px-0 smartphone:px-0 sm:h-full relative group'>
             {
                 imagesChanges.length > 0 ? (
                     <Image
-                        src={imagesChanges[currentIndex]}
+                        src={imagesChanges[currentIndex]===undefined ? defaultImage: imagesChanges[currentIndex]}
                         alt={`imageSlide${currentIndex}`}
                         width={1000}
                         height={1000}
@@ -86,10 +86,10 @@ export default function CarouselSingle({imageSlides,hidden}) {
                     />
                 ) : null
             }
-            <button className="bg-gray-700 absolute top-2 left-7 rounded-3xl p-2"
+            <button className={`bg-gray-700 absolute top-2 left-7 rounded-3xl p-2 ${hidden}`}
                 onClick={() => removeImage(imagesChanges[currentIndex])}
             >
-                <RiDeleteBin6Fill className={`text-[2rem] text-red-500 ${hidden}`}/>
+                <RiDeleteBin6Fill className={`text-[2rem] text-red-500`}/>
             </button>
             {/* Left Arrow */}
             <button className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
