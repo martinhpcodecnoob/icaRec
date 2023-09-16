@@ -1,12 +1,18 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { getTokenExpirationTime } from '../../utils/utils'
 import { useSession } from 'next-auth/react'
+import { getTokenExpirationTime } from '../../utils/utils'
+import { regenerateAccessToken } from '../../utils/apiBackend'
 
 const TokenRenewal = () => {
-    const { data: session } = useSession()
-    const [intervalDuration, setIntervalDuration] = useState(10000)
+
+    const INTERVAL_IN_SECONDS = (10) * 1000
+    //El tiempo debe ser menor que la expiracion del token
+    const TIME_BEFORE_EXPIRATION_IN_MINUTES = (5) * 60
+
+    const { data: session, update } = useSession()
+    const [intervalDuration, setIntervalDuration] = useState(INTERVAL_IN_SECONDS)
     const [tokenExpiration, setTokenExpiration] = useState(0)
     const [isFirstRun, setIsFirstRun] = useState(true)
   
@@ -29,29 +35,28 @@ const TokenRenewal = () => {
       }
   
       const renewTokenIfNeeded = async () => {
-        console.log("Expiracion: ", tokenExpiration)
-        if (tokenExpiration <= 0 && !isFirstRun) {
-          // Realiza la lógica para renovar el token aquí y actualiza el token en la sesión
+        console.log("tokenExpiration: ", tokenExpiration)
+        if ( tokenExpiration <= TIME_BEFORE_EXPIRATION_IN_MINUTES && !isFirstRun ) {
           try {
-            // Llama al backend para obtener el nuevo token de acceso
-            /* const response = await renewToken() */
-            if (true) {
-              // Actualiza el token en la sesión de NextAuth
-              // Por ejemplo, session.jwt es el nuevo token de acceso
-              // session.jwt = response.nuevoToken
-              console.log("Token renovado exitosamente")
-              // Actualiza tokenExpiration después de la renovación
-              setTokenExpiration(prevExpiration => prevExpiration + intervalDuration / 1000)
+            const regenerateAccessTokenResponse = await regenerateAccessToken(session.user.token) 
+            if (regenerateAccessTokenResponse.status === 200) {
+                const newToken = regenerateAccessTokenResponse.data.accessToken
+                const newExpireTime = await getTokenExpirationTime(newToken)
+                if (newExpireTime > TIME_BEFORE_EXPIRATION_IN_MINUTES) {
+                    await update({...session, user: {...session?.user, token: newToken}})
+                    setTokenExpiration(newExpireTime)
+                    setIsFirstRun(false) 
+                  }
             } else {
               console.error("Error al renovar el token")
+              //cerrar session
             }
           } catch (error) {
             console.error("Error de red u otro error al renovar el token")
           }
         }
       }
-  
-      // Inicia el intervalo de verificación inicial
+
       const intervalId = setInterval(() => {
         checkTokenExpiration()
         renewTokenIfNeeded()
@@ -65,57 +70,3 @@ const TokenRenewal = () => {
   
   export default TokenRenewal
 
-/* const TokenRenewal = () => {
-    const { data: session } = useSession()
-    const [intervalDuration, setIntervalDuration] = useState(10000) 
-    const [tokenExpiration, setTokenExpiration] = useState(0)
-    const [isFirstRun, setIsFirstRun] = useState(true)
-  
-    useEffect(() => {
-      const checkTokenExpiration = async () => {
-        const accessToken = session?.user?.token
-  
-        if (accessToken) {
-          if (isFirstRun) {
-      
-            const expiresIn = await getTokenExpirationTime(accessToken)
-            console.log("First Expires In: ", expiresIn)
-            if (expiresIn>0) {
-                setTokenExpiration(prevExpiration => prevExpiration + expiresIn)
-                setIsFirstRun(false)
-            }
-          } else {
-
-            setTokenExpiration(prevExpiration => prevExpiration - intervalDuration / 1000)
-          }
-  
-
-          console.log("token Expiration:", tokenExpiration)
-          if (tokenExpiration>=0 &&!isFirstRun) {
-
-            try {
-
-              if (true) {
-
-                console.log("Token renovado exitosamente")
-              } else {
-                console.error("Error al renovar el token")
-              }
-            } catch (error) {
-              console.error("Error de red u otro error al renovar el token")
-            }
-
-          }
-        }
-      }
-
-      const intervalId = setInterval(checkTokenExpiration, intervalDuration)
-  
-      return () => clearInterval(intervalId)
-    }, [session, tokenExpiration, intervalDuration, isFirstRun])
-  
-    return null
-  }
-  
-  export default TokenRenewal
- */

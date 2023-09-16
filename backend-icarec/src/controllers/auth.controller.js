@@ -9,7 +9,7 @@ const { generateAuthToken, sendEmailWithResend } = require("../utils/utils")
 const { EmailPasswordRecoveryHTML } = require("../utils/templates")
 
 const {SECRET, REFRESH_SECRET} = process.env
-const ACCESS_TOKEN_EXPIRATION = '1h'
+const ACCESS_TOKEN_EXPIRATION = '15m'
 const REFRESH_TOKEN_EXPIRATION = '1w'
 
 async function generateAccessAndRefreshTokens(req, res){
@@ -40,6 +40,38 @@ async function generateAccessAndRefreshTokens(req, res){
   } catch (error) {
     console.error("Error en el generateToken:", error)
     res.status(500).json({ error: "Error al generar el token." })
+  }
+}
+
+async function renewAccessToken(req, res){
+  try {
+    const { accessToken } = req.body
+
+    const decodedAccessToken = jwt.verify(accessToken, SECRET)
+    if (!decodedAccessToken || !decodedAccessToken.sub) {
+      return res.status(401).json({ error: "Token de acceso inválido o expirado." })
+    }
+
+    const userId = decodedAccessToken.sub
+
+    const account = await Account.findOne({ userId })
+
+    if (!account || !account.refreshToken) {
+      return res.status(401).json({ error: "No se encontró una cuenta válida para el usuario." })
+    }
+
+    const decodedRefreshToken = jwt.verify(account.refreshToken, REFRESH_SECRET)
+
+    if (!decodedRefreshToken || decodedRefreshToken.sub !== userId) {
+      return res.status(401).json({ error: "Token de actualización inválido." })
+    }
+
+    const newAccessToken = jwt.sign({ userId }, SECRET, { expiresIn: ACCESS_TOKEN_EXPIRATION });
+
+    res.status(200).json({ accessToken: newAccessToken })
+  } catch (error) {
+    console.error("Error al renovar el token de acceso:", error)
+    res.status(500).json({ error: "Error al renovar el token de acceso." })
   }
 }
 
@@ -120,7 +152,7 @@ async function registerWithoutCredentials(req, res) {
 
 async function login(req, res) {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body
 
     const user = await User.findOne({ email })
 
@@ -292,6 +324,7 @@ module.exports = {
   registerWithoutCredentials,
   login,
   generateAccessAndRefreshTokens,
+  renewAccessToken,
   generateRecoveryToken,
   verifyRecoveryToken,
   verifyUserExistsWithoutCredentials,
