@@ -116,7 +116,7 @@ export default function Form() {
             return
         }
 
-        if (name === 'cellphone' && /^[0-9]+$/.test(value) && value.length <= 9) {
+        if (name === 'cellphone' && /^[0-9]+$/.test(value) && value.length <= 9 || value==="") {
             setInput((prevState) => ({
                 ...prevState,
                 [name]: value
