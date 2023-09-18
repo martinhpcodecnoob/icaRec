@@ -5,11 +5,11 @@ import { GoogleMap, Marker } from '@react-google-maps/api'
 import { useDispatch } from 'react-redux'
 import { saveLoaction } from '@/redux/Slices/slicePreview'
 
-const Map = ({latProp, longProp, view}) => {
+const Map = ({latProp, longProp, view, heightMap='10.77rem'}) => {
 
   const containerStyle = {
     width: '100%',
-    height: '10.77rem',
+    height: heightMap,
     borderRadius:'0.375rem'
   }
 
