@@ -1,4 +1,5 @@
 const Business = require("../models/Business")
+const mongoose = require('mongoose');
 
 const get_business = async(req,res) => {
     try {
@@ -200,6 +201,57 @@ const delete_business = async (req, res) => {
     }
   }
 
+  const get_id_business = async(req,res) => {
+    const {businessId} = req.params;
+    try {
+      const isValidObjectId = mongoose.Types.ObjectId.isValid(businessId);
+      if (!isValidObjectId) {
+        return res.status(404).json({ error: "ID de Negocio invalido" });
+      }
+      const businessesIdWithLikes = await Business.aggregate([
+        {
+          $match: { _id: new mongoose.Types.ObjectId(businessId) }
+        },
+        {
+          $lookup: {
+            from: "interactions",
+            localField: "_id",
+            foreignField: "business",
+            as: "interactions",
+          },
+        },
+        {
+          $addFields: {
+            totalLikes: {
+              $size: {
+                $filter: {
+                  input: "$interactions",
+                  as: "interaction",
+                  cond: { $eq: ["$$interaction.liked", true] }
+                }
+              }
+            }
+          }
+        },
+        {
+          $project: {
+            interactions: 0
+          }
+        }
+      ]);
+      if (businessesIdWithLikes.length === 0) {
+        return res.status(404).json({ error: "Negocio no encontrado" });
+      }
+  
+      return res.status(200).json({ business: businessesIdWithLikes[0] });
+    } catch (error) {
+      console.log("Error: ", error);
+    return res.status(500).json({
+      error: "Error al recuperar el",
+    });
+    }
+  }
+
 module.exports = {
     get_business,
     get_all_businesses,
@@ -207,4 +259,5 @@ module.exports = {
     get_all_business_services,
     delete_business,
     update_business,
+    get_id_business
 }
