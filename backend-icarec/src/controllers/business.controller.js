@@ -48,13 +48,12 @@ const get_all_businesses = async (req, res) => {
           interactions: 0
         }
       }
-    ]);
-    return res.status(200).json({ businesses: businessesWithLikes });
+    ])
+    return res.status(200).json({ businesses: businessesWithLikes })
   } catch (error) {
-    console.log("Error I: ", error)
     return res.status(500).json({
       error: "Error retrieving businesses",
-    });
+    })
   }
 }
 
@@ -199,6 +198,62 @@ const delete_business = async (req, res) => {
       return res.status(500).json({error: error.message})
     }
   }
+  const splitBusiness = async (req, res) =>{
+
+    try {
+      const splitValue = parseInt(req.query.split)
+      const pageValue = parseInt(req.query.page)
+  
+      if (isNaN(splitValue) || splitValue <= 0 || isNaN(pageValue) || pageValue <= 0) {
+        res.status(400).send('Los parámetros "split" y "page" deben ser números válidos y mayores que cero.')
+        return
+      }
+      const business = await Business.aggregate([
+        {
+          $lookup: {
+            from: "interactions",
+            localField: "_id",
+            foreignField: "business",
+            as: "interactions",
+          },
+        },
+        {
+          $addFields: {
+            totalLikes: {
+              $size: {
+                $filter: {
+                  input: "$interactions",
+                  as: "interaction",
+                  cond: { $eq: ["$$interaction.liked", true] }
+                }
+              }
+            }
+          }
+        },
+        {
+          $project: {
+            interactions: 0
+          }
+        }
+      ])
+    
+      const startIndex = (pageValue - 1) * splitValue
+      let endIndex = startIndex + splitValue
+      
+      if (endIndex > business.length) {
+        endIndex = business.length
+      }
+    
+      const splitedBusiness = business.slice(startIndex, endIndex)
+    
+      return res.status(200).json(splitedBusiness)
+    } catch (error) {
+      return res.status(500).json({
+        error: "Error al intentar dividir los negocios.",
+      })
+    }
+
+  }
 
 module.exports = {
     get_business,
@@ -207,4 +262,5 @@ module.exports = {
     get_all_business_services,
     delete_business,
     update_business,
+    splitBusiness
 }
