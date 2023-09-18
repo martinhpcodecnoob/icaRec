@@ -9,7 +9,7 @@ import { TfiWorld } from "react-icons/tfi";
 import Popover from './Formbussiness/Popover';
 import AboutBusiness from './Formbussiness/AboutBusiness';
 
-const BusinessSubComponent = ({inputForm,showButton=true,hiddenRemove='',aboutBusinessShow=false}) => {
+const BusinessSubComponent = ({inputForm,showButton=true,showButtonPopover=false,hiddenRemove='',aboutBusinessShow=false, heightMap='10.77rem'}) => {
   const website = inputForm.name_web?inputForm.name_web:inputForm.website
   const services = inputForm.list_service ? inputForm.list_service : inputForm.services
   return (
@@ -23,7 +23,7 @@ const BusinessSubComponent = ({inputForm,showButton=true,hiddenRemove='',aboutBu
         </button>
       </div>
       <div className='lgx:hidden'>
-        <Map 
+        <Map heightMap={heightMap}
           latProp={
                   inputForm.location?.lat ? 
                     inputForm.location.lat 
@@ -62,7 +62,7 @@ const BusinessSubComponent = ({inputForm,showButton=true,hiddenRemove='',aboutBu
           <FaShareAlt className='text-[2rem]'/>
         </Link>
       </div>
-      <div className={`${aboutBusinessShow?'':'hidden'}`}>
+      <div className={`${aboutBusinessShow?'':'hidden'} lg:hidden`}>
         <AboutBusiness description={inputForm.description}/>
       </div>
       <div className='flex-col items-center p-4 sm:max-h-[10rem] smartphone:max-h-[12rem] overflow-auto scrolbar'>
@@ -104,7 +104,7 @@ const BusinessSubComponent = ({inputForm,showButton=true,hiddenRemove='',aboutBu
           Ver mas
         </button>
         <Popover 
-          viewPopover={showButton ? false:true}
+          viewPopover={showButtonPopover ? true:false}
           titleButton={'Ver mas'}
           title={'Boton te redigira a su web personalizada despues de crear el Negocio (Descripcion)'}
           description={inputForm.description}
