@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken')
 import * as Yup from 'yup'
 
 export const validationSchema = Yup.object().shape({
@@ -24,6 +25,8 @@ export const validationSchema = Yup.object().shape({
     .positive('El celular debe ser positivo')
     .typeError('El celular es obligatorio')
     .required('El celular es obligatorio'),
+  phoneCode: Yup.number()
+    .required('El codigo de pais es requerido'),
   email: Yup.string()
     .email('Ingresa un correo electrónico válido').required('El correo electrónico es obligatorio'),
   password: Yup.string()
@@ -90,5 +93,24 @@ export const logPageView = (pageName) => {
 export const logEvent = (action) => {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', action)
+  }
+}
+
+export const getTokenExpirationTime = async(token) => {
+  try {
+    const decodedToken = jwt.decode(token)
+
+    if (decodedToken && decodedToken.exp) {
+      const expirationTimestamp = decodedToken.exp
+      const currentTime = Math.floor(Date.now() / 1000)
+      const timeLeftInSeconds = expirationTimestamp - currentTime
+
+      return timeLeftInSeconds;
+    } else {
+      return null
+    }
+  } catch (error) {
+    console.error('Error al decodificar el token:', error)
+    return null
   }
 }

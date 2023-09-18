@@ -1,6 +1,5 @@
 const express = require('express')
 const UC = require('../controllers/user.controller')
-const { verifyTokenExpiration } = require('../middlewares/middleware')
 
 const userRouter = express.Router()
 

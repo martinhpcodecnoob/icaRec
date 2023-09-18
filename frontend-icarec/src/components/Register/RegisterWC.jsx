@@ -40,25 +40,25 @@ const RegisterWC = () => {
     const {sex, documentNumber, phoneNumber, phoneCode} = data
     const fullPhoneNumber = `+${phoneCode} ${phoneNumber}`
     try {
-        const updateUserResponse = await updateUser(session.user.userId, fullPhoneNumber, documentNumber, sex)
-        if(updateUserResponse.status === 200){
-          await updateAccount( session.user.userId, session.user.newAccount, true)
-          await update({...session, user: {...session?.user, isRegistered: true}})
+      const updateUserResponse = await updateUser(session.user.userId, fullPhoneNumber, documentNumber, sex)
+      if(updateUserResponse.status === 200){
+        await updateAccount( session.user.userId, session.user.newAccount, true)
+        await update({...session, user: {...session?.user, isRegistered: true}})
+      
+          toast.success('Registro exitoso, redirigiéndote a la página principal', {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 3000,
+            onClose: () => { router.push("/") }
+          })  
         
-            toast.success('Registro exitoso, redirigiéndote a la página principal', {
-              position: toast.POSITION.TOP_CENTER,
-              autoClose: 3000,
-              onClose: () => { router.push("/") }
-            })  
-          
-        }else{
-          toast.error('Ocurrio un error, intentelo más tarde', {
-              position: toast.POSITION.TOP_CENTER,
-              autoClose: 3000,
-              onClose: () => { router.push("/") } 
-          })
-          throw new Error(updateUserResponse.error)
-        }
+      }else{
+        toast.error('Ocurrio un error, intentelo más tarde', {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 3000,
+            onClose: () => { router.push("/") } 
+        })
+        throw new Error(updateUserResponse.error)
+      }
     } catch (error) {
       console.error("Error en la solicitud updateUserResponse:", error)
       //Podria hacer que la pantallad error reciba un string de props para poder mostrar un mejor manejo de errores

@@ -149,3 +149,28 @@ export const checkIfTokenIsValid = async (token) => {
       }
     }
   }
+
+  export const regenerateAccessToken = async (accessToken) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/renewAccessToken`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ accessToken }),
+      })
+  
+      const data = await response.json()
+  
+      return {
+        status: response.status, 
+        data: data,
+      }
+    } catch (error) {
+      console.error("Error del servidor al regenerar el token", error)
+      return {
+        status: 500, 
+        error: "Error del servidor al regenerar el token",
+      }
+    }
+  }

@@ -8,18 +8,73 @@ const Account = require('../models/Account')
 const { generateAuthToken, sendEmailWithResend } = require("../utils/utils")
 const { EmailPasswordRecoveryHTML } = require("../utils/templates")
 
-async function generateToken(req, res){
+const {SECRET, REFRESH_SECRET} = process.env
+const ACCESS_TOKEN_EXPIRATION = '5m'
+const REFRESH_TOKEN_EXPIRATION = '1w'
+
+async function generateAccessAndRefreshTokens(req, res){
   try {
     const user = req.user
-    const result = generateAuthToken(user._id.toString())
-    if (result.error) {
-      return res.status(500).json({ error: result.error })
+    const userId = user._id.toString()
+    const generateAccessToken = generateAuthToken(userId, ACCESS_TOKEN_EXPIRATION, SECRET)
+    const generateRefreshToken = generateAuthToken(userId, REFRESH_TOKEN_EXPIRATION, REFRESH_SECRET)
+
+    if (generateAccessToken.error || generateRefreshToken.error) {
+      return res.status(500).json({ error: "Error al generar el token." })
     }
-    const token = result.token
-    res.status(200).json({ message: "Token Creado", token })
+
+    const accessToken = generateAccessToken.token
+    const refreshToken = generateRefreshToken.token
+
+    const updatedAccount = await Account.findOneAndUpdate(
+      { userId: userId },
+      { refreshToken: refreshToken },
+      { new: true } 
+    )
+
+    if (!updatedAccount) {
+      return res.status(500).json({ error: "No se pudo actualizar el token de actualizacion de la cuenta." })
+    }
+
+    res.status(200).json({ message: "Tokens creados", accessToken })
   } catch (error) {
-    console.error("Error en el generate Token:", error)
+    console.error("Error en el generateToken:", error)
     res.status(500).json({ error: "Error al generar el token." })
+  }
+}
+
+async function renewAccessToken(req, res){
+  try {
+    const { accessToken } = req.body
+
+    const decodedAccessToken = jwt.verify(accessToken, SECRET)
+    if (!decodedAccessToken || !decodedAccessToken.sub) {
+      console.log("Token de acceso inválido o expirado.")
+      return res.status(401).json({ error: "Token de acceso inválido o expirado." })
+    }
+
+    const userId = decodedAccessToken.sub
+
+    const account = await Account.findOne({ userId })
+
+    if (!account || !account.refreshToken) {
+      console.log("No se encontró una cuenta válida para el usuario.")
+      return res.status(401).json({ error: "No se encontró una cuenta válida para el usuario." })
+    }
+
+    const decodedRefreshToken = jwt.verify(account.refreshToken, REFRESH_SECRET)
+
+    if (!decodedRefreshToken || decodedRefreshToken.sub !== userId) {
+      console.log("Token de actualización inválido.")
+      return res.status(401).json({ error: "Token de actualización inválido." })
+    }
+
+    const newAccessToken = jwt.sign({ sub: userId }, SECRET, { expiresIn: ACCESS_TOKEN_EXPIRATION });
+
+    res.status(200).json({ accessToken: newAccessToken })
+  } catch (error) {
+    console.error("Error al renovar el token de acceso:", error)
+    res.status(500).json({ error: "Error al renovar el token de acceso." })
   }
 }
 
@@ -101,50 +156,28 @@ async function registerWithoutCredentials(req, res) {
 async function login(req, res) {
   try {
     const { email, password } = req.body
-    /* console.log("valores de email y password: ", email, password)
 
-    const credentialsAccounts = await Account.find({ provider: 'credentials' })
+    const user = await User.findOne({ email })
 
-    const userAccounts = await Promise.all(credentialsAccounts.map(async (account) => {
-      const user = await User.findById(account.userId)
-      return { user, account }
-    }))
-
-    const matchedAccount = userAccounts.find(({ user }) => user.email === email)
-    if (!matchedAccount) {
+    if (!user) {
       return res.status(404).json({ error: "Usuario no encontrado." })
     }
 
-    const passwordMatch = await bcrypt.compare(password, matchedAccount.account.password);
+    const account = await Account.findOne({ userId: user._id, provider: 'credentials' })
+
+    if (!account) {
+      return res.status(404).json({ error: "La cuenta del usuario no fue encontrada." })
+    }
+
+    const passwordMatch = bcrypt.compareSync(password, account.password)
+
     if (!passwordMatch) {
       return res.status(401).json({ error: "Credenciales inválidas." })
     }
 
-    res.status(200).json({ message: "Inicio de sesión exitoso.", user: matchedAccount.user }) */
-    const matchingAccounts = await Account.find({ provider: 'credentials' })
-
-    if (matchingAccounts.length === 0) {
-      return res.status(404).json({ error: "Usuario no encontrado." })
-    }
-
-    // Buscar el usuario correspondiente a cada cuenta de credenciales
-    const userAccounts = await Promise.all(matchingAccounts.map(async (account) => {
-      const user = await User.findById(account.userId)
-      return { user, account }
-    }))
-
-    // Verificar si alguna cuenta coincide con la contraseña proporcionada
-    const matchedAccount = userAccounts.find(({ account }) => {
-      return bcrypt.compareSync(password, account.password)
-    })
-
-    if (!matchedAccount) {
-      return res.status(401).json({ error: "Credenciales inválidas." })
-    }
-
-    res.status(200).json({ message: "Inicio de sesión exitoso.", user: matchedAccount.user })
+    res.status(200).json({ message: "Inicio de sesión exitoso.", user })
   } catch (error) {
-    console.error("Error en el inicio de sesión:", error);
+    console.error("Error en el inicio de sesión:", error)
     res.status(500).json({ error: "Error en el inicio de sesión." })
   }
 }
@@ -293,7 +326,8 @@ module.exports = {
   register,
   registerWithoutCredentials,
   login,
-  generateToken,
+  generateAccessAndRefreshTokens,
+  renewAccessToken,
   generateRecoveryToken,
   verifyRecoveryToken,
   verifyUserExistsWithoutCredentials,
