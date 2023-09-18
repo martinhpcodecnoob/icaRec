@@ -13,7 +13,7 @@ export default function ModalHome({activated=false, closeVisualModal,images,inpu
                 tabIndex="-1" 
                 className={`flex items-center justify-center fixed top-0 left-0 right-0 z-50 ${activated ? "":"hidden"} w-full p-2 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%)] max-h-full`}
             >
-                <div className="relative w-full max-w-7xl max-h-full smartphone:max-h-[70rem] smartphone:mb-4 mt-[1rem] smartphone:mt-[6rem]">
+                <div className="relative w-full max-w-7xl max-h-full smartphone:h-full smartphone:mb-4 mt-[1rem] smartphone:mt-[5rem]">
                     {/* <!-- Modal content --> */}
                     <div className="relative bg-[#FAE3A3] rounded-lg shadow">
                         {/* <!-- Modal header --> */}

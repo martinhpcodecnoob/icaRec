@@ -7,8 +7,9 @@ import { FaFacebook,FaShareAlt } from "react-icons/fa";
 import { BsFillTelephoneOutboundFill } from "react-icons/bs";
 import { TfiWorld } from "react-icons/tfi";
 import Popover from './Formbussiness/Popover';
+import AboutBusiness from './Formbussiness/AboutBusiness';
 
-const BusinessSubComponent = ({inputForm,showButton=true,hiddenRemove=''}) => {
+const BusinessSubComponent = ({inputForm,showButton=true,hiddenRemove='',aboutBusinessShow=false}) => {
   const website = inputForm.name_web?inputForm.name_web:inputForm.website
   const services = inputForm.list_service ? inputForm.list_service : inputForm.services
   return (
@@ -60,6 +61,9 @@ const BusinessSubComponent = ({inputForm,showButton=true,hiddenRemove=''}) => {
         <Link className={`px-2`} href={''}>
           <FaShareAlt className='text-[2rem]'/>
         </Link>
+      </div>
+      <div className={`${aboutBusinessShow?'':'hidden'}`}>
+        <AboutBusiness description={inputForm.description}/>
       </div>
       <div className='flex-col items-center p-4 sm:max-h-[10rem] smartphone:max-h-[12rem] overflow-auto scrolbar'>
         <div className="grid grid-cols-2">
