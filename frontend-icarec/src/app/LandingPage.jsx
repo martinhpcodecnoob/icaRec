@@ -25,6 +25,7 @@ import RegisterScreen from '@/components/Screens/RegisterScreen'
 import 'react-toastify/dist/ReactToastify.css'
 import Popbuttons from '@/components/Modals/Popbuttons'
 import { extractAllBusiness, getServices } from '@/redux/Slices/sliceLanding'
+import ExtractUsersButton from '@/components/ExtractUsersButton'
 
 const LandingPage = ({dataBusiness}) => {
     useEffect(() => {
@@ -99,10 +100,10 @@ const LandingPage = ({dataBusiness}) => {
         return <LoadingScreen />
     }
 
-        return (
-        <div>
-            <ToastContainer/>
-            <div className='flex justify-between items-center p-4'>
+    return (
+    <div>
+        <ToastContainer/>
+        <div className='flex justify-between items-center p-4'>
             <Image
                 src={detodologo2}
                 alt='logo'
@@ -113,43 +114,47 @@ const LandingPage = ({dataBusiness}) => {
             </div>
             <div className='flex justify-center items-center'>
                 {!session && (
-                <Button color="failure" onClick={openLogin}>
-                    Login
-                </Button>
+                    <Button color="failure" onClick={openLogin}>
+                        Login
+                    </Button>
                 )}
                 {session && (
-                <div className='flex space-x-6 px-4 items-center'>
-                <div>
-                    <p>Bienvenido! </p>
-                    <p>{session.user.name}</p>
-                </div>
-                {session.user.providerType? (
-                    <>
-                    <Popbuttons viewPopover={true} creeateBusinness={handleCreateBusiness} closeSession={handleSignOut}/>
-                    </>
-                ) : null
-                }
-                </div>
+                    <div className='flex space-x-6 px-4 items-center'>
+                    <div>
+                        <p>Bienvenido! </p>
+                        <p>{session.user.name}</p>
+                    </div>
+                    {session.user.providerType? (
+                        <>
+                        <Popbuttons viewPopover={true} creeateBusinness={handleCreateBusiness} closeSession={handleSignOut}/>
+                        </>
+                    ) : null
+                    }
+                    {session.user?.role.includes('admin') ? (
+                        <ExtractUsersButton userId={session?.user?.userId} accessToken={session?.user?.token}/>
+                    ) : null
+                    } 
+                    </div>
                 )}
                 {isLoginOpen && <Login1 onClose={handleCloseLogin} />}
             </div>
-            </div>
-    <div>
+        </div>
+        <div>
             <DefaultCarousels/>
             <AdBanner
-            data-ad-slot="2597718181"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
+                data-ad-slot="2597718181"
+                data-ad-format="auto"
+                data-full-width-responsive="true"
             />
             <div className='flex justify-center items-center text-2xl pt-2'>¿En que te puedo ayudar?</div>
             <Searchbar/>
             <Cardsup/>
             <div id='cardDown'>
-            <Cardsdown bussinessAll={businessAll}/>
+                <Cardsdown bussinessAll={businessAll}/>
             </div>
         </div>
         <PopupContainer />
-        </div>
+    </div>
     )
 }
 

@@ -33,7 +33,6 @@ const handler = NextAuth({
           password: { label: "Password", type: "password", placeholder: "Contraseña ..." }
         },
         async authorize(credentials, req) {
-          console.log("El valor de credentials: ", credentials)
           const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/login`, {
             method: 'POST',
             headers: {
@@ -58,7 +57,7 @@ const handler = NextAuth({
     },
     session: {
       strategy: "jwt",
-      maxAge: 900,
+      maxAge: 1200,
     },
     callbacks: {
       async signIn({ user, account, credentials}) {
@@ -66,14 +65,7 @@ const handler = NextAuth({
        if(!user){
         return false
        }
-        /* let currentUserEmail = null
-        let currentAccountProvider = null
-        if(user){
-          currentUserEmail = user.email
-        }
-        if(account){
-          currentAccountProvider = account.provider
-        } */
+
         if(user && account){
           const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/verifyUserExistsWithoutCredentials?email=${user.email}&providerType=${account.provider}`, {
             method: 'GET',
@@ -88,36 +80,45 @@ const handler = NextAuth({
             if (res.status === 200) { 
               account.newAccount = false
               account.isRegistered = data.isRegistered
+              user.role = data.role
             }
-            //Definir mejor que pasaria si la res no es true
+
             return true
           }
 
           if(!data.found){
             account.newAccount = true
             account.isRegistered = false
+            user.role = ['user']
+
             return true
           } else {
             account.newAccount = data.newAccount
             account.isRegistered = data.isRegistered
+            user.role = data.role
+            
             return true
           }
         }
       },
        async jwt({ token, account, user, trigger, session }) {
         if(trigger === 'update'){
-          console.log("datos de s:",session)
-          console.log("datos de t:",token)
           if(session.user.newToken){
-            console.log("Dentro del new token")
             token.userToken = session.user.newToken
           }
           return {...token, ...session.user}
         }
+
+        if(user){
+          console.log("Valor del user: ", user)
+          token.role = user.role  
+        }
+
         if (account) {
           token.providerType = account.provider
           token.newAccount = account.newAccount
-          token.isRegistered = account.isRegistered      
+          token.isRegistered = account.isRegistered    
+          
           if (account.type === 'credentials') {
             if(user && user?._id){
               token.userId = user._id
@@ -151,6 +152,7 @@ const handler = NextAuth({
         session.user.providerType = token.providerType 
         session.user.newAccount = token.newAccount 
         session.user.isRegistered = token.isRegistered
+        session.user.role = token.role
         session.user.token = token.userToken
         session.user.userId = token.userId
         

@@ -3,7 +3,7 @@ import CarouselSingle from "../Carouseltools/CarouselSingle";
 
 export default function FileInput({images=[], hiddenRemove=''}) {
   let arrayimages = []
-  console.log("Desde file input imagenes: ",arrayimages);
+ /*  console.log("Desde file input imagenes: ",arrayimages); */
   if (images.length > 0) {
     for (let i = 0; i < images.length; i++) {
       if (images[i].url_cloudinary === "") {

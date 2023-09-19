@@ -9,7 +9,7 @@ const { generateAuthToken, sendEmailWithResend } = require("../utils/utils")
 const { EmailPasswordRecoveryHTML } = require("../utils/templates")
 
 const {SECRET, REFRESH_SECRET} = process.env
-const ACCESS_TOKEN_EXPIRATION = '5m'
+const ACCESS_TOKEN_EXPIRATION = '15m'
 const REFRESH_TOKEN_EXPIRATION = '1w'
 
 async function generateAccessAndRefreshTokens(req, res){
@@ -279,8 +279,8 @@ async function verifyUserExistsWithoutCredentials(req, res) {
     }
 
     const userAccount = matchingUsersAccounts[0]._doc
-    //cuidadop
-    const responseObj = { found: true, userId: userAccount.userId }
+    console.log("usersWithEmail:", usersWithEmail)
+    const responseObj = { found: true, userId: userAccount.userId, role: usersWithEmail[0].role[0] }
 
     if ('newAccount' in userAccount) {
       responseObj.newAccount = userAccount.newAccount

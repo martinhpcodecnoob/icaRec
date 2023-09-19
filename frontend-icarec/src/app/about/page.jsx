@@ -1,16 +1,20 @@
 'use client'
 
 import React from 'react'
-import RegisterScreen from '@/components/Screens/RegisterScreen'
 import AboutBusiness from '@/components/Formbussiness/AboutBusiness'
+import ExtractUsersButton from '@/components/ExtractUsersButton'
+import { useSession } from 'next-auth/react'
 
 const IndexPage = () => {
 
+  {/* <div className='w-[20rem]'>
+    <AboutBusiness/>
+  </div> */}
+
+  const { data: session, status } = useSession()  
+
   return (
-    // <RegisterScreen />
-    <div className='w-[20rem]'>
-      <AboutBusiness/>
-    </div>
+    <ExtractUsersButton userId={session?.user?.userId} accessToken={session?.user?.token}/>
   )
 }
 

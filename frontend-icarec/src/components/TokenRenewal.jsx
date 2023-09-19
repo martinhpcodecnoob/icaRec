@@ -7,7 +7,7 @@ import { regenerateAccessToken } from '../../utils/apiBackend'
 
 const TokenRenewal = () => {
 
-    const INTERVAL_IN_SECONDS = (5) * 1000
+    const INTERVAL_IN_SECONDS = (10) * 1000
     //El tiempo debe ser menor que la expiracion del token
     const TIME_BEFORE_EXPIRATION_IN_MINUTES = (1) * 60
 
