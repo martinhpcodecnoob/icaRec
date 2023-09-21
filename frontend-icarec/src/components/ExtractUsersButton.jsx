@@ -2,10 +2,10 @@ import React, {useState} from 'react'
 import { extractUsers } from '../../utils/apiBackend'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-/* import ReactExport from 'react-export-excel'
+/*  import ReactExport from 'react-export-excel'
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
-const ExcelColumn = ReactExport.ExcelFile.ExcelColumn; */
+const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;  */
 
 const ExtractUsersButton = ({userId, accessToken}) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);

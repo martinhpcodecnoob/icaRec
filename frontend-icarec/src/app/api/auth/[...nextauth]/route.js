@@ -110,7 +110,6 @@ const handler = NextAuth({
         }
 
         if(user){
-          console.log("Valor del user: ", user)
           token.role = user.role  
         }
 

@@ -13,6 +13,7 @@ import DocumentSection from './DocumentSection'
 import PhoneSection from './PhoneSection'
 import RegistrationButton from './RegistrationButton'
 import ErrorScreen from '../ErrorScreen'
+import DeleteAccountButton from './DeleteAccountButton'
 
 import { validationSchemaWithoutCredentials } from '../../../utils/utils'
 import { updateAccount, updateUser } from '../../../utils/apiBackend'
@@ -47,14 +48,14 @@ const RegisterWC = () => {
       
           toast.success('Registro exitoso, redirigiéndote a la página principal', {
             position: toast.POSITION.TOP_CENTER,
-            autoClose: 3000,
+            autoClose: 2000,
             onClose: () => { router.push("/") }
           })  
         
       }else{
         toast.error('Ocurrio un error, intentelo más tarde', {
             position: toast.POSITION.TOP_CENTER,
-            autoClose: 3000,
+            autoClose: 2000,
             onClose: () => { router.push("/") } 
         })
         throw new Error(updateUserResponse.error)
@@ -71,6 +72,7 @@ const RegisterWC = () => {
     <div className='flex flex-col justify-center items-center h-screen'>
       <ToastContainer/>
       <form className='flex flex-col justify-center items-center sm:w-1/2 md:w-1/4' onSubmit={handleSubmit(onSubmit)}>
+        <DeleteAccountButton userId={session?.user?.userId} accessToken={session?.user?.token}/>
         <RegistrationInfo title={"Ya casi terminamos"}/>
         <DocumentSection control={control} errors={errors} setValue={setValue} getValues={getValues} />
         <PhoneSection control={control} errors={errors} setValue={setValue} getValues={getValues}/>

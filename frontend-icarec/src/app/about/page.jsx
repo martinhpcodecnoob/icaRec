@@ -3,7 +3,7 @@
 import React from 'react'
 import AboutBusiness from '@/components/Formbussiness/AboutBusiness'
 import ExtractUsersButton from '@/components/ExtractUsersButton'
-import { useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 
 const IndexPage = () => {
 
@@ -14,7 +14,13 @@ const IndexPage = () => {
   const { data: session, status } = useSession()  
 
   return (
-    <ExtractUsersButton userId={session?.user?.userId} accessToken={session?.user?.token}/>
+    <div>
+      <button onClick={() => {
+        signOut()
+      }}>
+        SignOut
+      </button>
+    </div>
   )
 }
 

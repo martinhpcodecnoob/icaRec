@@ -4,9 +4,10 @@ const { ObjectId } = require('mongodb')
 
 const User = require('../models/User')
 const Account = require('../models/Account')
+const Business = require("../models/Business");
 
 const { generateAuthToken, sendEmailWithResend } = require("../utils/utils")
-const { EmailPasswordRecoveryHTML } = require("../utils/templates")
+const { EmailPasswordRecoveryHTML } = require("../utils/templates");
 
 const {SECRET, REFRESH_SECRET} = process.env
 const ACCESS_TOKEN_EXPIRATION = '15m'
@@ -322,6 +323,39 @@ async function changePassword(req, res) {
   }
 }
 
+async function deleteAccountAndUser(req, res) {
+  try {
+    const currentUser = req.user
+    const userIdParam = req.params.userId
+
+    if (currentUser._id.toString() !== userIdParam) {
+      return res.status(403).json({ error: "No tienes permiso para borrar los datos de otro usuario." })
+    }
+
+    await Business.deleteMany({ owner: userIdParam })
+
+    const deletedUser = await User.findByIdAndDelete(userIdParam)
+
+    if (!deletedUser) {
+      return res.status(404).json({ error: "Usuario no encontrado." })
+    }
+
+    const deletedUserId = deletedUser._id.toString()
+
+    const deletedAccount = await Account.findOneAndDelete({ userId: deletedUserId })
+
+    if (!deletedAccount) {
+      return res.status(404).json({ error: "Cuenta no encontrada." })
+    }
+
+    res.status(200).json({ message: "Usuario y cuenta eliminados correctamente." })
+  } catch (error) {
+    console.error("Error al eliminar usuario y cuenta:", error)
+    res.status(500).json({ error: "Error al eliminar usuario y cuenta." })
+  }
+}
+
+
 module.exports = {
   register,
   registerWithoutCredentials,
@@ -332,4 +366,5 @@ module.exports = {
   verifyRecoveryToken,
   verifyUserExistsWithoutCredentials,
   changePassword,
+  deleteAccountAndUser,
 }
