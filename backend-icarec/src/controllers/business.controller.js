@@ -199,8 +199,7 @@ const delete_business = async (req, res) => {
       return res.status(500).json({error: error.message})
     }
   }
-  const splitBusiness = async (req, res) =>{
-
+  const splitBusiness = async (req, res) => {
     try {
       const splitValue = parseInt(req.query.split)
       const pageValue = parseInt(req.query.page)
@@ -209,7 +208,10 @@ const delete_business = async (req, res) => {
         res.status(400).send('Los parámetros "split" y "page" deben ser números válidos y mayores que cero.')
         return
       }
-      const business = await Business.aggregate([
+  
+      const skipValue = (pageValue - 1) * splitValue
+  
+      const pipeline = [
         {
           $lookup: {
             from: "interactions",
@@ -225,43 +227,50 @@ const delete_business = async (req, res) => {
                 $filter: {
                   input: "$interactions",
                   as: "interaction",
-                  cond: { $eq: ["$$interaction.liked", true] }
-                }
-              }
-            }
-          }
+                  cond: { $eq: ["$$interaction.liked", true] },
+                },
+              },
+            },
+          },
         },
         {
           $project: {
-            interactions: 0
-          }
-        }
-      ])
-    
-      const startIndex = (pageValue - 1) * splitValue
-      let endIndex = startIndex + splitValue
-      
-      if (endIndex > business.length) {
-        endIndex = business.length
-      }
-    
-      const splitedBusiness = business.slice(startIndex, endIndex)
-    
-      return res.status(200).json(splitedBusiness)
+            interactions: 0,
+          },
+        },
+        {
+          $skip: skipValue, 
+        },
+        {
+          $limit: splitValue, 
+        },
+      ]
+  
+      const business = await Business.aggregate(pipeline)
+  
+      const totalResults = await Business.countDocuments()
+  
+      const totalPages = Math.ceil(totalResults / splitValue)
+  
+      return res.status(200).json({
+        page: pageValue,
+        result: business,
+        total_pages: totalPages,
+        total_results: totalResults,
+      })
     } catch (error) {
       return res.status(500).json({
         error: "Error al intentar dividir los negocios.",
       })
     }
-
   }
 
   const get_id_business = async(req,res) => {
     const {businessId} = req.params;
     try {
-      const isValidObjectId = mongoose.Types.ObjectId.isValid(businessId);
+      const isValidObjectId = mongoose.Types.ObjectId.isValid(businessId)
       if (!isValidObjectId) {
-        return res.status(404).json({ error: "ID de Negocio invalido" });
+        return res.status(404).json({ error: "ID de Negocio invalido" })
       }
       const businessesIdWithLikes = await Business.aggregate([
         {
@@ -295,15 +304,15 @@ const delete_business = async (req, res) => {
         }
       ]);
       if (businessesIdWithLikes.length === 0) {
-        return res.status(404).json({ error: "Negocio no encontrado" });
+        return res.status(404).json({ error: "Negocio no encontrado" })
       }
   
-      return res.status(200).json({ business: businessesIdWithLikes[0] });
+      return res.status(200).json({ business: businessesIdWithLikes[0] })
     } catch (error) {
-      console.log("Error: ", error);
+      console.log("Error: ", error)
     return res.status(500).json({
       error: "Error al recuperar el",
-    });
+    })
     }
   }
 

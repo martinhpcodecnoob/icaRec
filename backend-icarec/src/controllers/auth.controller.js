@@ -74,7 +74,6 @@ async function renewAccessToken(req, res){
 
     res.status(200).json({ accessToken: newAccessToken })
   } catch (error) {
-    console.error("Error al renovar el token de acceso:", error)
     res.status(500).json({ error: "Error al renovar el token de acceso." })
   }
 }
@@ -328,10 +327,10 @@ async function deleteAccountAndUser(req, res) {
     const currentUser = req.user
     const userIdParam = req.params.userId
 
-    if (currentUser._id.toString() !== userIdParam) {
+   /*  if (currentUser._id.toString() !== userIdParam) {
       return res.status(403).json({ error: "No tienes permiso para borrar los datos de otro usuario." })
     }
-
+ */
     await Business.deleteMany({ owner: userIdParam })
 
     const deletedUser = await User.findByIdAndDelete(userIdParam)
