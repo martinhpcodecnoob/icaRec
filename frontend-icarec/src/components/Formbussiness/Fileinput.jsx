@@ -1,9 +1,8 @@
 import React from "react";
 import CarouselSingle from "../Carouseltools/CarouselSingle";
 
-export default function FileInput({images=[], hiddenRemove=''}) {
+export default function FileInput({images=[], hiddenRemove='',visibleLiked,dataLiked}) {
   let arrayimages = []
-  console.log("Desde file input imagenes: ",arrayimages);
   if (images.length > 0) {
     for (let i = 0; i < images.length; i++) {
       if (images[i].url_cloudinary === "") {
@@ -16,7 +15,7 @@ export default function FileInput({images=[], hiddenRemove=''}) {
   if (arrayimages.length > 0) {
     return(
       <>
-        <CarouselSingle imageSlides={arrayimages} imagesPublicId={images} hidden={hiddenRemove}/>
+        <CarouselSingle imageSlides={arrayimages} imagesPublicId={images} hidden={hiddenRemove} visibleLiked={visibleLiked} dataLiked={dataLiked}/>
       </>
     )
   }

@@ -6,5 +6,6 @@ const interactionRouter = express.Router()
 
 interactionRouter.post("/createInteraction/:userId", checkUserExistence, checkBusinessExistence, checkExistingInteraction, IC.create_interaction)
 interactionRouter.put("/updateInteraction", IC.update_interaction)
+interactionRouter.get("/verifieldInteraction/:userId", checkUserExistence, checkBusinessExistence, checkExistingInteraction)
 
 module.exports= interactionRouter
