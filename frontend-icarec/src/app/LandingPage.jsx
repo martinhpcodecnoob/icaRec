@@ -21,7 +21,7 @@ import { openExternalLogin } from '@/redux/Slices/popupSlice'
 import PopupContainer from '@/components/Login/PopupContainer'
 import { ToastContainer, toast } from 'react-toastify'
 import RegisterScreen from '@/components/Screens/RegisterScreen'
-
+import { useRef } from 'react'
 import 'react-toastify/dist/ReactToastify.css'
 import Popbuttons from '@/components/Modals/Popbuttons'
 import { extractAllBusiness, getServices } from '@/redux/Slices/sliceLanding'

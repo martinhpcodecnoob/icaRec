@@ -1,25 +1,20 @@
 'use client'
 
 import React from 'react'
+import RegisterScreen from '@/components/Screens/RegisterScreen'
 import AboutBusiness from '@/components/Formbussiness/AboutBusiness'
-import ExtractUsersButton from '@/components/ExtractUsersButton'
-import { useSession, signOut } from 'next-auth/react'
+import ButtonRecomend from '@/components/Modals/ButtonRecomend'
+import { useSession } from "next-auth/react"
+import { useEffect } from 'react'
 
 const IndexPage = () => {
-
-  {/* <div className='w-[20rem]'>
-    <AboutBusiness/>
-  </div> */}
-
-  const { data: session, status } = useSession()  
-
+  const params = '6504bb8e30fc45678afe157d'
   return (
-    <div>
-      <button onClick={() => {
-        signOut()
-      }}>
-        SignOut
-      </button>
+    // <RegisterScreen />
+    <div className=''>
+      paginas de pruebas
+      {/* <AboutBusiness/> */}
+      <ButtonRecomend paramsIdBusiness={params}/>
     </div>
   )
 }
