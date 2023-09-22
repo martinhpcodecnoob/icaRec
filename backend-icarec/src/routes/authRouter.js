@@ -1,6 +1,6 @@
 const express = require('express')
 const authController = require('../controllers/auth.controller.js')
-const { checkUserExistence } = require('../middlewares/middleware.js')
+const { checkUserExistence, authenticateAndAuthorizeUser } = require('../middlewares/middleware.js')
 
 const authRouter = express.Router()
 
@@ -13,5 +13,6 @@ authRouter.post("/renewAccessToken", authController.renewAccessToken)
 authRouter.post("/generateRecovery", authController.generateRecoveryToken)
 authRouter.post("/verifyRecoveryToken", authController.verifyRecoveryToken)
 authRouter.post("/changePassword", authController.changePassword)
+authRouter.delete("/deleteAccountAndUser/:userId", authenticateAndAuthorizeUser, authController.deleteAccountAndUser)
 
 module.exports= authRouter

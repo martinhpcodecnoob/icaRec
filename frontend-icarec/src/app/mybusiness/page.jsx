@@ -97,7 +97,7 @@ export default function CreateForm() {
             });
             const dataUser = await dataUserResponse.json();
             // const userAlbertoId = "64c18890b2dd91ead7f93be2"
-            dispatch(createBusiness({userId:dataUser.currentUser._id, business:inputForm})).then(response => console.log("este es response ",response))
+            dispatch(createBusiness({userId:dataUser.currentUser._id, business:inputForm, accessToken: data?.user?.token})).then(response => console.log("este es response ",response))
             setActivatedSubmitForm(false)
         } catch (error) {
             setActivatedSubmitForm(false)

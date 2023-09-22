@@ -25,6 +25,29 @@ const get_user = async(req,res) => {
     }
 }
 
+const get_users= async (req, res) => {
+  try {
+    const users = await User.find()
+    if (!users) {
+      return res.status(404).json({
+        found: false,
+        message: 'Usuarios no encontrados.',
+      })
+    }
+    return res.status(200).json({
+      found: true,
+      users,
+    })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      found: false,
+      message: 'No se pudieron extraer a los usuarios.',
+      error,
+    })
+  }
+}
+
 const get_user_by_id = async (req, res) => {
     try {
       const { userId } = req.params
@@ -171,6 +194,7 @@ const update_user = async (req, res) => {
 
 module.exports = {
     get_user,
+    get_users,
     create_user,
     get_user_by_id,
     update_user,

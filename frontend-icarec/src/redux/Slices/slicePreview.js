@@ -8,7 +8,8 @@ export const createBusiness = createAsyncThunk(
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/business/createBusiness/${userForm.userId}`,{
                 method:"POST",
                 headers:{
-                    'Content-Type':'application/json'
+                    'Content-Type':'application/json',
+                    'Authorization': `${userForm.accessToken}`
                 },
                 body:JSON.stringify({
                     business_name: userForm.business.name_business,

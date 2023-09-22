@@ -1,13 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useSession, getSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 import { getTokenExpirationTime } from '../../utils/utils'
 import { regenerateAccessToken } from '../../utils/apiBackend'
 
 const TokenRenewal = () => {
 
-    const INTERVAL_IN_SECONDS = (5) * 1000
+    const INTERVAL_IN_SECONDS = (10) * 1000
     //El tiempo debe ser menor que la expiracion del token
     const TIME_BEFORE_EXPIRATION_IN_MINUTES = (1) * 60
 
@@ -50,8 +50,10 @@ const TokenRenewal = () => {
                     setIsFirstRun(false) 
                   }
             } else {
-              console.error("Error al renovar el token")
               //cerrar session
+              console.error("Error al renovar el token")
+              //redirecionar a la landing
+              signOut()
             }
           } catch (error) {
             console.error("Error de red u otro error al renovar el token")

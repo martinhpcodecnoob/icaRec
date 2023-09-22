@@ -114,7 +114,6 @@ const checkUserExistence = async (req, res, next) => {
   
       // Verifica la existencia del usuario
       try {
-        console.log("tok decoded: ", decodedToken)
         const user = await User.findById(decodedToken.sub)
         if (!user) {
           return res.status(404).json({ message: 'Usuario no encontrado' })
@@ -135,6 +134,21 @@ const checkUserExistence = async (req, res, next) => {
       }
     })
   }
+
+  
+  const verifyAdminRole = (req, res, next) => {
+    const user = req.user
+    if (!user) {
+      return res.status(401).json({ message: 'Usuario no autenticado.' })
+    }
+    const roles = user.role
+    console.log("Los roles son los siguientes: ", roles)
+    const isAdmin = roles.includes('admin')
+    if(!isAdmin){
+      return res.status(403).json({ message: 'Solo los administradores pueden acceder a este recurso.' })
+    }
+    next()
+  }
   
   module.exports = {
     checkUserExistence,
@@ -142,5 +156,6 @@ const checkUserExistence = async (req, res, next) => {
     checkExistingInteraction,
     validateUserSchema,
     authenticateAndAuthorizeUser,
+    verifyAdminRole,
 }
   

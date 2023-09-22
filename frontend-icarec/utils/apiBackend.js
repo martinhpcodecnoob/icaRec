@@ -174,3 +174,53 @@ export const checkIfTokenIsValid = async (token) => {
       }
     }
   }
+
+  export const extractUsers = async ( userId, accessToken ) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/user/getUsers/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${accessToken}`
+        },
+      })
+
+      const data = await response.json()
+
+      return {
+        status: response.status, 
+        data: data,
+      }
+    } catch (error) {
+      console.error("Error del servidor al extraer los usuarios", error)
+      return {
+        status: 500, 
+        error: "Error del servidor al extraer los usuarios",
+      }
+    }
+  }
+
+  export const deleteAccount = async ( userId, accessToken ) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/deleteAccountAndUser/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${accessToken}`
+        },
+      })
+
+      const data = await response.json()
+
+      return {
+        status: response.status, 
+        data: data,
+      }
+    } catch (error) {
+      console.error("Error del servidor al intentar eliminar la cuenta del usuario.", error)
+      return {
+        status: 500, 
+        error: "Error del servidor al intentar eliminar la cuenta del usuario.",
+      }
+    }
+  }
