@@ -307,6 +307,19 @@ const delete_business = async (req, res) => {
     }
   }
 
+  const get_all_Idsbusiness = async(req,res) => {
+    try {
+      const businessIds = await Business.find({},'_id')
+      const businessIdsArray = businessIds.map(business => business.id)
+      return res.status(200).json({
+        totalIds:businessIdsArray.length,
+        idsBusiness : businessIdsArray
+      })
+    } catch (error) {
+      
+    }
+  }
+
 module.exports = {
     get_business,
     get_all_businesses,
@@ -315,5 +328,6 @@ module.exports = {
     delete_business,
     update_business,
     splitBusiness,
-    get_id_business
+    get_id_business,
+    get_all_Idsbusiness
 }

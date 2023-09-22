@@ -245,6 +245,7 @@ return (
                         inputForm={inputForm}
                         showButton={false}
                         showButtonPopover={true}
+                        visibleLiked={false}
                         />
                 </div>
             </div>

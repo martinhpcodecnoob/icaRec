@@ -3,13 +3,21 @@ import Skeleton from './Formbussiness/Skeleton'
 import FileInput from './Formbussiness/Fileinput'
 import Link from 'next/link'
 import { IoLogoWhatsapp } from "react-icons/io";
-import { FaFacebook,FaShareAlt } from "react-icons/fa";
+import { FaFacebook,FaShareAlt,FaLink } from "react-icons/fa";
 import { BsFillTelephoneOutboundFill } from "react-icons/bs";
+import { BsSuitHeartFill } from "react-icons/bs";
 import { TfiWorld } from "react-icons/tfi";
 import Popover from './Formbussiness/Popover';
 import AboutBusiness from './Formbussiness/AboutBusiness';
+import ButtonRedirect from './Modals/ButtonRedirect';
 
-const BusinessSubComponent = ({inputForm,showButton=true,showButtonPopover=false,hiddenRemove='',aboutBusinessShow=false, heightMap='10.77rem'}) => {
+const BusinessSubComponent = ({
+                                inputForm,showButton=true,
+                                showButtonPopover=false,hiddenRemove='',
+                                aboutBusinessShow=false, heightMap='10.77rem',
+                                showRecomend = true,visibleLiked=false,
+                                dataLiked
+                              }) => {
   const website = inputForm.name_web?inputForm.name_web:inputForm.website
   const services = inputForm.list_service ? inputForm.list_service : inputForm.services
   return (
@@ -17,8 +25,8 @@ const BusinessSubComponent = ({inputForm,showButton=true,showButtonPopover=false
     {Object.keys(inputForm).length !== 0 ? (
     <div className="scrolbar w-full h-full bg-[#FFF8EE] p-3 lg:pt-10">
       <h2 className="text-center mb-4 font-bold text-[2rem] text-[#F3BA1A]">{inputForm.name_business ? inputForm.name_business:inputForm.business_name}</h2>
-      <div className="flex justify-center my-4">
-        <button className="bg-[#100E80] text-white py-1 px-4 rounded w-2/3">
+      <div className={`flex justify-center my-4 ${showRecomend?'':'hidden'}`}>
+        <button className={`bg-[#100E80] text-white py-1 px-4 rounded w-2/3`}>
           Recomiendame
         </button>
       </div>
@@ -39,7 +47,7 @@ const BusinessSubComponent = ({inputForm,showButton=true,showButtonPopover=false
         />
       </div>
       <div className='sm:w-[100%] lg:hidden'>
-        <FileInput images={inputForm.images} hiddenRemove={hiddenRemove}/>
+        <FileInput images={inputForm.images} hiddenRemove={hiddenRemove} visibleLiked={visibleLiked} dataLiked={dataLiked}/>
       </div>
       <div className='my-2 flex items-center justify-center'>
         <p className='font-bold'>Ubicacion: </p>
@@ -59,7 +67,7 @@ const BusinessSubComponent = ({inputForm,showButton=true,showButtonPopover=false
           <TfiWorld className='text-[2rem]'/>
         </Link>
         <Link className={`px-2`} href={''}>
-          <FaShareAlt className='text-[2rem]'/>
+          <FaLink className='text-[2rem]'/>
         </Link>
       </div>
       <div className={`${aboutBusinessShow?'':'hidden'} lg:hidden`}>
@@ -98,11 +106,7 @@ const BusinessSubComponent = ({inputForm,showButton=true,showButtonPopover=false
         />
       </div>
       <div className='flex items-center justify-center'>
-        <button 
-          className={`${showButton ? '':'hidden'} text-[1rem] focus:outline-none text-[#100E80]  bg-[#f3ba1a] hover:bg-[#FAE3A3] focus:ring-4 focus:ring-blue-400 font-bold rounded-lg text-sm px-5 py-2.5 mt-4`}
-        >
-          Ver mas
-        </button>
+        <ButtonRedirect inputForm={inputForm} showButton={showButton}/>
         <Popover 
           viewPopover={showButtonPopover ? true:false}
           titleButton={'Ver mas'}
