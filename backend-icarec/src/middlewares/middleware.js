@@ -65,7 +65,7 @@ const checkUserExistence = async (req, res, next) => {
       });
   
       if (existingInteraction) {
-        return res.status(409).json({
+        return res.status(201).json({
           message: "An interaction already exists for this user and business.",
           details:{
             idInteraction:existingInteraction._id,

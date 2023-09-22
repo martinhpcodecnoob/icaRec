@@ -20,13 +20,13 @@ export default function CardSingle({elementBusiness}) {
     //     // }
     // }, [visible])
     const handleCloseModal = () => {
-        bodyRef.current.classList.remove('overflow-hidden')
+        // bodyRef.current.classList.remove('overflow-hidden')
         setVisible(false)
         // bodyRef.current = document.body;
     }
     
     const handleShowModal = () => {
-        bodyRef.current.classList.add('overflow-hidden')
+        // bodyRef.current.classList.add('overflow-hidden')
         setVisible(true)
         // setChangeBody(changeBody.classList.add('overflow-hiddden'))
     }

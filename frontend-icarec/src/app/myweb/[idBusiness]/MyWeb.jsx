@@ -4,6 +4,7 @@ import { BsSuitHeartFill } from "react-icons/bs";
 import Kuskana from '../../../../public/kuskana_azul.svg'
 import Image from "next/image";
 import ErrorScreen from "@/components/ErrorScreen";
+import ButtonRecomend from "@/components/Modals/ButtonRecomend";
 
 export default function MyWeb({myBusiness}) {
     if (myBusiness === undefined) {
@@ -34,7 +35,9 @@ export default function MyWeb({myBusiness}) {
                                     <div className="mx-1">{myBusiness.totalLikes === undefined ? 'N':myBusiness.totalLikes.toLocaleString('en-US')}</div>
                                     <div><BsSuitHeartFill className="text-[1.4rem] mx-1"/></div>
                                 </div>
-                                <div className="bg-[#100E80] px-4 rounded-[1rem] text-white">Recomiendame</div>
+                                <div>
+                                    <ButtonRecomend paramsIdBusiness={myBusiness?._id}/>
+                                </div>
                             </div>
                             <div className="bg-slate-500 w-full rounded-sm h-[3px]"></div>
                             <div>
