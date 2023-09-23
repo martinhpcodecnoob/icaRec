@@ -5,6 +5,8 @@ import Kuskana from '../../../../public/kuskana_azul.svg'
 import Image from "next/image";
 import ErrorScreen from "@/components/ErrorScreen";
 import ButtonRecomend from "@/components/Modals/ButtonRecomend";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function MyWeb({myBusiness}) {
     if (myBusiness === undefined) {
@@ -72,6 +74,7 @@ export default function MyWeb({myBusiness}) {
                     </div>
                 </div>
             </div>
+            <ToastContainer position="top-center" theme="light"/>
         </div>
     )
 }

@@ -21,6 +21,9 @@ export const verifieldInteraction = createAsyncThunk(
         try {
             const response = await fetch(`${uriBack}/api/interaction/verifieldInteraction/${userId}?businessId=${businessId}`)
             const dataVerifield = await response.json()
+            if (dataVerifield.details === undefined) {
+                throw Error("no existe la interaccion")
+            }
             return dataVerifield.details
         } catch (error) {
             console.log("Error en los  ",error);

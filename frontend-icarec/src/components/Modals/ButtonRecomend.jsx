@@ -6,21 +6,46 @@ import { postCreateLiked, verifieldInteraction } from "@/redux/Slices/sliceLandi
 import { useEffect } from "react";
 import { useSession } from "next-auth/react"
 import { Spinner } from 'flowbite-react';
+import { toast } from 'react-toastify';
 
 export default function ButtonRecomend({paramsIdBusiness}) {
     const [recomend, setRecomend] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const dispatch = useDispatch()
     const { data:session,status } = useSession()
-    // const interactionStateRedux = useSelector(state => state.landing.stateLikedPost)
-
+    
     useEffect(() => {
-        console.log("este ees el loading ",isLoading);
-        if (session && paramsIdBusiness) {
-            // console.log("session.user la", session.user.userId);
-            // console.log("el id bussiness ", paramsIdBusiness);
+        if (!session) {
+            setIsLoading(false)
+            setRecomend(false)
+        }
+        if (session && status === 'authenticated') {
             setIsLoading(true)
             dispatch(verifieldInteraction({userId:session.user.userId,businessId:paramsIdBusiness}))
+                .then(data => {
+                    if (!data.payload) {
+                        setIsLoading(false)
+                        return setRecomend(false)
+                    }else{
+                        if (data.payload.liked) {
+                            setRecomend(true)
+                        }else{
+                            setRecomend(false)
+                        }
+                        setIsLoading(false)
+                    }
+                })
+                .catch(error => console.log("Este es la error",error))
+        }
+    }, [session])
+
+    const handleLiked = () => {
+        if (!session) {
+            toast.error("Auntenticate primero para recomendar")
+        }
+        if (session && status === 'authenticated') {
+            setIsLoading(true)
+            dispatch(postCreateLiked({userId:session.user.userId,businessId:paramsIdBusiness}))
                 .then(data => {
                     if (data.payload.liked) {
                         setRecomend(true)
@@ -30,21 +55,8 @@ export default function ButtonRecomend({paramsIdBusiness}) {
                     setIsLoading(false)
                 })
                 .catch(error => console.log("Este es la error",error))
+            
         }
-    }, [session])
-    const handleLiked = () => {
-        console.log(session.user.userId);
-        setIsLoading(true)
-        dispatch(postCreateLiked({userId:session.user.userId,businessId:paramsIdBusiness}))
-            .then(data => {
-                if (data.payload.liked) {
-                    setRecomend(true)
-                }else{
-                    setRecomend(false)
-                }
-                setIsLoading(false)
-            })
-            .catch(error => console.log("Este es la error",error))
     }
 
     return (
@@ -52,6 +64,7 @@ export default function ButtonRecomend({paramsIdBusiness}) {
             <button 
                 className={`flex bg-[#100E80] ${recomend?'text-[#F3BA1A]':'text-white '} py-1 px-4 rounded-[1rem]`}
                 onClick={handleLiked}
+                disabled={isLoading ? true : false}
             >
                 {   isLoading ?
                         (<>
