@@ -3,13 +3,14 @@ import Skeleton from './Formbussiness/Skeleton'
 import FileInput from './Formbussiness/Fileinput'
 import Link from 'next/link'
 import { IoLogoWhatsapp } from "react-icons/io";
-import { FaFacebook,FaShareAlt,FaLink } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
 import { BsFillTelephoneOutboundFill } from "react-icons/bs";
 import { TfiWorld } from "react-icons/tfi";
 import Popover from './Formbussiness/Popover';
 import AboutBusiness from './Formbussiness/AboutBusiness';
 import ButtonRedirect from './Modals/ButtonRedirect';
 import ButtonRecomend from './Modals/ButtonRecomend';
+import ButtonShareLink from './Modals/ButtonShareLink';
 
 const BusinessSubComponent = ({
                                 inputForm,showButton=true,
@@ -82,9 +83,7 @@ const BusinessSubComponent = ({
         <Link className={`px-2 ${website===undefined ?'hidden':''}`} href={`${inputForm.name_web}`} target='_blank'>
           <TfiWorld className='text-[2rem]'/>
         </Link>
-        <Link className={`px-2`} href={''}>
-          <FaLink className='text-[2rem]'/>
-        </Link>
+        <ButtonShareLink idLinkBussiness={inputForm._id}/>
       </div>
       <div className={`${aboutBusinessShow?'':'hidden'} lg:hidden`}>
         <AboutBusiness description={inputForm.description}/>
