@@ -19,7 +19,6 @@ const IndexPage = () => {
     if (isLoading) {
         return <RegisterScreen />
     }
-
     return (
         <RegisterWC />
     )

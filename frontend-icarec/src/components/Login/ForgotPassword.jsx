@@ -35,7 +35,6 @@ const ForgotPassword = ({ open, close }) => {
       try {
         const { email } = data
         const forgotMyPasswordResponse = await forgotMyPassword(email)
-        console.log("Responde de olvide mi contraseña: ", forgotMyPasswordResponse)
         if(forgotMyPasswordResponse.status === 200){
           setIsSent(true)
         }else if(forgotMyPasswordResponse.status === 404){

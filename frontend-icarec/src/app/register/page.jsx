@@ -1,14 +1,14 @@
 'use client'
+
 import React, { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
 import { logPageView } from '../../../utils/utils'
 import Head from 'next/head'
 import LoadingScreen from '@/components/LoadingScreen'
-import RegisterUser from '@/components/Register/Register'
+import ProtectedRoute from '@/components/Guards/ProtectedRoute'
+import RegisterForm from '@/components/Register/Register'
 
 const Register = () => {
 
-  const { data: session } = useSession()
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -23,10 +23,12 @@ const Register = () => {
   return (
     <>
     <Head>
-      <title>Tiendas é Registro</title>
-      <meta name="description" content="Registro de las tiendas é" />
+      <title>Kuskana Registro</title>
+      <meta name="description" content="Registro de Kuskana" />
     </Head>
-      <RegisterUser />
+    <ProtectedRoute>
+      <RegisterForm /> 
+    </ProtectedRoute>
     </>
   )
 }

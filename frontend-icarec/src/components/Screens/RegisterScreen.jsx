@@ -9,8 +9,7 @@ const RegisterScreen = () => {
         const handlePageLoad = () => {
             setVisible(false)
           }
-      
-          // Check if 'window' is defined before using it
+
           if (typeof window !== 'undefined') {
             window.onload = handlePageLoad
           }

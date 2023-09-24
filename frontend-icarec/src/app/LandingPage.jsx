@@ -45,29 +45,44 @@ const LandingPage = ({dataBusiness}) => {
     if( session){
         console.log("sesion user", session)
     }
+    /* useEffect(() => {
+        if (session && session.user.isRegistered === false && session.user.providerType !== 'credentials') {
+          router.push('/newUser')
+        }
+      }, [session, router])
+      
     useEffect(() => {
         dispatch(getServices())
         if (error === 'OAuthAccountNotLinked') {
-        toast.error('Ya tienes una cuenta creada con ese correo.', {
+          toast.error('Ya tienes una cuenta creada con ese correo.', {
             position: toast.POSITION.TOP_CENTER,
-            autoClose: 3000, 
-        })
-        router.replace('/')  
-        }
-
-        window.scroll(0,0)
-
-        if (session?.user?.isRegistered === false && session.user.providerType !== 'credentials') {
-        router.push('/newUser')
+            autoClose: 3000,
+          })
+          router.replace('/')
         } else {
-        logPageView('landing_page')
+          window.scroll(0, 0)
+          logPageView('landing_page')
         }
-        
-    }, [])
+      }, [dispatch, error, router, session])
+     */
+      
+     useEffect(() => {
+        dispatch(getServices())
+        window.scroll(0,0)
+        if (session && session.user.isRegistered === false && session.user.providerType !== 'credentials') {
+            router.push('/newUser')
+        } 
+    }, [session]) 
 
-    if (session?.user?.isRegistered === false && session.user.providerType !== 'credentials') {
-        return router.push('/newUser')
-    }  
+    useEffect(() => {
+        if (error === 'OAuthAccountNotLinked') {
+            toast.error('Ya tienes una cuenta creada con ese correo.', {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 3000, 
+            })
+            router.replace('/')  
+            }
+    }, []) 
 
     const handleOpenLogin = () => {
         logEvent('press_login_button')
