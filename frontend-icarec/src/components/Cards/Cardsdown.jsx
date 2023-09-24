@@ -6,7 +6,7 @@ import CardSingle from "./CardSingle";
 export default function Cardsdown({bussinessAll}) {
 
     return (
-        <div className='flex flex-col justify-center items-center'>
+        <div className='flex flex-col justify-center items-center mb-6'>
             <LinkScroll activeClass="active" to="down" spy={true} smooth={true} offset={-30} duration={500}>
                 <FaAngleDown className='text-3xl text-[#F3BA1A]'/>
             </LinkScroll>

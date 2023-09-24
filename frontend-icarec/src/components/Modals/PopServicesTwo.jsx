@@ -1,21 +1,17 @@
 'use client'
-import { extractServices } from '@/redux/Slices/sliceLanding';
-import { collectionSelectService } from '@/redux/Slices/sliceLandingTwo';
 import React, { useState } from 'react';
 import { usePopper } from 'react-popper';
 import { useDispatch } from 'react-redux';
 
-export default function PopServices({children,referenceElement,showPopover,hidePopover,visible,suggestions,inputValue}) {
+export default function PopServicesTwo({children,referenceElement,suggestions,inputValue,setInputValue,visible,showPopover,hidePopover}) {
     const [popperElement, setPopperElement] = useState(null);
     const dispatch = useDispatch()
     const { styles, attributes } = usePopper(referenceElement, popperElement, {
       placement: 'bottom', // Puedes ajustar la posición según tus necesidades
     });
-
     const captureSelect = (e) => {
         const {textContent} = e.target
-        dispatch(extractServices(textContent))
-        dispatch(collectionSelectService(textContent))
+        setInputValue(textContent)
         hidePopover()
     }
     return (
@@ -27,7 +23,7 @@ export default function PopServices({children,referenceElement,showPopover,hideP
                 ref={setPopperElement}
                 style={{ ...styles.popper, zIndex: 20 }} // Ajusta el valor de zIndex aquí
                 {...attributes.popper}
-                className={`absolute z-20 inline-block w-full text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-100`}
+                className={`absolute z-20 inline-block w-full max-h-[12rem] text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-100 overflow-auto scrolbar`}
                 onMouseEnter={showPopover}
                 onMouseLeave={hidePopover}
             >

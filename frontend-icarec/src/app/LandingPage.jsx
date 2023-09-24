@@ -26,6 +26,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import Popbuttons from '@/components/Modals/Popbuttons'
 import { extractAllBusiness, getServices } from '@/redux/Slices/sliceLanding'
 import ExtractUsersButton from '@/components/ExtractUsersButton'
+import { BiReset } from "react-icons/bi";
+import { resetCollectionService } from '@/redux/Slices/sliceLandingTwo'
 
 const LandingPage = ({dataBusiness}) => {
     useEffect(() => {
@@ -35,7 +37,7 @@ const LandingPage = ({dataBusiness}) => {
     const searchParams = useSearchParams()
     const dispatch = useDispatch()
     const businessAll = useSelector(state => state.landing.bussiness)
-
+    const collectionService = useSelector(state => state.landingTwo.collectionService)
     const { data: session, status } = useSession()  
 
     const error = searchParams.get('error')
@@ -150,7 +152,23 @@ const LandingPage = ({dataBusiness}) => {
             <Searchbar/>
             <Cardsup/>
             <div id='cardDown'>
-                <Cardsdown bussinessAll={businessAll}/>
+                <Cardsdown bussinessAll={collectionService.length > 0 ? collectionService : businessAll}/>
+                {
+                    collectionService.length > 0 ?
+                        (
+                        <div className='flex justify-center'>
+                            <button
+                                className='flex justify-center items-center'
+                                onClick={() => dispatch(resetCollectionService())}
+                            >
+                                <BiReset className='text-[4rem] text-[#100E80]'/>
+                                <div className='text-[1.5rem]'>Limpiar Busqueda</div>
+                            </button>
+                        </div>
+                        )
+                        :
+                        null
+                }
             </div>
         </div>
         <PopupContainer />

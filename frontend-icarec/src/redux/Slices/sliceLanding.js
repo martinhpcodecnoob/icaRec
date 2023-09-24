@@ -96,6 +96,9 @@ export const Landing = createSlice({
         },
         extractAllBusiness:(state,action) => {
             state.bussiness = action.payload
+        },
+        addAllServices:(state,action) => {
+            state.services = action.payload
         }
     },
     extraReducers:(builder) => {
@@ -154,4 +157,4 @@ export const Landing = createSlice({
     }
 })
 
-export const {extractServices,extractAllBusiness} = Landing.actions
+export const {extractServices,extractAllBusiness,addAllServices} = Landing.actions
