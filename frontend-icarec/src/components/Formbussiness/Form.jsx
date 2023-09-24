@@ -405,7 +405,7 @@ export default function Form() {
                 <EtiquetasScroll input={input} setInput={setInput}/>
             </div>
 
-            <div className="flex items-center justify-center w-full relative -z-10">
+            <div className="flex items-center justify-center w-full relative">
                 <label
                 htmlFor="dropzone-file"
                 className="flex items-center justify-center w-full sm:h-[4rem] smartphone:h-[4rem]  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
