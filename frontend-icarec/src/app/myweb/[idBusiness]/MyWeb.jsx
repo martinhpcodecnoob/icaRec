@@ -7,6 +7,7 @@ import ErrorScreen from "@/components/ErrorScreen";
 import ButtonRecomend from "@/components/Modals/ButtonRecomend";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Link from "next/link";
 
 export default function MyWeb({myBusiness}) {
     if (myBusiness === undefined) {
@@ -16,13 +17,13 @@ export default function MyWeb({myBusiness}) {
         <div>
             <div className="block sticky top-0 z-10">
                 <div className="flex p-[1rem] items-center justify-between bg-[#FFF8EE]">
-                    <div className="w-32 h-8">
+                    <Link href={'/'} className="w-32 h-8">
                         <Image
                             alt="Kuskasna"
                             src={Kuskana}
                             className="w-full h-full"
                         />
-                    </div>
+                    </Link>
                     <button className="bg-[#100E80] px-4 rounded-[1rem] text-white">
                         Editar mi sitio
                     </button>
@@ -56,9 +57,10 @@ export default function MyWeb({myBusiness}) {
                         showButtonPopover={false}
                         aboutBusinessShow={true}
                         heightMap={'16rem'}
-                        showRecomend={false}
+                        showRecomend={true}
                         visibleLiked={true}
                         dataLiked={myBusiness.totalLikes}
+                        showRecomendInteraction={true}
                     />
                     <div className="w-full hidden lg:block mb-5">
                         <div className="text-[#100E80] font-bold text-[2rem]">

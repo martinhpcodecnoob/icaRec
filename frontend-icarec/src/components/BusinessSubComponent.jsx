@@ -5,18 +5,19 @@ import Link from 'next/link'
 import { IoLogoWhatsapp } from "react-icons/io";
 import { FaFacebook,FaShareAlt,FaLink } from "react-icons/fa";
 import { BsFillTelephoneOutboundFill } from "react-icons/bs";
-import { BsSuitHeartFill } from "react-icons/bs";
 import { TfiWorld } from "react-icons/tfi";
 import Popover from './Formbussiness/Popover';
 import AboutBusiness from './Formbussiness/AboutBusiness';
 import ButtonRedirect from './Modals/ButtonRedirect';
+import ButtonRecomend from './Modals/ButtonRecomend';
 
 const BusinessSubComponent = ({
                                 inputForm,showButton=true,
                                 showButtonPopover=false,hiddenRemove='',
                                 aboutBusinessShow=false, heightMap='10.77rem',
                                 showRecomend = true,visibleLiked=false,
-                                dataLiked
+                                dataLiked,
+                                showRecomendInteraction = false
                               }) => {
   const website = inputForm.name_web?inputForm.name_web:inputForm.website
   const services = inputForm.list_service ? inputForm.list_service : inputForm.services
@@ -26,9 +27,24 @@ const BusinessSubComponent = ({
     <div className="scrolbar w-full h-full bg-[#FFF8EE] p-3 lg:pt-10">
       <h2 className="text-center mb-4 font-bold text-[2rem] text-[#F3BA1A]">{inputForm.name_business ? inputForm.name_business:inputForm.business_name}</h2>
       <div className={`flex justify-center my-4 ${showRecomend?'':'hidden'}`}>
-        <button className={`bg-[#100E80] text-white py-1 px-4 rounded w-2/3`}>
-          Recomiendame
-        </button>
+        {
+          showRecomendInteraction ? 
+            (
+              <div className='lg:hidden'>
+                <ButtonRecomend paramsIdBusiness={inputForm._id}/>
+              </div>
+            )
+            :
+            (
+              <Link 
+                href={`${process.env.NEXT_PUBLIC_URL}/myweb/${inputForm._id ? inputForm._id:'error'}`} 
+                className={`bg-[#100E80] text-white py-1 px-4 rounded w-2/3 flex justify-center`}
+              >
+                Recomienda mi Negocio
+              </Link>
+            )
+
+        }
       </div>
       <div className='lgx:hidden'>
         <Map heightMap={heightMap}

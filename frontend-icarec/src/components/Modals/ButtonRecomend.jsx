@@ -41,7 +41,7 @@ export default function ButtonRecomend({paramsIdBusiness}) {
 
     const handleLiked = () => {
         if (!session) {
-            toast.error("Auntenticate primero para recomendar")
+            toast.error("Registrate primero para recomendar")
         }
         if (session && status === 'authenticated') {
             setIsLoading(true)
