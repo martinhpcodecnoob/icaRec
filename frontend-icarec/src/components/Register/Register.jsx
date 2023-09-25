@@ -23,7 +23,7 @@ import { registerUser } from '../../../utils/apiBackend'
 
 import 'react-toastify/dist/ReactToastify.css'
 
-const Register = () => {
+const RegisterForm = () => {
 
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -91,4 +91,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default RegisterForm

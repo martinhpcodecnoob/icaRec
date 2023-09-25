@@ -4,16 +4,13 @@ export const metadata = {
     keywords: ['Register', 'Form', 'Ica Rec'],
   }
   
-  export default function RootLayout({ children }) {
+  export default function RootLayout({
+    children, // will be a page or nested layout
+  }) {
     return (
-      <html lang="en">
-        <head>
-          <meta name="google-site-verification" content="vUKjhY8B-urg2zQl40Ku2HGovTAc_prSfPWpbk_48ko" />
-        </head>
-        <body>
-            {children}
-        </body>
-      </html>
+      <section>
+        {children}
+      </section>
     )
   }
   

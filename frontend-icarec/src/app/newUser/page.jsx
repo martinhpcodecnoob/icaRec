@@ -3,26 +3,24 @@
 import React, { useState, useEffect } from 'react'
 import RegisterWC from '@/components/Register/RegisterWC'
 import RegisterScreen from '@/components/Screens/RegisterScreen'
-import { useSession } from 'next-auth/react'
 
 const IndexPage = () => {
-    const { data: session, status } = useSession()  
-    const [isLoading, setIsLoading] = useState(true)
-
+    const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
-        setIsLoading(false)
-    }, [])
-    
-    if(session){
-        console.log("data session info: ", session)
-    }
-    if (isLoading) {
-        return <RegisterScreen />
-    }
+      let timer
 
-    return (
-        <RegisterWC />
-    )
+      const loadContent = () => {
+        timer = setTimeout(() => {
+          setIsLoading(false)
+        }, 2000)
+      }
+
+      loadContent()
+
+      return () => clearTimeout(timer)
+    }, [])
+
+    return isLoading ? <RegisterScreen /> : <RegisterWC />
 }
 
 export default IndexPage

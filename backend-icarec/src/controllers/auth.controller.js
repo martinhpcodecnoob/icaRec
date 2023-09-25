@@ -50,7 +50,6 @@ async function renewAccessToken(req, res){
 
     const decodedAccessToken = jwt.verify(accessToken, SECRET)
     if (!decodedAccessToken || !decodedAccessToken.sub) {
-      console.log("Token de acceso inválido o expirado.")
       return res.status(401).json({ error: "Token de acceso inválido o expirado." })
     }
 
@@ -59,18 +58,16 @@ async function renewAccessToken(req, res){
     const account = await Account.findOne({ userId })
 
     if (!account || !account.refreshToken) {
-      console.log("No se encontró una cuenta válida para el usuario.")
       return res.status(401).json({ error: "No se encontró una cuenta válida para el usuario." })
     }
 
     const decodedRefreshToken = jwt.verify(account.refreshToken, REFRESH_SECRET)
 
     if (!decodedRefreshToken || decodedRefreshToken.sub !== userId) {
-      console.log("Token de actualización inválido.")
       return res.status(401).json({ error: "Token de actualización inválido." })
     }
 
-    const newAccessToken = jwt.sign({ sub: userId }, SECRET, { expiresIn: ACCESS_TOKEN_EXPIRATION });
+    const newAccessToken = jwt.sign({ sub: userId }, SECRET, { expiresIn: ACCESS_TOKEN_EXPIRATION })
 
     res.status(200).json({ accessToken: newAccessToken })
   } catch (error) {
@@ -110,8 +107,8 @@ async function register(req, res) {
 
     res.status(200).json({ message: "Usuario registrado exitosamente." })
   } catch (error) {
-    console.error("Error en el registro:", error)
-    res.status(500).json({ error: "Error en el registro." })
+    console.error("Error al intentar registrar al usuario:", error)
+    res.status(500).json({ error: "Error al intentar registrar al usuario." })
   }
 }
 
@@ -122,7 +119,7 @@ async function registerWithoutCredentials(req, res) {
     const usersWithEmail = await User.find({ email })
 
     if (!usersWithEmail) {
-      return res.status(404).json({ error: "User not found" })
+      return res.status(404).json({ error: "Usuario no encontrado." })
     }
 
     const matchingUsers = []
@@ -136,7 +133,7 @@ async function registerWithoutCredentials(req, res) {
     }
 
     if (matchingUsers.length === 0) {
-      return res.status(404).json({ error: "Account not found" })
+      return res.status(404).json({ error: "Cuenta no encontrada." })
     }
 
     const userToUpdate = matchingUsers[0]
@@ -146,10 +143,10 @@ async function registerWithoutCredentials(req, res) {
     userToUpdate.dni = dni
     await userToUpdate.save()
 
-    res.status(200).json({ message: "User registered successfully." })
+    res.status(200).json({ message: "Usuario registrado por terceros exitosamente." })
   } catch (error) {
-    console.error("Error in registration:", error)
-    res.status(500).json({ error: "Error in registration." })
+    console.error("Error al intentar registrar por terceros al usuario:", error)
+    res.status(500).json({ error: "Error al intentar registrar por terceros al usuario." })
   }
 }
 
@@ -199,7 +196,7 @@ async function generateRecoveryToken(req, res) {
       const account = await Account.findOne({
         provider: 'credentials',
         userId: user._id
-      });
+      })
 
       if (account) {
         userWithCredentials = user;
@@ -212,12 +209,11 @@ async function generateRecoveryToken(req, res) {
       return res.status(404).json({ error: "Usuario o cuenta no encontrados." })
     }
 
-    const token = generateAuthToken(userWithCredentials._id).token
-    console.log("Token de function: ", token)
-    accountToUpdate.passwordResetToken = token
+    const token = generateAuthToken( userWithCredentials._id, '1h', SECRET )
+    accountToUpdate.passwordResetToken = token.token
     await accountToUpdate.save()
 
-    const recoveryLink = `${process.env.FRONT_URL}/recover-password?token=${token}`
+    const recoveryLink = `${process.env.FRONT_URL}/recover-password?token=${token.token}`
     const emailOptions = {
       from: 'tiendasE@resend.dev',
       to: userWithCredentials.email,
@@ -261,7 +257,7 @@ async function verifyUserExistsWithoutCredentials(req, res) {
     const usersWithEmail = await User.find({ email })
 
     if (!usersWithEmail) {
-      return res.status(404).json({ error: "User not found" })
+      return res.status(404).json({ error: "Usuario no encontrado." })
     }
 
     const matchingUsersAccounts = []
@@ -275,11 +271,10 @@ async function verifyUserExistsWithoutCredentials(req, res) {
     }
 
     if (matchingUsersAccounts.length === 0) {
-      return res.status(404).json({ found: false, error: "Account not found" })
+      return res.status(404).json({ found: false, error: "Cuenta no encontrada." })
     }
 
     const userAccount = matchingUsersAccounts[0]._doc
-    console.log("usersWithEmail:", usersWithEmail)
     const responseObj = { found: true, userId: userAccount.userId, role: usersWithEmail[0].role[0] }
 
     if ('newAccount' in userAccount) {
@@ -290,8 +285,8 @@ async function verifyUserExistsWithoutCredentials(req, res) {
     }
     return res.status(200).json(responseObj)
   } catch (error) {
-    console.error("Error searching user account:", error)
-    res.status(500).json({ found: false, error: "Error searching user account" })
+    console.error("Error al buscar la cuenta del usuario:", error)
+    res.status(500).json({ found: false, error: "Error al buscar la cuenta del usuario." })
   }
 }
 
@@ -308,7 +303,6 @@ async function changePassword(req, res) {
     }
 
     const user = await User.findOne({_id: userId})
-    console.log("Usuario del change")
     const userEmail = user.email
 
     const hashedPassword = await bcrypt.hash(newPassword.toString(), 10)
@@ -325,15 +319,10 @@ async function changePassword(req, res) {
 async function deleteAccountAndUser(req, res) {
   try {
     const currentUser = req.user
-    const userIdParam = req.params.userId
 
-   /*  if (currentUser._id.toString() !== userIdParam) {
-      return res.status(403).json({ error: "No tienes permiso para borrar los datos de otro usuario." })
-    }
- */
-    await Business.deleteMany({ owner: userIdParam })
+    await Business.deleteMany({ owner: currentUser._id.toString() })
 
-    const deletedUser = await User.findByIdAndDelete(userIdParam)
+    const deletedUser = await User.findByIdAndDelete(currentUser._id.toString())
 
     if (!deletedUser) {
       return res.status(404).json({ error: "Usuario no encontrado." })

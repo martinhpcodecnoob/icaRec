@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { extractUsers } from '../../utils/apiBackend'
 import { toast } from 'react-toastify'
 
-import * as XLSX from "xlsx";
+import * as XLSX from "xlsx"
 
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -13,13 +13,14 @@ const ExtractUsersButton = ({userId, accessToken}) => {
     const onClickExtractUsers = async () => {
       const extractUsersResponse =  await extractUsers(userId, accessToken)
       if(extractUsersResponse.status === 200){
-       console.log("Datos de los Users: ", extractUsersResponse.data)
+        
        const usersData = Array.isArray(extractUsersResponse.data.users) ? extractUsersResponse.data.users : [extractUsersResponse.data.users]
-       console.log("userdat: ", usersData)
        const workbook = XLSX.utils.book_new()
+
        const data = [
          ["ID", "Nombre", "Celular", "DNI", "Email", "Sexo", "Roles", "Fecha de Creación"],
        ]
+
        usersData.forEach((user) => {
          data.push([
            user._id,

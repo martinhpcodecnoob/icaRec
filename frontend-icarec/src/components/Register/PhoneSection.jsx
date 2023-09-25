@@ -14,8 +14,8 @@ const PhoneSection = ({control, errors, setValue, getValues}) => {
   const countriesOptions = (
     <>
      <option value="default">Selecciona un país</option>
-    {countries.map((country) => (
-      <option key={country.code} value={country.code}>
+    {countries.map((country, index) => (
+      <option key={`country-${country.code}-${index}`} value={country.code}>
         {country.name}
       </option>
     ))}
@@ -56,9 +56,13 @@ const PhoneSection = ({control, errors, setValue, getValues}) => {
             </span>
           </div>
           <div className='col-span-2 col-start-3'>
-            <button className='border rounded-full px-3 py-1 text-[#100e80] font-semibold bg-[#f3ba1a]' onClick={() => {
+            <button 
+            className={`border rounded-full px-3 py-1 text-[#100e80] font-semibold bg-[#f3ba1a] ${
+              showPhoneInput ? '' : 'hidden'
+            }`}
+            onClick={() => {
               setshowPhoneInput(false)
-              setValue('phoneCode', '')
+               setValue('phoneCode', '')
               setValue('phoneNumber', '')
               }}
             >
@@ -109,7 +113,7 @@ const PhoneSection = ({control, errors, setValue, getValues}) => {
             <p className='col-span-10 text-red-500'>Selecciona un país</p>
           )}
         </>
-        )
+        ) 
       }
       </div>
     </div>

@@ -76,6 +76,20 @@ export const validationForgotPassword = Yup.object().shape({
     .required('Ingrese su correo electrónico'),
 })
 
+export const validationPasswords = Yup.object().shape({
+  password: Yup.string()
+    .min(8, 'La contraseña debe tener al menos 8 caracteres')
+     .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/,
+      'La contraseña debe contener al menos una mayúscula, una minúscula, un número y un carácter especial'
+    ) 
+    .required('La contraseña es obligatoria'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Las contraseñas deben coincidir')
+    .required('Confirma tu contraseña'),
+})
+
+
 export const logPageView = (pageName) => {
   if (typeof window !== 'undefined') {
       const pagePath = window.location.pathname

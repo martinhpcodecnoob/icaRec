@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from "next/navigation"
 import { useSession, signOut } from 'next-auth/react'
-import Login1 from '../components/Login1'
 import Image from 'next/image'
 import { Button } from 'flowbite-react'
 import DefaultCarousels from '../components/Carousel'
@@ -11,17 +10,13 @@ import Searchbar from '../components/Searchbar'
 import Cardsup from '@/components/Cards/Cardsup'
 import Cardsdown from '@/components/Cards/Cardsdown'
 import LoadingScreen from '@/components/LoadingScreen'
-import detodologo from '../../public/kuskanazul.svg'
 import detodologo2 from '../../public/kuskanalogo.svg'
-import { logPageView, logEvent } from '../../utils/utils'
+import { logEvent } from '../../utils/utils'
 import AdBanner from '@/components/AdBanner'
-import ErrorRegisterScreen from '@/components/ErrorRegisterScreen'
 import { useDispatch, useSelector } from 'react-redux';
 import { openExternalLogin } from '@/redux/Slices/popupSlice'
 import PopupContainer from '@/components/Login/PopupContainer'
 import { ToastContainer, toast } from 'react-toastify'
-import RegisterScreen from '@/components/Screens/RegisterScreen'
-import { useRef } from 'react'
 import 'react-toastify/dist/ReactToastify.css'
 import Popbuttons from '@/components/Modals/Popbuttons'
 import { extractAllBusiness, getServices } from '@/redux/Slices/sliceLanding'
@@ -30,54 +25,72 @@ import { BiReset } from "react-icons/bi";
 import { resetCollectionService } from '@/redux/Slices/sliceLandingTwo'
 
 const LandingPage = ({dataBusiness}) => {
-    useEffect(() => {
-        dispatch(extractAllBusiness(dataBusiness.businesses))
-    }, [])
+
     const router = useRouter()
-    const searchParams = useSearchParams()
     const dispatch = useDispatch()
+    const searchParams = useSearchParams()
+    const error = searchParams.get('error')
     const businessAll = useSelector(state => state.landing.bussiness)
     const collectionService = useSelector(state => state.landingTwo.collectionService)
+
     const { data: session, status } = useSession()  
 
-    const error = searchParams.get('error')
-    const [isLoginOpen, setLoginOpen] = useState(false)
+    const businessAll = useSelector(state => state.landing.bussiness)
     const [isLoading, setIsLoading] = useState(false)
 
-    if( session){
+    
+
+  /*   if( session){
         console.log("sesion user", session)
-    }
+    } */
+    /* useEffect(() => {
+        if (session && session.user.isRegistered === false && session.user.providerType !== 'credentials') {
+          router.push('/newUser')
+        }
+      }, [session, router])
+      
     useEffect(() => {
         dispatch(getServices())
         if (error === 'OAuthAccountNotLinked') {
-        toast.error('Ya tienes una cuenta creada con ese correo.', {
+          toast.error('Ya tienes una cuenta creada con ese correo.', {
             position: toast.POSITION.TOP_CENTER,
-            autoClose: 3000, 
-        })
-        router.replace('/')  
-        }
-
-        window.scroll(0,0)
-
-        if (session?.user?.isRegistered === false && session.user.providerType !== 'credentials') {
-        router.push('/newUser')
+            autoClose: 3000,
+          })
+          router.replace('/')
         } else {
-        logPageView('landing_page')
+          window.scroll(0, 0)
+          logPageView('landing_page')
         }
-        
-    }, [])
+      }, [dispatch, error, router, session])
+     */
+    useEffect(() => {
+        dispatch(extractAllBusiness(dataBusiness.businesses))
+        if (error === 'OAuthAccountNotLinked') {
+            toast.error('Ya tienes una cuenta creada con ese correo.', {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 3000, 
+            })
+            router.replace('/')  
+            }
+    }, []) 
+
+     useEffect(() => {
+        if(status === 'unauthenticated'){
+             dispatch(getServices())
+             window.scroll(0, 0)
+         }
+        if(session && session.user.isRegistered === true){
+            dispatch(getServices())
+            window.scroll(0, 0)
+        }
+        if (session && session.user.isRegistered === false && session.user.providerType !== 'credentials') {
+           router.push('/newUser')
+        }
+    }, [session]) 
 
     if (session?.user?.isRegistered === false && session.user.providerType !== 'credentials') {
-        return router.push('/newUser')
-    }  
-
-    const handleOpenLogin = () => {
-        logEvent('press_login_button')
-        setLoginOpen(true)
-    }
-
-    const handleCloseLogin = () => {
-        setLoginOpen(false)
+        return null 
+        /* return router.push('/newUser') */
     }
 
     const handleSignOut = () => {
@@ -86,16 +99,13 @@ const LandingPage = ({dataBusiness}) => {
     } 
 
     const openLogin = () => {
+        logEvent('press_login_button')
         dispatch(openExternalLogin())
     }
 
     const handleCreateBusiness = () => {
         router.push('/mybusiness')
         setIsLoading(true)
-    } 
-
-    const handleUpdateUserAccount = () => {
-        router.push('/register')
     } 
 
     if (status === "loading" || isLoading) {
@@ -138,7 +148,6 @@ const LandingPage = ({dataBusiness}) => {
                     } 
                     </div>
                 )}
-                {isLoginOpen && <Login1 onClose={handleCloseLogin} />}
             </div>
         </div>
         <div>

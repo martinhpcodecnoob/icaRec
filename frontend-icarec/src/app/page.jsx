@@ -11,10 +11,11 @@ export async function getAllBusiness(){
 }
 
 export default async function page() {
-  const dataBusiness = await getAllBusiness()
+   const dataBusiness = await getAllBusiness() 
+  
   return (
     <div>
-      <LandingPage dataBusiness={dataBusiness}/>
+      <LandingPage dataBusiness={dataBusiness} />
     </div>
   )
 }

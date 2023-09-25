@@ -1,17 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
 import { changePassword } from '../../utils/apiBackend'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { validationSchema } from '../../utils/utils';
+import { validationPasswords } from '../../utils/utils';
 
 const PasswordRecoveryPage = ({userId}) => {
 
-  const router = useRouter()
-
   const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationPasswords),
   })
 
   const onSubmit = async (data) => {
@@ -32,8 +29,6 @@ const PasswordRecoveryPage = ({userId}) => {
   const signInAndRedirect = async (userRedirectData) => {
     try {
       const { userEmail, password } = userRedirectData
-      console.log("Email:", userEmail)
-      console.log("Password:", password)
       const result = await signIn('credentials', {
         email: userEmail,
         password,
@@ -44,7 +39,6 @@ const PasswordRecoveryPage = ({userId}) => {
         console.error('Error login credentials:', result.error)
       } else {
         console.log("Aca se redirije")
-        //AL USAR EL PUSH.ROUTER SE CRASHEA
         window.location.replace('/')
       }
     } catch (error) {
