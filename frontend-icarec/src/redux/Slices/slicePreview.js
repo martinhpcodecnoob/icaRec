@@ -104,6 +104,10 @@ export const Slice = createSlice({
             }
             state.inputForm.location={...location}
         },
+        saveFormEdition:(state,action) => {
+            const input = action.payload
+            state.inputForm = {...input}
+        },
         removeImageOfRedux:(state,action) => {
             const image=action.payload
             const arrayImages = state.inputForm.images
@@ -166,5 +170,6 @@ export const Slice = createSlice({
 export const {
     saveLoaction,saveFormPreview,
     removeImageOfRedux,saveDataCloudinary,
-    saveLimitMessage
+    saveLimitMessage,
+    saveFormEdition
 } = Slice.actions

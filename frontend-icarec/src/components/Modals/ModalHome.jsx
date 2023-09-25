@@ -39,7 +39,7 @@ export default function ModalHome({activated=false, closeVisualModal,images,inpu
                                 <FileInput images={images} hiddenRemove='hidden'/>
                             </div>
                             <div className='lg:w-[70%] smartphone:max-h-[70rem] sm:h-[50rem] lg:ml-1 sm:w-full smartphone:w-full smartphone:mb-5'>
-                                <BusinessSubComponent inputForm={inputForm} hiddenRemove='hidden' visibleLiked={true}/>
+                                <BusinessSubComponent inputForm={inputForm} hiddenRemove='hidden' visibleLiked={true} dataLiked={inputForm.totalLikes}/>
                             </div>
                         </div>
                     </div>

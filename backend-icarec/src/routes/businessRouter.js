@@ -13,4 +13,5 @@ businessRouter.delete('/deleteBusiness/:userId',checkUserExistence, BC.delete_bu
 businessRouter.put('/updateBusiness/:userId',checkUserExistence, BC.update_business)
 businessRouter.get('/getIdBusiness/:businessId', BC.get_id_business)
 businessRouter.get('/getTotalIdsBusiness/',BC.get_all_Idsbusiness)
+businessRouter.get('/getServiceForBusiness/:servicio',BC.getBusinessForServices)
 module.exports= businessRouter

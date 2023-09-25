@@ -329,6 +329,59 @@ const delete_business = async (req, res) => {
     }
   }
 
+  const getBusinessForServices = async(req,res) => {
+    try {
+      const {servicio} = req.params;
+  
+      // Utiliza la función `aggregate` de Mongoose para buscar negocios que contengan el servicio en el array 'services'
+      const businessesWithLikes = await Business.aggregate([
+        {
+          $match: {
+            services: {
+              $regex: new RegExp(servicio, 'i'), // 'i' indica insensibilidad a mayúsculas y minúsculas
+            },
+          },
+        },
+        {
+          $lookup: {
+            from: "interactions",
+            localField: "_id",
+            foreignField: "business",
+            as: "interactions",
+          },
+        },
+        {
+          $addFields: {
+            totalLikes: {
+              $size: {
+                $filter: {
+                  input: "$interactions",
+                  as: "interaction",
+                  cond: { $eq: ["$$interaction.liked", true] },
+                },
+              },
+            },
+          },
+        },
+        {
+          $project: {
+            interactions: 0,
+          },
+        },
+      ]);
+  
+      if (businessesWithLikes.length === 0) {
+        return res
+          .status(404)
+          .json({ mensaje: 'No se encontraron negocios para el servicio proporcionado.' });
+      }
+  
+      return res.status(200).json(businessesWithLikes);
+    } catch (error) {
+      return res.status(500).json({ mensaje: 'Error en el servidor', error: error });
+    }
+  }
+
 module.exports = {
     get_business,
     get_all_businesses,
@@ -338,5 +391,6 @@ module.exports = {
     update_business,
     splitBusiness,
     get_id_business,
-    get_all_Idsbusiness
+    get_all_Idsbusiness,
+    getBusinessForServices
 }
