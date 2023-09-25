@@ -104,6 +104,7 @@ const checkUserExistence = async (req, res, next) => {
   
     jwt.verify(sessionToken, process.env.SECRET, async (err, decodedToken) => {
       if (err) {
+        console.log("Error de token")
         if (err.name === 'TokenExpiredError') {
           return res.status(401).json({ message: 'Token de sesión expirado' })
         } else {
@@ -123,6 +124,7 @@ const checkUserExistence = async (req, res, next) => {
   
         // Verifica si el userId coincide con el token
         if (decodedToken.sub !== req.params.userId) {
+          console.log("No coinciden usuarios")
           return res.status(401).json({ message: 'No tienes permiso para acceder a esta ruta' })
         }
   

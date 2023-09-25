@@ -11,7 +11,10 @@ const ProtectedRoute = ({ children }) => {
       router.push("/")
     }
   }, [session, router])
-
+  
+  if (session?.user?.isRegistered === true) {
+    return null
+  }
   return children
 }
 

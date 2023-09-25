@@ -19,12 +19,13 @@ export const collectionSelectService = createAsyncThunk(
 
 export const businessIdUpdates = createAsyncThunk(
     'businessIdUpdates',
-    async({businessId,updates,userId}) => {
+    async({businessId,updates,userId, accessToken}) => {
         try {
             const response = await fetch(`${uriBack}/api/business/updateBusiness/${userId}`,{
                 method:'PUT',
                 headers:{
                     'Content-Type':'application/json',
+                    'Authorization': `${accessToken}`
                 },
                 body:JSON.stringify({
                     businessId,
