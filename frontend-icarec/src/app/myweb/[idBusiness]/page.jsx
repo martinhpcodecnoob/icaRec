@@ -20,19 +20,19 @@ export default async function page({params}) {
     )
 }
 
-export async function generateStaticParams(){
-    let urlID = `${process.env.NEXT_PUBLIC_BACKEND_URI}/api/business/getTotalIdsBusiness`
-    try {
-        const response = await fetch(urlID)
-        const idsBusinessResponse =await response.json()
-        return idsBusinessResponse.idsBusiness.map(id => (
-            {
-                idBusiness:id
-            }
-        ))
-    } catch (error) {
-        return error
-    }
-}
+// export async function generateStaticParams(){
+//     let urlID = `${process.env.NEXT_PUBLIC_BACKEND_URI}/api/business/getTotalIdsBusiness`
+//     try {
+//         const response = await fetch(urlID)
+//         const idsBusinessResponse =await response.json()
+//         return idsBusinessResponse.idsBusiness.map(id => (
+//             {
+//                 idBusiness:id
+//             }
+//         ))
+//     } catch (error) {
+//         return error
+//     }
+// }
 
 
