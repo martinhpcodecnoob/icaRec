@@ -8,7 +8,7 @@ export const getServices = createAsyncThunk(
             const dataBusiness = await response.json()
             return dataBusiness
         } catch (error) {
-            console.log("Error en los  ",error);
+            // console.log("Error en los  ",error);
             throw error
         }
     }
@@ -26,7 +26,7 @@ export const verifieldInteraction = createAsyncThunk(
             }
             return dataVerifield.details
         } catch (error) {
-            console.log("Error en los  ",error);
+            // console.log("Error en los  ",error);
             throw error
         }
     }

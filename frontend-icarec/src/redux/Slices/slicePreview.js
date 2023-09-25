@@ -4,7 +4,7 @@ export const createBusiness = createAsyncThunk(
     'createBusiness',
     async(userForm) => {
         try {
-            console.log("Estes el el input: ",userForm);
+            // console.log("Estes el el input: ",userForm);
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/business/createBusiness/${userForm.userId}`,{
                 method:"POST",
                 headers:{

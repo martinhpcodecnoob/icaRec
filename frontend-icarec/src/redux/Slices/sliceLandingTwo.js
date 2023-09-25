@@ -11,7 +11,7 @@ export const collectionSelectService = createAsyncThunk(
             }
             return dataCollection
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             throw error
         }
     }

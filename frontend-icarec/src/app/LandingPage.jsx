@@ -32,10 +32,7 @@ const LandingPage = ({dataBusiness}) => {
     const error = searchParams.get('error')
     const businessAll = useSelector(state => state.landing.bussiness)
     const collectionService = useSelector(state => state.landingTwo.collectionService)
-
     const { data: session, status } = useSession()  
-
-    const businessAll = useSelector(state => state.landing.bussiness)
     const [isLoading, setIsLoading] = useState(false)
 
     
@@ -104,7 +101,6 @@ const LandingPage = ({dataBusiness}) => {
     }
 
     const handleCreateBusiness = () => {
-        router.push('/mybusiness')
         setIsLoading(true)
     } 
 
@@ -132,20 +128,16 @@ const LandingPage = ({dataBusiness}) => {
                 )}
                 {session && (
                     <div className='flex space-x-6 px-4 items-center'>
-                    <div>
-                        <p>Bienvenido! </p>
-                        <p>{session.user.name}</p>
-                    </div>
-                    {session.user.providerType? (
-                        <>
-                        <Popbuttons viewPopover={true} creeateBusinness={handleCreateBusiness} closeSession={handleSignOut}/>
-                        </>
-                    ) : null
-                    }
-                    {session.user?.role.includes('admin') ? (
-                        <ExtractUsersButton userId={session?.user?.userId} accessToken={session?.user?.token}/>
-                    ) : null
-                    } 
+                        <div>
+                            <p>Bienvenido! </p>
+                            <p>{session.user.name.split(' ')[0]}</p>
+                        </div>
+                        {session.user.providerType? (
+                            <>
+                            <Popbuttons viewPopover={true} creeateBusinness={handleCreateBusiness} closeSession={handleSignOut}/>
+                            </>
+                        ) : null
+                        }
                     </div>
                 )}
             </div>
@@ -159,7 +151,7 @@ const LandingPage = ({dataBusiness}) => {
             />
             <div className='flex justify-center items-center text-2xl pt-2'>¿En que te puedo ayudar?</div>
             <Searchbar/>
-            <Cardsup/>
+            {/* <Cardsup/> */}
             <div id='cardDown'>
                 <Cardsdown bussinessAll={collectionService.length > 0 ? collectionService : businessAll}/>
                 {

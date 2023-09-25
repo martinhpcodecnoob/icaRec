@@ -9,7 +9,6 @@ const Cardsup = () => {
     const [sizeScreen, setSizeScreen] = useState({width:0, height:0})
     
     useEffect(() => {
-        console.log(sizeScreen.width);
         const handleResize = () =>{
             setSizeScreen({
                 width:window.innerWidth,
