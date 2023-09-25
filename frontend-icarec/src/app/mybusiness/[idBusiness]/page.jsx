@@ -11,7 +11,6 @@ export async function getIdBusiness(idBusiness){
     }
 }
 
-
 export default async function page({params}) {
     const {idBusiness} = params
     const dataIdBusiness = await getIdBusiness(idBusiness)
@@ -37,12 +36,15 @@ export default async function page({params}) {
             long:+business.location_coordinates.longitude
         }
     }
-    console.log("Estee es el formato de bussinesid: ", formatDataIdBusiness);
     const servicesB = await getServicesB()
-    // console.log(servicesB);
     return (
         <div>
-            <MyBusiness servicess={servicesB.services} formatDataIdBusiness={formatDataIdBusiness} userIDBusiness={business.owner}/>
+            <MyBusiness 
+                servicess={servicesB.services} 
+                formatDataIdBusiness={formatDataIdBusiness} 
+                userIDBusiness={business.owner}
+                businessID={business._id}
+            />
         </div>
     )
 }

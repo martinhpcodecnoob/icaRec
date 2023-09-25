@@ -6,22 +6,21 @@ import BusinessSubComponent from '@/components/BusinessSubComponent'
 import FileInput from '@/components/Formbussiness/Fileinput'
 import Form from '@/components/Formbussiness/Form'
 import detodologo from '../../../public/kuskanazul.svg'
-import detodologo2 from '../../../public/detodologo2.png'
 import { logPageView } from '../../../utils/utils'
 import { useSession } from 'next-auth/react'
 import { useRouter } from "next/navigation"
-import { PiShieldWarningFill } from "react-icons/pi";
 import LoadingScreen from '@/components/LoadingScreen'
 import { convertURLtofile } from '../../../utils/converURLtofile'
 import { signResponseCloudinary } from '../../../utils/apiCloudinary'
-import { createBusiness, saveDataCloudinary, saveFormEdition, saveLimitMessage } from '@/redux/Slices/slicePreview'
+import { createBusiness, saveDataCloudinary, saveLimitMessage } from '@/redux/Slices/slicePreview'
 import LoadFormBusiness from '@/components/Formbussiness/LoadFormBusiness'
 import WarningModal from '@/components/Formbussiness/WarningModal'
 import Link from 'next/link'
 import { addAllServices } from '@/redux/Slices/sliceLanding'
 import ValidationUser from '@/components/ValidationUser'
+import { businessIdUpdates } from '@/redux/Slices/sliceLandingTwo'
 
-export default function MyBusiness({servicess,formatDataIdBusiness=undefined,userIDBusiness}) {
+export default function MyBusiness({servicess,formatDataIdBusiness=undefined,userIDBusiness,businessID}) {
     
     const router = useRouter()
     const inputForm = useSelector(state => state.preview.inputForm)
@@ -94,7 +93,17 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
             });
             const dataUser = await dataUserResponse.json();
             // const userAlbertoId = "64c18890b2dd91ead7f93be2"
-            dispatch(createBusiness({userId:dataUser.currentUser._id, business:inputForm, accessToken: data?.user?.token})).then(response => console.log("este es response ",response))
+            if (formatDataIdBusiness) {
+                dispatch(businessIdUpdates({
+                    businessId:businessID,
+                    updates:inputForm,
+                    userId:userIDBusiness
+                })).then(response => {
+                    console.log("este es response al hacer update",response)
+                })
+            } else {
+                dispatch(createBusiness({userId:dataUser.currentUser._id, business:inputForm, accessToken: data?.user?.token})).then(response => console.log("este es response ",response))
+            }
             setActivatedSubmitForm(false)
         } catch (error) {
             setActivatedSubmitForm(false)

@@ -17,6 +17,50 @@ export const collectionSelectService = createAsyncThunk(
     }
 )
 
+export const businessIdUpdates = createAsyncThunk(
+    'businessIdUpdates',
+    async({businessId,updates,userId}) => {
+        try {
+            const response = await fetch(`${uriBack}/api/business/updateBusiness/${userId}`,{
+                method:'PUT',
+                headers:{
+                    'Content-Type':'application/json',
+                },
+                body:JSON.stringify({
+                    businessId,
+                    updates:{
+                        business_name: updates.name_business,
+                        business_location: updates.geo_business,
+                        location_coordinates:{
+                            latitude: updates.location.lat,
+                            longitude: updates.location.long
+                        },
+                        description: updates.description, 
+                        cellphone: updates.cellphone, 
+                        facebook: updates.facebook,
+                        website: updates.name_web,
+                        schedule: updates.schedule,
+                        services: updates.list_service,
+                        images: updates.images.map(imagesCloudinary => {
+                            return {
+                                url_cloudinary:imagesCloudinary.url_cloudinary,
+                                public_id:imagesCloudinary.public_id
+                            }
+                        })
+                    }
+                })
+            })
+            const dataUpdates = await response.json()
+            if (dataUpdates.updated) {
+                return dataUpdates
+            }
+            throw Error("Error en la actualizacion")
+        } catch (error) {
+            throw error
+        }
+    }
+)
+
 export const LandingTwo = createSlice({
     name:'slice_landing_two',
     initialState:{
@@ -25,16 +69,16 @@ export const LandingTwo = createSlice({
             loading:false,
             error:null
         },
-        bussinessIdEdition:{}
+        updateState:{
+            fulfilled:false,
+            loading:false,
+            error:null
+        }
     },
     reducers:{
         resetCollectionService:(state,action) => {
             state.collectionService = []
         },
-        addBusinessIdEdition:(state,action) => {
-            state.bussinessIdEdition = action.payload
-        }
-
     },
     extraReducers:(builder) => {
         builder
@@ -49,6 +93,19 @@ export const LandingTwo = createSlice({
             .addCase(collectionSelectService.pending, (state,action) => {
                 state.stateCollectionService.loading = true
                 state.stateCollectionService.error = null
+            })
+        builder
+            .addCase(businessIdUpdates.fulfilled, (state,action) => {
+                state.updateState.fulfilled = true
+                state.updateState.loading = false
+            })
+            .addCase(businessIdUpdates.rejected, ( state,action) => {
+                state.updateState.error = action.error.message
+                state.updateState.loading = false
+            })
+            .addCase(businessIdUpdates.pending, (state,action) => {
+                state.updateState.loading = true
+                state.updateState.error = null
             })
     }
 })
