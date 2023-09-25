@@ -3,13 +3,14 @@ import React, { useEffect, useState } from "react";
 import Map from '../../components/Map'
 import { IoIosAddCircle } from "react-icons/io";
 import EtiquetasScroll from "./EtiquetasScroll";
-import { saveFormPreview, saveLimitMessage } from "@/redux/Slices/slicePreview";
+import { saveFormPreview, saveLimitMessage, saveLoaction } from "@/redux/Slices/slicePreview";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PopServicesTwo from "../Modals/PopServicesTwo";
 
-export default function Form() {
-    const initialValues = {
+export default function Form({formatDataIdBusiness}) {
+    const initialValues = formatDataIdBusiness ? formatDataIdBusiness : {
         name_business:"",
         geo_business:"",
         description:"",
@@ -38,9 +39,14 @@ export default function Form() {
     const [input, setInput] = useState(initialValues)
     const [addService, setAddService] = useState(inputService)
     const [compareInput, setCompareInput] = useState(false)
+    const [refInputServices, setRefInputServices] = useState(null)
+    const [visible, setVisible] = useState(false);
+    const [suggestions, setSuggestions] = useState([])
     const dispatch = useDispatch()
     const newImagesRedux = useSelector(state => state.preview.inputForm.images)
+    const servicesReduxForm = useSelector(state => state.landing.services)
     const inputRedux = useSelector(state => state.preview.inputForm)
+
     useEffect(() => {
         if (newImagesRedux) {
             if (newImagesRedux.length >= 0) {
@@ -65,7 +71,18 @@ export default function Form() {
         setCompareInput(true)
     }, [compareInput,addService])
     
+    useEffect(() => {
+        if (formatDataIdBusiness) {
+            dispatch(saveLimitMessage('Hacer clic en "Actualizar"'))
+        }
+    }, [])
     
+    const showPopover = () => {
+        setVisible(true);
+    }
+    const hidePopover = () => {
+        setVisible(false);
+    };
     const handleUrlBlur = (e) => {
         if (e.target.name === 'name_web' || e.target.name === 'facebook') {
             let url = input[e.target.name]
@@ -80,8 +97,16 @@ export default function Form() {
 
     const handleInputService = (e) => {
         e.preventDefault()
-        if (e.target.value.length <= 45) {
-            setAddService(e.target.value)
+        const {name,value} = e.target
+        if (value.length <= 45) {
+            setAddService(value)
+            if (servicesReduxForm.length > 0) {
+                const filteredSuggestions = servicesReduxForm.filter(word =>
+                    word.toLowerCase().includes(value.toLowerCase()) && word.toLowerCase() !== value.toLowerCase() || word.toLowerCase() === value.toLowerCase()
+                )
+                setSuggestions(filteredSuggestions)
+            }
+            showPopover()
         }else{
             toast.error(toastError.addServices)
         }
@@ -206,7 +231,7 @@ export default function Form() {
     return (
         <>
         <div className="flex font-bold justify-center text-center text-[1rem] text-[#100E80] bg-[#f3ba1a] mb-3 rounded-lg">¡QUE CONOZCAN TU NEGOCIO!</div>
-        <form onChange={handleSubmit} onSubmit={handleSubmit}>
+        <form onChange={handleSubmit} onSubmit={handleSubmit} onLoad={handleSubmit}>
             <div className="relative z-0 w-full mb-3 group">
                 <input
                     type="text"
@@ -244,7 +269,11 @@ export default function Form() {
                     Ubicacion del Negocio
                 </label>
                 <div className={`mt-3 w-full h-[11rem] border-2 border-gray-300 rounded-md`}>
-                    <Map view={true}/>
+                    <Map 
+                        view={true} 
+                        latProp={formatDataIdBusiness ? initialValues.location.lat:undefined}
+                        longProp={formatDataIdBusiness ? initialValues.location.long:undefined}
+                    />
                 </div>
             </div>
             <div className="relative z-0 w-full mb-3 group">
@@ -341,31 +370,43 @@ export default function Form() {
                     Horario
                 </label>
             </div>
-            <div className="relative z-0 w-full mb-3 group">
-                <input
-                    type="text"
-                    name="list_service"
-                    id="list_service"
-                    value={addService}
-                    onChange={handleInputService}
-                    onKeyDown={
-                        (e) => {
-                            if (e.key === 'Enter') {
-                                e.preventDefault()
-                                handleAddService()
+            <div className="relative w-full mb-3 group">
+                <PopServicesTwo
+                    inputValue={addService}
+                    setInputValue={setAddService}
+                    referenceElement={refInputServices}
+                    suggestions={suggestions}
+                    showPopover={showPopover}
+                    hidePopover={hidePopover}
+                    visible={visible}
+                >
+                    <input
+                        ref={setRefInputServices}
+                        type="text"
+                        name="list_service"
+                        id="list_service"
+                        value={addService}
+                        onChange={handleInputService}
+                        onKeyDown={
+                            (e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault()
+                                    handleAddService()
+                                }
                             }
                         }
-                    }
-                    className="block py-2.5 px-0 w-full h-9 text-sm text-gray-900 bg-[#f3ba1a] border-0 rounded-[1rem] border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    autoComplete="off"
-                />
-                <label
-                    htmlFor="list_service"
-                    className="left-3 peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-2 z-10 origin-[0] peer-focus:left-0 peer-focus:text-black peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                    Servicios
-                </label>
+                        className="block py-2.5 px-0 w-full h-9 text-sm text-gray-900 bg-[#f3ba1a] border-0 rounded-[1rem] border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        placeholder=" "
+                        autoComplete="off"
+                        onClick={showPopover} onMouseLeave={hidePopover}
+                    />
+                    <label
+                        htmlFor="list_service"
+                        className="left-3 peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-2 z-10 origin-[0] peer-focus:left-0 peer-focus:text-black peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    >
+                        Servicios
+                    </label>
+                </PopServicesTwo>
                 <button type="button" className="absolute left-[91%] top-2" onClick={handleAddService}>
                     <IoIosAddCircle className="text-[1.4rem] text-gray-500"/>
                 </button>

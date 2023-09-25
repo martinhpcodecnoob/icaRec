@@ -21,6 +21,9 @@ export const verifieldInteraction = createAsyncThunk(
         try {
             const response = await fetch(`${uriBack}/api/interaction/verifieldInteraction/${userId}?businessId=${businessId}`)
             const dataVerifield = await response.json()
+            if (dataVerifield.details === undefined) {
+                throw Error("no existe la interaccion")
+            }
             return dataVerifield.details
         } catch (error) {
             console.log("Error en los  ",error);
@@ -93,6 +96,9 @@ export const Landing = createSlice({
         },
         extractAllBusiness:(state,action) => {
             state.bussiness = action.payload
+        },
+        addAllServices:(state,action) => {
+            state.services = action.payload
         }
     },
     extraReducers:(builder) => {
@@ -151,4 +157,4 @@ export const Landing = createSlice({
     }
 })
 
-export const {extractServices,extractAllBusiness} = Landing.actions
+export const {extractServices,extractAllBusiness,addAllServices} = Landing.actions
