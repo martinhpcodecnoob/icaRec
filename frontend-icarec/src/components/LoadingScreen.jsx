@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useEffect, useState } from 'react'
 
 const LoadingScreen = () => {
@@ -9,7 +10,6 @@ const LoadingScreen = () => {
       setVisible(false)
     }
 
-    // Check if 'window' is defined before using it
     if (typeof window !== 'undefined') {
       window.onload = handlePageLoad
     }

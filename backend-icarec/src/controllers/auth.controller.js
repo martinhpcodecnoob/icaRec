@@ -50,7 +50,6 @@ async function renewAccessToken(req, res){
 
     const decodedAccessToken = jwt.verify(accessToken, SECRET)
     if (!decodedAccessToken || !decodedAccessToken.sub) {
-      console.log("Token de acceso inválido o expirado.")
       return res.status(401).json({ error: "Token de acceso inválido o expirado." })
     }
 
@@ -59,7 +58,6 @@ async function renewAccessToken(req, res){
     const account = await Account.findOne({ userId })
 
     if (!account || !account.refreshToken) {
-      console.log("No se encontró una cuenta válida para el usuario.")
       return res.status(401).json({ error: "No se encontró una cuenta válida para el usuario." })
     }
 
@@ -198,7 +196,7 @@ async function generateRecoveryToken(req, res) {
       const account = await Account.findOne({
         provider: 'credentials',
         userId: user._id
-      });
+      })
 
       if (account) {
         userWithCredentials = user;
@@ -211,12 +209,11 @@ async function generateRecoveryToken(req, res) {
       return res.status(404).json({ error: "Usuario o cuenta no encontrados." })
     }
 
-    const token = generateAuthToken(userWithCredentials._id).token
-    console.log("Token de function: ", token)
-    accountToUpdate.passwordResetToken = token
+    const token = generateAuthToken( userWithCredentials._id, '1h', SECRET )
+    accountToUpdate.passwordResetToken = token.token
     await accountToUpdate.save()
 
-    const recoveryLink = `${process.env.FRONT_URL}/recover-password?token=${token}`
+    const recoveryLink = `${process.env.FRONT_URL}/recover-password?token=${token.token}`
     const emailOptions = {
       from: 'tiendasE@resend.dev',
       to: userWithCredentials.email,
@@ -278,7 +275,6 @@ async function verifyUserExistsWithoutCredentials(req, res) {
     }
 
     const userAccount = matchingUsersAccounts[0]._doc
-    console.log("usersWithEmail:", usersWithEmail)
     const responseObj = { found: true, userId: userAccount.userId, role: usersWithEmail[0].role[0] }
 
     if ('newAccount' in userAccount) {
