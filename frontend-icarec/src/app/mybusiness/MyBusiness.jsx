@@ -222,7 +222,7 @@ return (
                         className="text-[1rem] focus:outline-none text-[#100E80]  bg-[#f3ba1a] hover:bg-[#FAE3A3] focus:ring-4 focus:ring-blue-400 font-bold rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
                         onClick={handleSubmitBack}
                         >
-                        Enviar
+                        Guardar
                     </button>
                 </div>
             </div>

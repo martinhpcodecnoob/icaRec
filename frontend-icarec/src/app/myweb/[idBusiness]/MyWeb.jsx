@@ -8,6 +8,7 @@ import ButtonRecomend from "@/components/Modals/ButtonRecomend";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Link from "next/link";
+import ButtonLinkRedirect from "@/components/Modals/ButtonLinkRedirect";
 
 export default function MyWeb({myBusiness}) {
     if (myBusiness === undefined) {
@@ -24,9 +25,7 @@ export default function MyWeb({myBusiness}) {
                             className="w-full h-full"
                         />
                     </Link>
-                    <button className="bg-[#100E80] px-4 rounded-[1rem] text-white">
-                        Editar mi sitio
-                    </button>
+                    <ButtonLinkRedirect idBusiness={myBusiness._id} idUserBusiness={myBusiness.owner}/>
                 </div>
             </div>
             <div className="flex w-full">
