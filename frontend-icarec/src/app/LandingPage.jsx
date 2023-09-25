@@ -34,9 +34,11 @@ const LandingPage = ({dataBusiness}) => {
     const businessAll = useSelector(state => state.landing.bussiness)
     const [isLoading, setIsLoading] = useState(false)
 
-    if( session){
+    
+
+  /*   if( session){
         console.log("sesion user", session)
-    }
+    } */
     /* useEffect(() => {
         if (session && session.user.isRegistered === false && session.user.providerType !== 'credentials') {
           router.push('/newUser')
@@ -57,7 +59,6 @@ const LandingPage = ({dataBusiness}) => {
         }
       }, [dispatch, error, router, session])
      */
-
     useEffect(() => {
         dispatch(extractAllBusiness(dataBusiness.businesses))
         if (error === 'OAuthAccountNotLinked') {
@@ -70,13 +71,23 @@ const LandingPage = ({dataBusiness}) => {
     }, []) 
 
      useEffect(() => {
-        dispatch(getServices())
-        window.scroll(0,0)
+        if(status === 'unauthenticated'){
+             dispatch(getServices())
+             window.scroll(0, 0)
+         }
+        if(session && session.user.isRegistered === true){
+            dispatch(getServices())
+            window.scroll(0, 0)
+        }
         if (session && session.user.isRegistered === false && session.user.providerType !== 'credentials') {
-            router.push('/newUser')
-        } 
+           router.push('/newUser')
+        }
     }, [session]) 
 
+    if (session?.user?.isRegistered === false && session.user.providerType !== 'credentials') {
+        return null 
+        /* return router.push('/newUser') */
+    }
 
     const handleSignOut = () => {
         setIsLoading(true)

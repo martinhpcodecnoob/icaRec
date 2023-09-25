@@ -24,7 +24,6 @@ const TokenRenewal = () => {
         if (accessToken) {
           if (isFirstRun) {
             const expiresIn = await getTokenExpirationTime(accessToken)
-            console.log("First Expires In: ", expiresIn)
             if (expiresIn > 0) {
               setTokenExpiration(expiresIn)
               setIsFirstRun(false)
@@ -36,7 +35,6 @@ const TokenRenewal = () => {
       }
   
       const renewTokenIfNeeded = async () => {
-        console.log("tokenExpiration: ", tokenExpiration)
         if ( tokenExpiration <= TIME_BEFORE_EXPIRATION_IN_MINUTES && !isFirstRun ) {
           try {
             let regenerateAccessTokenResponse = await regenerateAccessToken(session.user.token) 
@@ -44,7 +42,6 @@ const TokenRenewal = () => {
                 const newToken = regenerateAccessTokenResponse.data.accessToken
                 const newExpireTime = await getTokenExpirationTime(newToken)
                 if (newExpireTime > TIME_BEFORE_EXPIRATION_IN_MINUTES) {
-                    console.log("Se actualiza la session con el nuevo token:", newToken)
                     await update({...session, user: {...session?.user, newToken}})
                     setTokenExpiration(newExpireTime)
                     setIsFirstRun(false) 
