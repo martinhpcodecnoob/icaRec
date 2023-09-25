@@ -11,6 +11,7 @@ import AboutBusiness from './Formbussiness/AboutBusiness';
 import ButtonRedirect from './Modals/ButtonRedirect';
 import ButtonRecomend from './Modals/ButtonRecomend';
 import ButtonShareLink from './Modals/ButtonShareLink';
+import ButtonRecomendLink from './Modals/ButtonRecomendLink';
 
 const BusinessSubComponent = ({
                                 inputForm,showButton=true,
@@ -37,12 +38,9 @@ const BusinessSubComponent = ({
             )
             :
             (
-              <Link 
-                href={`${process.env.NEXT_PUBLIC_URL}/myweb/${inputForm._id ? inputForm._id:'error'}`} 
-                className={`bg-[#100E80] text-white py-1 px-4 rounded w-2/3 flex justify-center`}
-              >
-                Recomienda mi Negocio
-              </Link>
+              <div className='w-full flex justify-center'>
+                <ButtonRecomendLink inputForm={inputForm}/>
+              </div>
             )
 
         }

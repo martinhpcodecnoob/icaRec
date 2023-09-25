@@ -7,18 +7,6 @@ import { useEffect, useRef, useState } from 'react';
 export default function CardSingle({elementBusiness}) {
     const [visible, setVisible] = useState(false)
     const bodyRef = useRef(document.body)
-    // const [changeBody, setChangeBody] = useState(bodyRef.current)
-    // console.log(bodyRef);
-    // useEffect(() => {
-    //     bodyRef.current = document.body;
-    //     console.log(bodyRef);
-    //     // if (visible) {
-    //     //     bodyRef.current.classList.add('overflow-hiddden')
-    //     // }
-    //     // if (!visible) {
-    //     //     bodyRef.current.classList.remove('overflow-hiddden')
-    //     // }
-    // }, [visible])
     const handleCloseModal = () => {
         // bodyRef.current.classList.remove('overflow-hidden')
         setVisible(false)
@@ -51,8 +39,8 @@ export default function CardSingle({elementBusiness}) {
                         height={1000}
                         className="w-full h-full object-center object-cover rounded-lg"
                     />
-                    <div className='absolute md:left-[187px] left-2 md:top-[5px] top-2'>
-                        <CardEmotic initialNumber={0} increment={100}/>
+                    <div className='absolute left-2 md:top-[5px] top-2'>
+                        <CardEmotic totalLikes={elementBusiness.totalLikes}/>
                     </div>
                 </div>
             </ModalHome >

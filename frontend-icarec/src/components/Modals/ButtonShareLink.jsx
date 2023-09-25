@@ -6,7 +6,6 @@ export default function ButtonShareLink({idLinkBussiness}) {
     const handleCopyClic = () => {
         navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_URL}/myweb/${idLinkBussiness ? idLinkBussiness:'error'}`)
             .then((data) => {
-                console.log(data);
                 toast.info("Enlace copiado al portapapeles")
             })
             .catch((err) => {

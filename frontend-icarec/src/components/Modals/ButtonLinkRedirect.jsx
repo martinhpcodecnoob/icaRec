@@ -14,7 +14,6 @@ export default function ButtonLinkRedirect({idBusiness, idUserBusiness}) {
         }
     }, [data])
     
-    console.log("Este es el usuario desde button de link edit site: ", data);
     return (
         <>
             {

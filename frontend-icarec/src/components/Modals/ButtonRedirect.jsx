@@ -1,16 +1,16 @@
 'use client'
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import LoadingScreen from '../LoadingScreen'
 export default function ButtonRedirect({showButton,inputForm}) {
     useEffect(() => {
         setIsLoading(false)
     }, [])
     const [isLoading, setIsLoading] = useState(false)
-    const bodyRefTwo = useRef()
+    // const bodyRefTwo = useRef()
     const handleCloseModal = () => {
-        bodyRefTwo.current=document.body
-        bodyRefTwo.current.classList.remove('overflow-hidden')
+        // bodyRefTwo.current=document.body
+        // bodyRefTwo.current.classList.remove('overflow-hidden')
         setIsLoading(true)
     }
     if (isLoading) {

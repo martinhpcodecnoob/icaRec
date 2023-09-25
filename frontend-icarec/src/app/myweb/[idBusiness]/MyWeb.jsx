@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Link from "next/link";
 import ButtonLinkRedirect from "@/components/Modals/ButtonLinkRedirect";
+import ButtonKuskana from "@/components/Modals/ButtonKuskana";
 
 export default function MyWeb({myBusiness}) {
     if (myBusiness === undefined) {
@@ -18,13 +19,7 @@ export default function MyWeb({myBusiness}) {
         <div>
             <div className="block sticky top-0 z-10">
                 <div className="flex p-[1rem] items-center justify-between bg-[#FFF8EE]">
-                    <Link href={'/'} className="w-32 h-8">
-                        <Image
-                            alt="Kuskasna"
-                            src={Kuskana}
-                            className="w-full h-full"
-                        />
-                    </Link>
+                    <ButtonKuskana/>
                     <ButtonLinkRedirect idBusiness={myBusiness._id} idUserBusiness={myBusiness.owner}/>
                 </div>
             </div>

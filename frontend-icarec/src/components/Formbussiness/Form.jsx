@@ -186,7 +186,7 @@ export default function Form({formatDataIdBusiness}) {
 
     const handleFileChange = (e) => {
         const file = e.target.files
-        console.log(file);
+        // console.log(file);
 
         if (file.length < 1) {
             dispatch(saveLimitMessage("No has subido ni una imagen"))

@@ -54,7 +54,7 @@ const ExtractUsersButton = ({userId, accessToken}) => {
 
   return (
     <button 
-      className='text-[1rem] focus:outline-none text-white font-bold bg-[#319e2d] rounded-lg text-sm px-3 py-2.5'
+      className='w-full flex px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]'
       disabled={isButtonDisabled}
       onClick={onClickExtractUsers}
     >

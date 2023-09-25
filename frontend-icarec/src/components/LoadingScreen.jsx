@@ -18,7 +18,7 @@ const LoadingScreen = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 w-full h-full flex items-center justify-center bg-[#F3BA1A] transition-opacity duration-500 ${
+      className={`fixed top-0 left-0 w-full h-full flex items-center justify-center bg-[#F3BA1A] transition-opacity duration-500 z-50 ${
         visible ? 'opacity-100' : 'opacity-0'
       }`}
     >

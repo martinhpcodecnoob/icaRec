@@ -1,11 +1,15 @@
 'use client'
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import { usePopper } from 'react-popper';
+import ExtractUsersButton from '../ExtractUsersButton';
 
 export default function Popbuttons({viewPopover=false, creeateBusinness, closeSession}) {
     const [visible, setVisible] = useState(false);
     const [referenceElement, setReferenceElement] = useState(null);
     const [popperElement, setPopperElement] = useState(null);
+    const { data: session, status } = useSession()  
     const { styles, attributes } = usePopper(referenceElement, popperElement, {
       placement: 'bottom', // Puedes ajustar la posición según tus necesidades
     });
@@ -39,14 +43,15 @@ export default function Popbuttons({viewPopover=false, creeateBusinness, closeSe
                 onMouseLeave={hidePopover}
             >
                 <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                    {session.user?.role.includes('admin') ? (
+                        <ExtractUsersButton userId={session?.user?.userId} accessToken={session?.user?.token}/>
+                        ) : null
+                    } 
                     <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Descargar Data</a>
+                        <Link href={'/mybusiness'} onClick={creeateBusinness} className="w-full flex px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Crear Negocio</Link>
                     </li>
                     <li>
-                        <a href="#" onClick={creeateBusinness} className="block px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Crear Negocio</a>
-                    </li>
-                    <li>
-                        <a href="#" onClick={closeSession} className="block px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Cerrar sesion</a>
+                        <button onClick={closeSession} className="w-full flex px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Cerrar sesion</button>
                     </li>
                 </ul>
             </div>
