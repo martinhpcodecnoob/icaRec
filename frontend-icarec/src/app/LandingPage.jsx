@@ -32,10 +32,7 @@ const LandingPage = ({dataBusiness}) => {
     const error = searchParams.get('error')
     const businessAll = useSelector(state => state.landing.bussiness)
     const collectionService = useSelector(state => state.landingTwo.collectionService)
-
     const { data: session, status } = useSession()  
-
-    const businessAll = useSelector(state => state.landing.bussiness)
     const [isLoading, setIsLoading] = useState(false)
 
     

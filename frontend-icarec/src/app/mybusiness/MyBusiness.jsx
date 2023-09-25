@@ -97,7 +97,8 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
                 dispatch(businessIdUpdates({
                     businessId:businessID,
                     updates:inputForm,
-                    userId:userIDBusiness
+                    userId:userIDBusiness,
+                    accessToken: data?.user?.token
                 })).then(response => {
                     console.log("este es response al hacer update",response)
                 })
