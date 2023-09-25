@@ -4,7 +4,7 @@ import MyBusiness from './MyBusiness'
 export async function getServicesB() {
     let urlID = `${process.env.NEXT_PUBLIC_BACKEND_URI}/api/business/getAllBusinessServices`
     try {
-        const response = await fetch(urlID,{cache:'no-store'})
+        const response = await fetch(urlID,{next:{revalidate:2}})
         const services = response.json()
         return services
     } catch (error) {

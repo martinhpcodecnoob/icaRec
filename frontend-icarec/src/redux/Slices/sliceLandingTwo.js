@@ -24,11 +24,15 @@ export const LandingTwo = createSlice({
         stateCollectionService:{
             loading:false,
             error:null
-        }
+        },
+        bussinessIdEdition:{}
     },
     reducers:{
         resetCollectionService:(state,action) => {
             state.collectionService = []
+        },
+        addBusinessIdEdition:(state,action) => {
+            state.bussinessIdEdition = action.payload
         }
 
     },

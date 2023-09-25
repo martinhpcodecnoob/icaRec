@@ -3,14 +3,14 @@ import React, { useEffect, useState } from "react";
 import Map from '../../components/Map'
 import { IoIosAddCircle } from "react-icons/io";
 import EtiquetasScroll from "./EtiquetasScroll";
-import { saveFormPreview, saveLimitMessage } from "@/redux/Slices/slicePreview";
+import { saveFormPreview, saveLimitMessage, saveLoaction } from "@/redux/Slices/slicePreview";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PopServicesTwo from "../Modals/PopServicesTwo";
 
-export default function Form() {
-    const initialValues = {
+export default function Form({formatDataIdBusiness}) {
+    const initialValues = formatDataIdBusiness ? formatDataIdBusiness : {
         name_business:"",
         geo_business:"",
         description:"",
@@ -70,6 +70,11 @@ export default function Form() {
         }
         setCompareInput(true)
     }, [compareInput,addService])
+    useEffect(() => {
+        if (formatDataIdBusiness) {
+            dispatch(saveLimitMessage('Hacer clic en "Actualizar"'))
+        }
+    }, [])
     
     const showPopover = () => {
         setVisible(true);
@@ -225,7 +230,7 @@ export default function Form() {
     return (
         <>
         <div className="flex font-bold justify-center text-center text-[1rem] text-[#100E80] bg-[#f3ba1a] mb-3 rounded-lg">¡QUE CONOZCAN TU NEGOCIO!</div>
-        <form onChange={handleSubmit} onSubmit={handleSubmit}>
+        <form onChange={handleSubmit} onSubmit={handleSubmit} onLoad={handleSubmit}>
             <div className="relative z-0 w-full mb-3 group">
                 <input
                     type="text"
@@ -263,7 +268,11 @@ export default function Form() {
                     Ubicacion del Negocio
                 </label>
                 <div className={`mt-3 w-full h-[11rem] border-2 border-gray-300 rounded-md`}>
-                    <Map view={true}/>
+                    <Map 
+                        view={true} 
+                        latProp={formatDataIdBusiness ? initialValues.location.lat:undefined}
+                        longProp={formatDataIdBusiness ? initialValues.location.long:undefined}
+                    />
                 </div>
             </div>
             <div className="relative z-0 w-full mb-3 group">

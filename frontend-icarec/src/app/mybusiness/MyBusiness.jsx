@@ -14,13 +14,14 @@ import { PiShieldWarningFill } from "react-icons/pi";
 import LoadingScreen from '@/components/LoadingScreen'
 import { convertURLtofile } from '../../../utils/converURLtofile'
 import { signResponseCloudinary } from '../../../utils/apiCloudinary'
-import { createBusiness, saveDataCloudinary, saveLimitMessage } from '@/redux/Slices/slicePreview'
+import { createBusiness, saveDataCloudinary, saveFormEdition, saveLimitMessage } from '@/redux/Slices/slicePreview'
 import LoadFormBusiness from '@/components/Formbussiness/LoadFormBusiness'
 import WarningModal from '@/components/Formbussiness/WarningModal'
 import Link from 'next/link'
 import { addAllServices } from '@/redux/Slices/sliceLanding'
+import ValidationUser from '@/components/ValidationUser'
 
-export default function MyBusiness({servicess}) {
+export default function MyBusiness({servicess,formatDataIdBusiness=undefined,userIDBusiness}) {
     
     const router = useRouter()
     const inputForm = useSelector(state => state.preview.inputForm)
@@ -159,29 +160,23 @@ export default function MyBusiness({servicess}) {
 
 
 if (status === "unauthenticated") {
+    const message = 'Oops!!, No puedes entrar a esta ruta sin Autenticarte'
     return(
-        <div className="flex items-center justify-center h-[90vh]">
-            <div className="flex flex-col items-center">
-                <span className="text-[1.2rem] md:text-[1.5rem] xl:text-[2vw] text-center mx-3">
-                    Oops!!, No puedes entrar a esta ruta sin Autenticarte
-                </span>
-                <PiShieldWarningFill className="text-[10rem] text-gray-500"/>
-                <button 
-                    type="button" 
-                    className="text-white text-[1.5rem]
-                                bg-gradient-to-r from-red-400 via-red-500 to-red-600 
-                                hover:bg-gradient-to-br focus:ring-4 
-                                focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 
-                                font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-                    onClick={()=> router.push("/")}
-                >
-                Volver
-                </button>
-            </div>
-        </div>
+        <>
+            <ValidationUser message={message}/>
+        </>
     )
 }
-
+if (formatDataIdBusiness) {
+    if (data?.user?.userId !== userIDBusiness) {
+        const message2 = "No puedes editar un negocio que no te pertenece"
+        return(
+            <>
+                <ValidationUser message={message2}/>
+            </>
+        )
+    }
+}
 return (
     <div>
         <div className='hidden mdx:block sticky top-0 z-10'>
@@ -226,7 +221,7 @@ return (
 
         <div className='flex justify-evenly px-6 smartphone:flex-col smartphone:h-[100%] sm:h-[85vh]'>
             <div className='px-2 smartphone:w-[100%] lg:w-[20rem] overflow-auto scrolbar sm:w-[60%]'>
-                <Form/>
+                <Form formatDataIdBusiness={formatDataIdBusiness===undefined ? undefined:formatDataIdBusiness}/>
             </div>
             <div className='flex items-center justify-center w-[70%] sm:relative smartphone:relative smartphone:w-full smartphone:mt-7'>
                 <div className='lg:h-full lg:w-[100%] lg:bottom-0 lg:relative mr-1 rounded-lg 
@@ -242,6 +237,7 @@ return (
                         showButton={false}
                         showButtonPopover={true}
                         visibleLiked={false}
+                        
                         />
                 </div>
             </div>
