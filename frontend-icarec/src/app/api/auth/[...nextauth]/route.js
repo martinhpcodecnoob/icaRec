@@ -4,6 +4,7 @@ import FacebookProvider from "next-auth/providers/facebook"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import clientPromise from "../../../../../utils/mongodb.js"
+import { updateAccount } from "../../../../../utils/apiBackend.js"
 
 const handler = NextAuth({
   secret:"secret123",
@@ -19,7 +20,7 @@ const handler = NextAuth({
   providers: [
       GoogleProvider({
         clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-        clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET
+        clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
       }),
       FacebookProvider({
         clientId: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID,
@@ -38,8 +39,8 @@ const handler = NextAuth({
               'Content-Type':'application/json'
             },
             body: JSON.stringify({
-              email: credentials?.email,
-              password: credentials?.password,
+              email: credentials.email,
+              password: credentials.password,
             }),
           })
           const data = await res.json()
@@ -51,52 +52,95 @@ const handler = NextAuth({
         }
       })
     ],
+    pages: {
+      signIn:'/',
+    },
     session: {
       strategy: "jwt",
+      maxAge: 1200,
     },
     callbacks: {
-      async signIn({ user, account, profile, email, credentials }) {
-          //if (account.provider === "google") {
-          /* const tokenData = {
-            providerType: account.provider,
-            accessToken: credentials.accessToken,
+      async signIn({ user, account, credentials}) {
+
+       if(!user){
+        return false
+       }
+
+        if(user && account){
+          const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/verifyUserExistsWithoutCredentials?email=${user.email}&providerType=${account.provider}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type':'application/json'
+            },
+            
+          })
+          const data = await res.json()
+          if(data.found){
+            const res = await updateAccount( data.userId, false, data.isRegistered )
+            if (res.status === 200) { 
+              account.newAccount = false
+              account.isRegistered = data.isRegistered
+              user.role = data.role
+            }
+
+            return true
           }
-          await saveAccessTokenInDatabase(user.id, tokenData) */
-        //}  
-          //console.log("sigIn:", { user, account, profile, email, credentials })
-        /* const token = await user.idToken;
-        console.log("Token JWT generado:", token); */
-        return true
+
+          if(!data.found){
+            account.newAccount = true
+            account.isRegistered = false
+            user.role = ['user']
+
+            return true
+          } else {
+            account.newAccount = data.newAccount
+            account.isRegistered = data.isRegistered
+            user.role = data.role
+            
+            return true
+          }
+        }
       },
-       async jwt({ token, account, user }) {
+       async jwt({ token, account, user, trigger, session }) {
+        if(trigger === 'update'){
+          if(session.user.newToken){
+            token.userToken = session.user.newToken
+          }
+          return {...token, ...session.user}
+        }
+
+        if(user){
+          token.role = user.role  
+        }
+
         if (account) {
           token.providerType = account.provider
-           /* console.log("token, token: ", token)
-          console.log("token, account: ", account)
-          console.log("token, user: ", user)   */
+          token.newAccount = account.newAccount
+          token.isRegistered = account.isRegistered    
+          
           if (account.type === 'credentials') {
-            console.log("Entra al credentials")
             if(user && user?._id){
-              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateToken/${user._id}`, {
+              token.userId = user._id
+              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateAccessAndRefreshTokens/${user._id}`, {
                 method: 'POST',
                 headers: {
                   'Content-Type':'application/json'
                 },
               })
               const data = await res.json()
-              token.userToken = data.token
+              token.userToken = data.accessToken
             }
           }else {
             if(token?.sub){
-
-              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateToken/${token.sub}`, {
+              token.userId = token.sub
+              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/generateAccessAndRefreshTokens/${token.sub}`, {
                 method: 'POST',
                 headers: {
                   'Content-Type':'application/json'
                 },
               })
               const data = await res.json()
-              token.userToken = data.token
+              token.userToken = data.accessToken
             }
           }  
         }
@@ -104,11 +148,13 @@ const handler = NextAuth({
         return token
       }, 
       async session({ session, token, user }) {
-        
         session.user.providerType = token.providerType 
+        session.user.newAccount = token.newAccount 
+        session.user.isRegistered = token.isRegistered
+        session.user.role = token.role
         session.user.token = token.userToken
-         /* console.log("session, session: ", session)
-        console.log("session, token: ", token)  */
+        session.user.userId = token.userId
+        
         return session
       },
     },

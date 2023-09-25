@@ -1,18 +1,27 @@
-import Image from "next/image";
 import React from "react";
 import CarouselSingle from "../Carouseltools/CarouselSingle";
 
-export default function FileInput({images=[]}) {
+export default function FileInput({images=[], hiddenRemove='',visibleLiked,dataLiked}) {
+  let arrayimages = []
   if (images.length > 0) {
+    for (let i = 0; i < images.length; i++) {
+      if (images[i].url_cloudinary === "") {
+          arrayimages.push(images[i].fileURL)
+      }else{
+          arrayimages.push(images[i].url_cloudinary)
+      }
+  }
+  }
+  if (arrayimages.length > 0) {
     return(
       <>
-        <CarouselSingle imageSlides={images}/>
+        <CarouselSingle imageSlides={arrayimages} imagesPublicId={images} hidden={hiddenRemove} visibleLiked={visibleLiked} dataLiked={dataLiked}/>
       </>
     )
   }
   return (
     <>
-      <div className="animate-pulse flex items-center justify-center w-full h-full bg-red-300 rounded-lg">
+      <div className="animate-pulse flex items-center justify-center lgx:h-[10rem] w-full h-full bg-[#F3BA1A] rounded-lg">
         <svg
           className="w-10 h-10 text-gray-200 dark:text-gray-600"
           aria-hidden="true"

@@ -22,6 +22,18 @@ const accountSchema = new Schema({
         ref: 'User', 
         required: true 
     },
+    newAccount: {
+        type: Schema.Types.Boolean,
+        default: true
+    },
+    isRegistered: {
+        type: Schema.Types.Boolean,
+        default: false
+    },
+    refreshToken: {
+        type: String,
+        default: null
+    },
     passwordResetToken: {
         type: String,
         default: null
