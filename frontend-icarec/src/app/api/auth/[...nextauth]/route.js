@@ -33,6 +33,7 @@ const handler = NextAuth({
           password: { label: "Password", type: "password", placeholder: "Contraseña ..." }
         },
         async authorize(credentials, req) {
+          console.log("URL DEL BACKEND EN EL FRONT: ", process.env.NEXT_PUBLIC_BACKEND_URI)
           const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/login`, {
             method: 'POST',
             headers: {
