@@ -1,3 +1,5 @@
+import { data } from "autoprefixer"
+
 const cloudname = process.env.NEXT_PUBLIC_CLOUDNAME
 export const signResponseCloudinary = (nameComplete,bussinessFolder) => {
     // console.log(`${nameComplete}/${bussinessFolder} y ${cloudname}`);
@@ -15,3 +17,11 @@ export const signResponseCloudinary = (nameComplete,bussinessFolder) => {
     .then((response) => response.json())
     .then((data) => data)
 }
+
+export function getAllBusinessOpcion1(){
+        return fetch(`http://localhost:3004/api/business/getAllBusiness`)
+                    .then((response) => {
+                        return response.json()
+                    })
+                    .then(data => data)
+  }

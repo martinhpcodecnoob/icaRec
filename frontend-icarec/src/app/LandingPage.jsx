@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { useSession, signOut } from 'next-auth/react'
 import Image from 'next/image'
 import { Button } from 'flowbite-react'
@@ -28,8 +28,8 @@ const LandingPage = ({dataBusiness}) => {
 
     const router = useRouter()
     const dispatch = useDispatch()
-    const searchParams = useSearchParams()
-    const error = searchParams.get('error')
+    // const searchParams = useSearchParams()
+    // const error = searchParams.get('error')
     const businessAll = useSelector(state => state.landing.bussiness)
     const collectionService = useSelector(state => state.landingTwo.collectionService)
     const { data: session, status } = useSession()  
@@ -62,13 +62,13 @@ const LandingPage = ({dataBusiness}) => {
      */
     useEffect(() => {
         dispatch(extractAllBusiness(dataBusiness.businesses))
-        if (error === 'OAuthAccountNotLinked') {
-            toast.error('Ya tienes una cuenta creada con ese correo.', {
-                position: toast.POSITION.TOP_CENTER,
-                autoClose: 3000, 
-            })
-            router.replace('/')  
-            }
+        // if (error === 'OAuthAccountNotLinked') {
+        //     toast.error('Ya tienes una cuenta creada con ese correo.', {
+        //         position: toast.POSITION.TOP_CENTER,
+        //         autoClose: 3000, 
+        //     })
+        //     router.replace('/')  
+        //     }
     }, []) 
 
      useEffect(() => {
