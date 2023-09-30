@@ -2,11 +2,14 @@
 
 import { SessionProvider } from "next-auth/react"
 import TokenRenewal from "./TokenRenewal"
+import { Suspense } from "react"
 
 export const NextAuthProvider = ({ children }) => {
     return (
     <SessionProvider refetchOnWindowFocus={false}>
-        {children}
+        <Suspense fallback={<></>}>
+            {children}
+        </Suspense>
         <TokenRenewal />
     </SessionProvider>
     )
