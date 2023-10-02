@@ -1,13 +1,11 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from 'react'
+import React, { useState, useEffect} from 'react'
 import { useRouter, useSearchParams } from "next/navigation"
 import { useSession, signOut } from 'next-auth/react'
 import Image from 'next/image'
-import { Button } from 'flowbite-react'
 import DefaultCarousels from '../components/Carousel'
 import Searchbar from '../components/Searchbar'
-import Cardsup from '@/components/Cards/Cardsup'
 import Cardsdown from '@/components/Cards/Cardsdown'
 import LoadingScreen from '@/components/LoadingScreen'
 import detodologo2 from '../../public/kuskanalogo.svg'
@@ -20,7 +18,6 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Popbuttons from '@/components/Modals/Popbuttons'
 import { extractAllBusiness, getServices } from '@/redux/Slices/sliceLanding'
-import ExtractUsersButton from '@/components/ExtractUsersButton'
 import { BiReset } from "react-icons/bi";
 import { resetCollectionService } from '@/redux/Slices/sliceLandingTwo'
 
@@ -89,6 +86,8 @@ const LandingPage = ({dataBusiness}) => {
             <Image
                 src={detodologo2}
                 alt='logo'
+                width={100}
+                height={100}
                 className='h-[3rem] w-[3rem]'
             />
             <div className='flex justify-center items-center lgx:hidden'>
@@ -96,9 +95,12 @@ const LandingPage = ({dataBusiness}) => {
             </div>
             <div className='flex justify-center items-center'>
                 {!session && (
-                    <Button color="failure" onClick={openLogin}>
+                    <button 
+                        color="failure" onClick={openLogin}
+                        className={`relative text-[1rem] focus:outline-none text-[#100E80]  bg-[#f3ba1a] hover:bg-[#FAE3A3] focus:ring-4 focus:ring-blue-400 font-bold rounded-lg text-sm px-5 py-2.5`}
+                    >
                         Login
-                    </Button>
+                    </button>
                 )}
                 {session && (
                     <div className='flex space-x-6 px-4 items-center'>

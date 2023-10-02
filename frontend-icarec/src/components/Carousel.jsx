@@ -1,28 +1,23 @@
 import { Carousel } from 'flowbite-react';
+import Image from 'next/image';
+import frame1 from '../../public/metadata/frame1.png'
+import frame2 from '../../public/metadata/frame2.png'
 
 export default function DefaultForm() {
     return(
-    <div className="h-56 sm:h-64 xl:h-80 2xl:h-96 z-0">
+    <div className="smartphone:h-44 sm:h-64 xl:h-80 2xl:h-96 z-0">
         <Carousel style={{ borderRadius: '0' }}>
-            <img
-                alt="..."
-                src="https://flowbite.com/docs/images/carousel/carousel-1.svg"
+            <Image
+                alt='frame1'
+                src={frame1}
+                width={1000}
+                height={1000}
             />
-            <img
-                alt="..."
-                src="https://flowbite.com/docs/images/carousel/carousel-2.svg"
-            />
-            <img
-                alt="..."
-                src="https://flowbite.com/docs/images/carousel/carousel-3.svg"
-            />
-            <img
-                alt="..."
-                src="https://flowbite.com/docs/images/carousel/carousel-4.svg"
-            />
-            <img
-                alt="..."
-                src="https://flowbite.com/docs/images/carousel/carousel-5.svg"
+            <Image
+                alt="frame2"
+                src={frame2}
+                width={1000}
+                height={1000}
             />
         </Carousel>
     </div>
