@@ -42,4 +42,4 @@ const EmailPasswordRecoveryHTML = (clientName, recoveryLink) => `
 </html>
 `;
 
-module.exports = {RegistrationEmailHTML, EmailPasswordRecoveryHTML} 
+module.exports = {RegistrationEmailHTML, EmailPasswordRecoveryHTML } 

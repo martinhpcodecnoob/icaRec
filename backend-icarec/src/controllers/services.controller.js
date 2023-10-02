@@ -4,11 +4,11 @@ const { sendEmailWithResend } = require('../utils/utils')
 const sendEmail = async  (req, res ) => {
     try {
         const user = req.user
-
+        
         const emailOptions = {
             from: 'tiendasE@resend.dev',
             to: user.email,
-            subject: 'Bienvenido a Tienda é',
+            subject: 'Bienvenido a Kuskana',
             html: RegistrationEmailHTML(user.name)
           }
       
