@@ -129,12 +129,10 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
         if (status === "authenticated" && persBussines.nombre && persBussines.business) {
             data2 = await signResponseCloudinary(persBussines.nombre, persBussines.business)
         }
-        console.log(data2);
         // Usamos map para crear un array de Promesas
         const promises = imageURLarray.map(async (image,i) => {
             if (image.url_cloudinary === '') {
                 const file = await convertURLtofile(image.fileURL);
-                console.log(data2.apiKey);
                 if (file) {
                     const formData = new FormData();
                     formData.append('file', file);

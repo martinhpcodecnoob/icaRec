@@ -12,9 +12,58 @@ const GOOGLE_ANALYTICS_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
 const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID
 
 export const metadata = {
-  title: 'Tiendas é',
-  description: 'Somos tiendas é',
-}
+  metadataBase: new URL('https://www.kuskana.com/'),
+  title: "Kuskana",
+    twitter:{
+      card: 'summary_large_image',
+    },
+    openGraph: {
+      title:"Kuskana",
+      description:"Somos un Directorio de Negocios",
+      siteName:"Kuskana",
+      url:"https://www.kuskana.com/",
+      images: [
+        {
+          url:"https://res.cloudinary.com/dl6jys7s8/image/upload/v1695918061/MetadataImages/Frame2_1_nr3ea8.png",
+          width:800,
+          height:600
+        }
+      ],
+      type: 'website',
+    },
+  }
+
+// export async function generateMetadata({ params, searchParams }, parent) {
+//   // read route params
+//   // const id = params.id
+ 
+//   // fetch data
+//   // const product = await fetch(`https://.../${id}`).then((res) => res.json())
+ 
+//   // optionally access and extend (rather than replace) parent metadata
+//   // const previousImages = (await parent).openGraph?.images || []
+ 
+//   return {
+//     title: "Tiendas E",
+//     twitter:{
+//       card: 'summary_large_image',
+//     },
+//     openGraph: {
+//       title:"Tiendas E",
+//       description:"Somos un tienda de Negocios",
+//       siteName:"Tiendas E`",
+//       url:"https://ica-rec.vercel.app/",
+//       images: [
+//         {
+//           url:"https://res.cloudinary.com/dl6jys7s8/image/upload/v1692326894/MartinHernandezPe%C3%B1a/Hughenst/eek3pnee5nxro0q4otd7.png",
+//           width:800,
+//           height:600
+//         }
+//       ],
+//       type: 'website',
+//     },
+//   }
+// }
 
 
 export default async function RootLayout({ children }) {

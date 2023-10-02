@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from "next/navigation"
 import { useSession, signOut } from 'next-auth/react'
 import Image from 'next/image'
@@ -34,32 +34,7 @@ const LandingPage = ({dataBusiness}) => {
     const collectionService = useSelector(state => state.landingTwo.collectionService)
     const { data: session, status } = useSession()  
     const [isLoading, setIsLoading] = useState(false)
-
-    
-
-  /*   if( session){
-        console.log("sesion user", session)
-    } */
-    /* useEffect(() => {
-        if (session && session.user.isRegistered === false && session.user.providerType !== 'credentials') {
-          router.push('/newUser')
-        }
-      }, [session, router])
-      
-    useEffect(() => {
-        dispatch(getServices())
-        if (error === 'OAuthAccountNotLinked') {
-          toast.error('Ya tienes una cuenta creada con ese correo.', {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 3000,
-          })
-          router.replace('/')
-        } else {
-          window.scroll(0, 0)
-          logPageView('landing_page')
-        }
-      }, [dispatch, error, router, session])
-     */
+     
     useEffect(() => {
         dispatch(extractAllBusiness(dataBusiness.businesses))
         if (error === 'OAuthAccountNotLinked') {
@@ -87,7 +62,6 @@ const LandingPage = ({dataBusiness}) => {
 
     if (session?.user?.isRegistered === false && session.user.providerType !== 'credentials') {
         return null 
-        /* return router.push('/newUser') */
     }
 
     const handleSignOut = () => {
