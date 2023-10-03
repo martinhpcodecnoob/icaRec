@@ -15,7 +15,7 @@ const handler = NextAuth({
       users: "custom-users-collection",
       verificationTokens: "custom-verification-tokens-collection",
     },
-    databaseName: "test",
+    databaseName: "dbkuskana",
   }),
   providers: [
       GoogleProvider({
