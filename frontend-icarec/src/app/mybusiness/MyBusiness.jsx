@@ -6,7 +6,6 @@ import BusinessSubComponent from '@/components/BusinessSubComponent'
 import FileInput from '@/components/Formbussiness/Fileinput'
 import Form from '@/components/Formbussiness/Form'
 import detodologo from '../../../public/kuskanazul.svg'
-import { logPageView } from '../../../utils/utils'
 import { useSession } from 'next-auth/react'
 import { useRouter } from "next/navigation"
 import LoadingScreen from '@/components/LoadingScreen'
@@ -39,7 +38,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
         if (servicesRedux.length === 0) {
             dispatch(addAllServices(servicess))
         }
-        logPageView('business_form')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     
     useEffect(() => {
@@ -54,6 +53,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
                 }, 1000);
             })
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activatedSubmitForm])
 
     useEffect(() => {
@@ -68,6 +68,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
                 router.push('/')
             }, 1000);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [progressBar])
     
     

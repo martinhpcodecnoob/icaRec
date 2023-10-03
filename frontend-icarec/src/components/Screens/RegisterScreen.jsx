@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 
 const RegisterScreen = () => {
@@ -22,10 +23,12 @@ const RegisterScreen = () => {
         }`}
       >
         <div className="flex flex-col items-center">
-        <img
+        <Image
           src="/kuskana_amarillo.svg" 
           alt="Logo"
           className="w-1/2 h-1/2 mb-4" 
+          width={200}
+          height={200}
         />
         <div className="animate-spin rounded-full border-t-4 border-[#F3BA1A] border-solid h-16 w-16 m-2"></div>
         <h1 className="text-3xl m-6 text-center text-[#F3BA1A] font-semibold">

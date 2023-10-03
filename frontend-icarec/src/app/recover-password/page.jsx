@@ -15,7 +15,7 @@ const RecoverPassword = () => {
   useEffect(() => {
     async function checkTokenValidity() {
       const token = searchParams.get('token')
-
+      
       const response = await checkIfTokenIsValid(token)
       setUser(response.userId)
       setTokenValid(response.isValid)
@@ -23,6 +23,7 @@ const RecoverPassword = () => {
     }
     
     checkTokenValidity()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (loading) {

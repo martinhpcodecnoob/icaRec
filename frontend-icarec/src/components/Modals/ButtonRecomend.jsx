@@ -37,6 +37,7 @@ export default function ButtonRecomend({paramsIdBusiness}) {
                 })
                 .catch(error => console.log("Este es la error",error))
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [session])
 
     const handleLiked = () => {

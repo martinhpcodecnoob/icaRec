@@ -56,6 +56,7 @@ export default function Form({formatDataIdBusiness}) {
                 }) 
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [newImagesRedux])
 
     useEffect(() => {
@@ -69,12 +70,14 @@ export default function Form({formatDataIdBusiness}) {
             }
         }
         setCompareInput(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [compareInput,addService])
     
     useEffect(() => {
         if (formatDataIdBusiness) {
             dispatch(saveLimitMessage('Hacer clic en "Actualizar"'))
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     
     const showPopover = () => {

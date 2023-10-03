@@ -9,6 +9,8 @@ const DeleteAccountButton = ({userId, accessToken}) => {
     const deleteAccountResponse = await deleteAccount(userId, accessToken)
     if(deleteAccountResponse.status === 200){
       await signOut({ callbackUrl: '/' })
+    }else{
+      await signOut({ callbackUrl: '/' })
     }
   }
   return (

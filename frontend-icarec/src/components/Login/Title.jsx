@@ -1,14 +1,16 @@
 import React from 'react'
+import Image from 'next/image'
 
 const Title = ({ title }) => {
   return (
     <div className="text-center w-full">
       <div className="mb-6">
-        <img
+        <Image
           src="/kuskana_amarillo.svg"
           alt="Logo Kuskana Amarillo"
           className="mx-auto bg"
-          style={{ maxWidth: '200px' }} 
+          width={200}
+          height={200}
         />
       </div>
       {title && (

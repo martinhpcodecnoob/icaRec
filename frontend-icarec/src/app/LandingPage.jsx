@@ -41,6 +41,7 @@ const LandingPage = ({dataBusiness}) => {
             })
             router.replace('/')  
             }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []) 
 
      useEffect(() => {
@@ -55,6 +56,7 @@ const LandingPage = ({dataBusiness}) => {
         if (session && session.user.isRegistered === false && session.user.providerType !== 'credentials') {
            router.push('/newUser')
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [session]) 
 
     if (session?.user?.isRegistered === false && session.user.providerType !== 'credentials') {

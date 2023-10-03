@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 
 const EmailButton = ({content, onOpenLogin, disabled }) => {
@@ -8,13 +9,13 @@ const EmailButton = ({content, onOpenLogin, disabled }) => {
               onClick={onOpenLogin}
               disabled={disabled}
           >
-            <img
+            <Image
               src="/maillogo.png"
-              className='mr-2'
               alt="Mail Logo"
-
-              style={{ width: '18px', height: '18px' }}
-            />
+              className='mr-2'
+              width={18}
+              height={18}
+          />
             <span className='w-full'>
               {content}
             </span>
