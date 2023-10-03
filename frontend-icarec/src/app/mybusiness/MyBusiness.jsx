@@ -65,7 +65,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
                     modalProgress:false,
                     message:''
                 })
-                // router.push('/')
+                router.push('/')
             }, 1000);
         }
     }, [progressBar])
@@ -83,28 +83,17 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
                 modalProgress:true,
                 message:"Guardando formulario"
             })
-            const dataUserResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/user/getUser`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: data?.user?.name
-                })
-            });
-            const dataUser = await dataUserResponse.json();
-            // const userAlbertoId = "64c18890b2dd91ead7f93be2"
             if (formatDataIdBusiness) {
                 dispatch(businessIdUpdates({
                     businessId:businessID,
                     updates:inputForm,
-                    userId:userIDBusiness,
+                    userId:data?.user?.userId,
                     accessToken: data?.user?.token
                 })).then(response => {
                     console.log("este es response al hacer update",response)
                 })
             } else {
-                dispatch(createBusiness({userId:dataUser.currentUser._id, business:inputForm, accessToken: data?.user?.token})).then(response => console.log("este es response ",response))
+                dispatch(createBusiness({userId:data?.user?.userId, business:inputForm, accessToken: data?.user?.token})).then(response => console.log("este es response ",response))
             }
             setActivatedSubmitForm(false)
         } catch (error) {
