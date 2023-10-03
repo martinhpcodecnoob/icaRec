@@ -7,7 +7,7 @@ const Account = require('../models/Account')
 const Business = require("../models/Business");
 
 const { generateAuthToken, sendEmailWithResend } = require("../utils/utils")
-const { EmailPasswordRecoveryHTML } = require("../utils/templates");
+const { EmailPasswordRecoveryHTML, newRecoveryPasswordHTML } = require("../utils/templates");
 
 const {SECRET, REFRESH_SECRET} = process.env
 const ACCESS_TOKEN_EXPIRATION = '15m'
@@ -218,7 +218,7 @@ async function generateRecoveryToken(req, res) {
       from: 'tiendasE@resend.dev',
       to: userWithCredentials.email,
       subject: 'Recuperación de Contraseña(Tienda é)',
-      html: EmailPasswordRecoveryHTML(userWithCredentials.name, recoveryLink)
+      html: newRecoveryPasswordHTML(userWithCredentials.name, recoveryLink)
     }
 
     await sendEmailWithResend(emailOptions)
