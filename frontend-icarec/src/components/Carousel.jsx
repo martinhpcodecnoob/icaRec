@@ -10,17 +10,17 @@ export default function DefaultForm() {
             <Image
                 alt='frame1'
                 src={frame1}
-                // width={1000}
-                // height={1000}
-                className='w-full h-full'
+                width={2000}
+                height={2000}
+                // className='w-full h-full'
                 priority={true}
             />
             <Image
                 alt="frame2"
                 src={frame2}
-                // width={1000}
-                // height={1000}
-                className='w-full h-full'
+                width={2000}
+                height={2000}
+                // className='w-full h-full'
                 priority={true}
             />
         </Carousel>
