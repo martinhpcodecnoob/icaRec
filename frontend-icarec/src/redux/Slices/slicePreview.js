@@ -56,7 +56,10 @@ export const destroyCloudinary = createAsyncThunk(
                     publicId
                 })
             })
-
+            // if (response.status !== 304 ||) {
+                
+            // }
+            console.log(response);
             const data = await response.json()
             if (data.errorBolean) {
                 throw Error(`Error :${data.message}`)
