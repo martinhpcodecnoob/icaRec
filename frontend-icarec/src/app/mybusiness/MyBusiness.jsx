@@ -249,7 +249,7 @@ return (
                         ¡Descubre un mundo de oportunidades con un click!
                     </div>
                     <div className='w-10 relative'>
-                        <Image alt='click' src={manoclick} className='w-full'/>
+                        <Image alt='click' src={manoclick} width={50} height={50}/>
                     </div>
                 </div>
                 <div>
