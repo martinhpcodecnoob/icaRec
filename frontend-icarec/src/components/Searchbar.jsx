@@ -47,7 +47,7 @@ const Searchbar = () => {
                         className="border-4 text-[17px] border-[#F3BA1A] focus:border-[#F3BA1A] bg-white h-14 w-full px-5 pr-16 rounded-[2rem] appearance-none focus:ring-0"
                         type="text" 
                         name="search" 
-                        placeholder="Busca un Servicio"
+                        placeholder="Buscar servicios"
                         value={inputValue}
                         onChange={handleInputChange}
                         autoComplete="off"

@@ -15,7 +15,7 @@ export default function ButtonRedirect({showButton,inputForm}) {
     }
     if (isLoading) {
         return <LoadingScreen/>
-    }
+    } 
     return (
         <>
         <Link

@@ -47,7 +47,7 @@ const PasswordRecoveryPage = ({userId}) => {
   };
 
   return (
-    <div className="bg-red-200 w-full max-w-sm mx-auto p-6 ">
+    <div className="bg-[#FAE3A3] w-full max-w-sm mx-auto p-6 ">
       <h2 className="text-2xl font-semibold mb-4">Recuperación de Contraseña</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
@@ -76,7 +76,7 @@ const PasswordRecoveryPage = ({userId}) => {
         {errors.confirmPassword && <p key="confirmPasswordError" className="text-red-500">{errors.confirmPassword.message}</p>}
         <button
           type="submit"
-          className="w-full bg-red-500 text-white rounded py-2 px-4 hover:bg-blue-600 transition duration-300"
+          className="w-full bg-[#100e80] text-white rounded py-2 px-4 hover:bg-blue-600 transition duration-300"
         >
           Cambiar Contraseña
         </button>

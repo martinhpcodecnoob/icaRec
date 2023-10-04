@@ -41,6 +41,7 @@ const LandingPage = ({dataBusiness}) => {
             })
             router.replace('/')  
             }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []) 
 
      useEffect(() => {
@@ -55,6 +56,7 @@ const LandingPage = ({dataBusiness}) => {
         if (session && session.user.isRegistered === false && session.user.providerType !== 'credentials') {
            router.push('/newUser')
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [session]) 
 
     if (session?.user?.isRegistered === false && session.user.providerType !== 'credentials') {
@@ -125,7 +127,7 @@ const LandingPage = ({dataBusiness}) => {
                 data-ad-format="auto"
                 data-full-width-responsive="true"
             />
-            <div className='flex justify-center items-center text-2xl pt-2'>¿En que te puedo ayudar?</div>
+            <div className='flex justify-center items-center text-2xl pt-2 m-2'>¿En qué te puedo ayudar?</div>
             <Searchbar/>
             {/* <Cardsup/> */}
             <div id='cardDown'>

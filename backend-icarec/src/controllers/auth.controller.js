@@ -217,7 +217,7 @@ async function generateRecoveryToken(req, res) {
     const emailOptions = {
       from: 'tiendasE@resend.dev',
       to: userWithCredentials.email,
-      subject: 'Recuperación de Contraseña(Tienda é)',
+      subject: 'Kuskana - Recuperación de Contraseña',
       html: newRecoveryPasswordHTML(userWithCredentials.name, recoveryLink)
     }
 

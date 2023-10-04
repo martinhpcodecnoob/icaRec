@@ -64,6 +64,7 @@ const TokenRenewal = () => {
       }, intervalDuration)
   
       return () => clearInterval(intervalId)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ session, tokenExpiration, intervalDuration, isFirstRun])
   
     return null

@@ -79,7 +79,7 @@ export default function CarouselSingle({imageSlides,imagesPublicId,hidden,visibl
                                 alt={`imageSlide${currentIndex}`}
                                 width={1000}
                                 height={1000}
-                                className={`w-full lg:max-h-[85vh] lg:h-full sm:h-[22vh] smartphone:h-[27vh] rounded-2xl object-center object-cover duration-500`}
+                                className={`w-full lg:max-h-[85vh] lg:h-full sm:h-[22vh] smartphone:h-[27vh] rounded-2xl object-center object-contain duration-500`}
                                 />
                             <div className={`absolute inset-0 flex left-3 top-2 ${visibleLiked?'lg:hidden':'hidden'}`}>
                                 <div className="flex items-center h-7 bg-[#F3BA1A] rounded-[1rem] px-2 py-1">

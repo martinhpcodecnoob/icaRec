@@ -1,9 +1,17 @@
 'use client'
+
 import React, { useState, useEffect }from 'react'
 import { useSearchParams } from 'next/navigation'
-import { checkIfTokenIsValid } from '../../../utils/apiBackend'
-import PasswordRecoveryPage from '@/components/PasswordRecoveryPage'
+import dynamic from 'next/dynamic'
+
+/* import PasswordRecoveryPage from '@/components/PasswordRecoveryPage' */
 import LoadingScreen from '@/components/LoadingScreen'
+
+import { checkIfTokenIsValid } from '../../../utils/apiBackend'
+
+const PasswordRecoveryPage = dynamic(() =>
+  import('@/components/PasswordRecoveryPage')
+)
 
 const RecoverPassword = () => {
 
@@ -15,7 +23,7 @@ const RecoverPassword = () => {
   useEffect(() => {
     async function checkTokenValidity() {
       const token = searchParams.get('token')
-
+      
       const response = await checkIfTokenIsValid(token)
       setUser(response.userId)
       setTokenValid(response.isValid)
@@ -23,18 +31,19 @@ const RecoverPassword = () => {
     }
     
     checkTokenValidity()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (loading) {
     return <LoadingScreen />
   }
-
+ 
   if (!tokenValid) {
     return <div>El enlace de recuperación es inválido o ha expirado.</div>
   }
 
-  return  <div className="flex justify-center items-center h-screen bg-red-200">
-            <PasswordRecoveryPage userId={user}/>
+  return  <div className="flex justify-center items-center h-screen bg-[#FAE3A3]">
+            <PasswordRecoveryPage userId={user} />
           </div>
 }
 
