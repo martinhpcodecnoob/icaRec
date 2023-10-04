@@ -23,7 +23,7 @@ import { businessIdUpdates } from '@/redux/Slices/sliceLandingTwo'
 import { convertURLtofile } from '../../../utils/converURLtofile'
 import { signResponseCloudinary } from '../../../utils/apiCloudinary'
 import detodologo from '../../../public/kuskanazul.svg'
-import manoclick from '../../../public/manoclick.png'
+import manoclick from '../../../public/manoclick.PNG'
 
 export default function MyBusiness({servicess,formatDataIdBusiness=undefined,userIDBusiness,businessID}) {
     
