@@ -9,9 +9,9 @@ export default function ButtonKuskana() {
     const handleCloseModal = () => {
         setIsLoading(true)
     }
-    if (isLoading) {
+   if (isLoading) {
         return <LoadingScreen/>
-    }
+    } 
     return (
         <>
             <Link onClick={handleCloseModal} href={'/'} className="w-32 h-8">

@@ -269,7 +269,7 @@ export default function Form({formatDataIdBusiness}) {
                     htmlFor="geo_business"
                     className="left-3 peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-2 z-10 origin-[0] peer-focus:left-0 peer-focus:text-black peer-focus:dark:text-green-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                 >
-                    Ubicacion del Negocio
+                    Ubicación del Negocio
                 </label>
                 <div className={`mt-3 w-full h-[11rem] border-2 border-gray-300 rounded-md`}>
                     <Map 

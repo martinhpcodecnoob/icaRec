@@ -132,7 +132,7 @@ const Map = ({latProp, longProp, view, heightMap='10.77rem'}) => {
               options={{
                   icon: {
                     path: window.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-                    fillColor: 'green', 
+                    fillColor: 'blue', 
                     fillOpacity: 1,
                     strokeWeight: 0,
                     scale: 8,

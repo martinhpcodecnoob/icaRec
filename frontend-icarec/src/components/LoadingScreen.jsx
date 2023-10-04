@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-
+import kuskanaAzul from '../../public/kuskanazul.svg'
 const LoadingScreen = () => {
   const [visible, setVisible] = useState(true)
 
@@ -25,10 +25,11 @@ const LoadingScreen = () => {
     >
       <div className="flex flex-col items-center">
         <Image
-          src="/kuskanazul.svg" 
+          src={kuskanaAzul} 
           alt="Logo"
-          width={500}
-          height={500}
+          priority={true}
+          /* width={500}
+          height={500} */
           className="w-1/2 h-1/2 mb-4" 
         />
         <div className="animate-spin rounded-full border-t-4 border-[#100E80] border-solid h-16 w-16"></div>
