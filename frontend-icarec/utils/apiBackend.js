@@ -224,3 +224,27 @@ export const checkIfTokenIsValid = async (token) => {
       }
     }
   }
+
+  export const sendUserWelcomeEmail = async (userId) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/services/sendEmail/${userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+  
+      const data = await response.json()
+  
+      return {
+        status: response.status, 
+        data: data,
+      }
+    } catch (error) {
+      console.error("Error del servidor al intentar enviar el correo de bienvenida", error)
+      return {
+        status: 500, 
+        error: "Error del servidor al intentar enviar el correo de bienvenida",
+      }
+    }
+  }

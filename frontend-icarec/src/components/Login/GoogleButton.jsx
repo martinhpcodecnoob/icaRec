@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { signIn } from 'next-auth/react'
 import { closeAllPopups } from '@/redux/Slices/popupSlice'
+import Image from 'next/image'
 
 const GoogleButton = ({content, disabled }) => {
     
@@ -17,11 +18,12 @@ const GoogleButton = ({content, disabled }) => {
                 }}
                 disabled={disabled}
             >
-                <img
-                src="/googlelogo.png"
-                alt="Google Logo"
-                className= "mr-2"
-                style={{ width: '18px', height: '18px' }}
+                <Image
+                    src="/googlelogo.png"
+                    alt="Google Logo"
+                    className= "mr-2"
+                    width={18}
+                    height={18}
                 />
                 <span className='w-full'>
                     {content}

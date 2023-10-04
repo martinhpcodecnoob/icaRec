@@ -1,14 +1,17 @@
 import React from 'react'
-
+import Image from 'next/image'
+import kuskanaAmarillo from '../../../public/kuskana_amarillo.svg'
 const Title = ({ title }) => {
   return (
     <div className="text-center w-full">
       <div className="mb-6">
-        <img
-          src="/kuskana_amarillo.svg"
+        <Image
+          src={kuskanaAmarillo}
           alt="Logo Kuskana Amarillo"
+          priority={true}
           className="mx-auto bg"
-          style={{ maxWidth: '200px' }} 
+          width={200}
+          height={200}
         />
       </div>
       {title && (

@@ -65,7 +65,7 @@ const BusinessSubComponent = ({
         <FileInput images={inputForm.images} hiddenRemove={hiddenRemove} visibleLiked={visibleLiked} dataLiked={dataLiked}/>
       </div>
       <div className='my-2 flex items-center justify-center'>
-        <p className='font-bold'>Ubicacion: </p>
+        <p className='font-bold'>Ubicación: </p>
         <p className='ml-2'>{inputForm.geo_business ? inputForm.geo_business:inputForm.business_location}</p>
       </div>
       <div className='flex justify-center items-center pb-2'>

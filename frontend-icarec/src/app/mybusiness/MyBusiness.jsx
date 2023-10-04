@@ -1,24 +1,27 @@
 'use client'
+
 import React, { useEffect,useState } from 'react'
-import Image from 'next/image'
 import { useDispatch, useSelector } from 'react-redux'
-import BusinessSubComponent from '@/components/BusinessSubComponent'
-import FileInput from '@/components/Formbussiness/Fileinput'
-import Form from '@/components/Formbussiness/Form'
-import detodologo from '../../../public/kuskanazul.svg'
-import { logPageView } from '../../../utils/utils'
 import { useSession } from 'next-auth/react'
 import { useRouter } from "next/navigation"
+import Image from 'next/image'
+import Link from 'next/link'
+
+import BusinessSubComponent from '@/components/BusinessSubComponent'
+import LoadFormBusiness from '@/components/Formbussiness/LoadFormBusiness'
+import ValidationUser from '@/components/ValidationUser'
 import LoadingScreen from '@/components/LoadingScreen'
+import WarningModal from '@/components/Formbussiness/WarningModal'
+import FileInput from '@/components/Formbussiness/Fileinput'
+import Form from '@/components/Formbussiness/Form'
+
+import { createBusiness, saveDataCloudinary, saveLimitMessage } from '@/redux/Slices/slicePreview'
+import { addAllServices } from '@/redux/Slices/sliceLanding'
+import { businessIdUpdates } from '@/redux/Slices/sliceLandingTwo'
+
 import { convertURLtofile } from '../../../utils/converURLtofile'
 import { signResponseCloudinary } from '../../../utils/apiCloudinary'
-import { createBusiness, saveDataCloudinary, saveLimitMessage } from '@/redux/Slices/slicePreview'
-import LoadFormBusiness from '@/components/Formbussiness/LoadFormBusiness'
-import WarningModal from '@/components/Formbussiness/WarningModal'
-import Link from 'next/link'
-import { addAllServices } from '@/redux/Slices/sliceLanding'
-import ValidationUser from '@/components/ValidationUser'
-import { businessIdUpdates } from '@/redux/Slices/sliceLandingTwo'
+import detodologo from '../../../public/kuskanazul.svg'
 
 export default function MyBusiness({servicess,formatDataIdBusiness=undefined,userIDBusiness,businessID}) {
     
@@ -39,7 +42,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
         if (servicesRedux.length === 0) {
             dispatch(addAllServices(servicess))
         }
-        logPageView('business_form')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     
     useEffect(() => {
@@ -54,6 +57,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
                 }, 1000);
             })
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activatedSubmitForm])
 
     useEffect(() => {
@@ -68,13 +72,14 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
                 router.push('/')
             }, 1000);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [progressBar])
     
-    
+     
     if (status === "loading") {
         return <LoadingScreen />
     }
-
+ 
     const finalSubmitback = async() => {
         // Ahora ejecutamos el segundo fetch
         try {

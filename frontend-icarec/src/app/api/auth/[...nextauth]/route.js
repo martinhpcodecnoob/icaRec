@@ -4,7 +4,7 @@ import FacebookProvider from "next-auth/providers/facebook"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import clientPromise from "../../../../../utils/mongodb.js"
-import { updateAccount } from "../../../../../utils/apiBackend.js"
+import { sendUserWelcomeEmail, updateAccount } from "../../../../../utils/apiBackend.js"
 
 const handler = NextAuth({
   secret:"secret123",
@@ -102,18 +102,24 @@ const handler = NextAuth({
           }
         }
       },
-       async jwt({ token, account, user, trigger, session }) {
+       async jwt({ token, account, user, trigger, session, isNewUser }) {
+        console.log("El usuario es nuevo? ", isNewUser)
         if(trigger === 'update'){
           if(session.user.newToken){
             token.userToken = session.user.newToken
           }
           return {...token, ...session.user}
         }
-
+        if(trigger === 'signUp'){
+          console.log("El triger de signUp?")
+        }
         if(user){
           token.role = user.role  
         }
-
+        if (isNewUser) {
+          console.log("Este es el id del usuario en el trigger: ", user)
+          await sendUserWelcomeEmail(user.id)
+        }
         if (account) {
           token.providerType = account.provider
           token.newAccount = account.newAccount
