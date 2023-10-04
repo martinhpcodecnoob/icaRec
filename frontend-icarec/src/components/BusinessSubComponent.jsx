@@ -19,7 +19,8 @@ const BusinessSubComponent = ({
                                 aboutBusinessShow=false, heightMap='10.77rem',
                                 showRecomend = true,visibleLiked=false,
                                 dataLiked,
-                                showRecomendInteraction = false
+                                showRecomendInteraction = false,
+                                linkIconsState = false
                               }) => {
   const website = inputForm.name_web?inputForm.name_web:inputForm.website
   const services = inputForm.list_service ? inputForm.list_service : inputForm.services
@@ -69,19 +70,40 @@ const BusinessSubComponent = ({
         <p className='ml-2'>{inputForm.geo_business ? inputForm.geo_business:inputForm.business_location}</p>
       </div>
       <div className='flex justify-center items-center pb-2'>
-        <Link className={`px-2 ${inputForm.facebook === "" ?'hidden':''}`} href={inputForm.facebook} target='_blank'>
-          <FaFacebook className='text-blue-600 text-[2rem]'/>
-        </Link>
-        <Link className={`px-2 ${inputForm.cellphone === "" ?'hidden':''}`} href={`https://wa.me/51${inputForm.cellphone}`} target='_blank'>
-          <IoLogoWhatsapp className='text-green-400 text-[2rem]'/>
-        </Link>
-        <a className={`px-2 ${inputForm.cellphone === "" ?'hidden':''}`} href={`tel:${inputForm.cellphone}`} target='_blank'>
-          <BsFillTelephoneOutboundFill className='text-[2rem]'/>
-        </a>
-        <Link className={`px-2 ${website===undefined ?'hidden':''}`} href={`${inputForm.name_web}`} target='_blank'>
-          <TfiWorld className='text-[2rem]'/>
-        </Link>
-        <ButtonShareLink idLinkBussiness={inputForm._id}/>
+        {
+          linkIconsState ?
+            (<>
+              <Link className={`px-2 ${inputForm.facebook === "" ?'hidden':''}`} href={inputForm.facebook} target='_blank'>
+                <FaFacebook className='text-blue-600 text-[2rem]'/>
+              </Link>
+              <Link className={`px-2 ${inputForm.cellphone === "" ?'hidden':''}`} href={`https://wa.me/51${inputForm.cellphone}`} target='_blank'>
+                <IoLogoWhatsapp className='text-green-400 text-[2rem]'/>
+              </Link>
+              <a className={`px-2 ${inputForm.cellphone === "" ?'hidden':''}`} href={`tel:${inputForm.cellphone}`} target='_blank'>
+                <BsFillTelephoneOutboundFill className='text-[2rem]'/>
+              </a>
+              <Link className={`px-2 ${website===undefined ?'hidden':''}`} href={`${inputForm.name_web}`} target='_blank'>
+                <TfiWorld className='text-[2rem]'/>
+              </Link>
+              <ButtonShareLink idLinkBussiness={inputForm._id}/>
+            </>)
+            :
+            (<>
+              <button className={`px-2 ${inputForm.facebook === "" ?'hidden':''}`}>
+                <FaFacebook className='text-blue-600 text-[2rem]'/>
+              </button>
+              <button className={`px-2 ${inputForm.cellphone === "" ?'hidden':''}`}>
+                <IoLogoWhatsapp className='text-green-400 text-[2rem]'/>
+              </button>
+              <button className={`px-2 ${inputForm.cellphone === "" ?'hidden':''}`}>
+                <BsFillTelephoneOutboundFill className='text-[2rem]'/>
+              </button>
+              <button className={`px-2 ${website===undefined ?'hidden':''}`}>
+                <TfiWorld className='text-[2rem]'/>
+              </button>
+              <ButtonShareLink idLinkBussiness={inputForm._id}/>
+            </>)
+        }
       </div>
       <div className={`${aboutBusinessShow?'':'hidden'} lg:hidden`}>
         <AboutBusiness description={inputForm.description}/>

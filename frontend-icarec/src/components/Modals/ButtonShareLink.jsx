@@ -1,5 +1,5 @@
 'use client'
-import {FaLink } from "react-icons/fa";
+import { BsFillShareFill } from "react-icons/bs";
 import { toast } from 'react-toastify';
 
 export default function ButtonShareLink({idLinkBussiness}) {
@@ -15,9 +15,20 @@ export default function ButtonShareLink({idLinkBussiness}) {
     }
     return (
         <>
-            <button className={`px-2`} onClick={handleCopyClic}>
-                <FaLink className='text-[2rem]'/>
-            </button>
+            {
+                idLinkBussiness ? 
+                    (<>
+                        <button className={`px-2`} onClick={handleCopyClic}>
+                            <BsFillShareFill className='text-[2rem]'/>
+                        </button>
+                    </>)
+                    :
+                    (<>
+                        <button className={`px-2`}>
+                            <BsFillShareFill className='text-[2rem]'/>
+                        </button>
+                    </>)
+            }
         </>
     )
 }

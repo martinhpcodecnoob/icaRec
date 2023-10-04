@@ -32,6 +32,9 @@ export const createBusiness = createAsyncThunk(
                     })
                 })
             })
+            if (response.status !== 200 && response.status !== 304) {
+                throw Error(`Error al crear:${response.status} ${response.statusText}`)
+            }
             const data= await response.json()
             if (data.errors) {
                 throw Error(`Error al crear: ${data.message}`)
@@ -56,10 +59,6 @@ export const destroyCloudinary = createAsyncThunk(
                     publicId
                 })
             })
-            // if (response.status !== 304 ||) {
-                
-            // }
-            console.log(response);
             const data = await response.json()
             if (data.errorBolean) {
                 throw Error(`Error :${data.message}`)
