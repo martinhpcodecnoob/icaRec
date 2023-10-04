@@ -55,6 +55,7 @@ export default function MyWeb({myBusiness}) {
                         visibleLiked={true}
                         dataLiked={myBusiness.totalLikes}
                         showRecomendInteraction={true}
+                        linkIconsState={true}
                     />
                     <div className="w-full hidden lg:block mb-5">
                         <div className="text-[#100E80] font-bold text-[2rem]">

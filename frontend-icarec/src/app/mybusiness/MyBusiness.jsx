@@ -39,7 +39,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
         nombre:data?.user?.name.split(' ').join(''),
         business:inputForm?.name_business
     }
-    console.log(data);
+    // console.log(data);
     useEffect(() => {
         if (servicesRedux.length === 0) {
             dispatch(addAllServices(servicess))
@@ -49,15 +49,26 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
     
     useEffect(() => {
         if (activatedSubmitForm) {
-            finalSubmitback().then(() => {
-                setTimeout(() => {
+            finalSubmitback()
+                .then((finareponse) => {
+                    console.log(finareponse);
+                    setTimeout(() => {
+                        setProgressBar({
+                            percentage:100,
+                            modalProgress:true,
+                            message:"Finalizo el envio"
+                        })
+                    }, 1000);
+                })
+                .catch((error) =>{
                     setProgressBar({
-                        percentage:100,
-                        modalProgress:true,
-                        message:"Finalizo el envio"
+                        percentage:0,
+                        modalProgress:false,
+                        message:''
                     })
-                }, 1000);
-            })
+                    dispatch(saveLimitMessage(`${error.error}`))
+                    // return error
+                })
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activatedSubmitForm])
@@ -71,7 +82,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
                     modalProgress:false,
                     message:''
                 })
-                // router.push('/')
+                router.push('/')
             }, 1000);
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,6 +95,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
  
     const finalSubmitback = async() => {
         // Ahora ejecutamos el segundo fetch
+        let createBusinessVar
         try {
             setProgressBar({
                 percentage:85,
@@ -100,67 +112,95 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
                     console.log("este es response al hacer update",response)
                 })
             } else {
-                dispatch(createBusiness({userId:data?.user?.userId, business:inputForm, accessToken: data?.user?.token})).then(response => console.log("este es response ",response))
+                createBusinessVar =await dispatch(createBusiness({userId:data?.user?.userId, business:inputForm, accessToken: data?.user?.token}))
+                    .then(response => {
+                        console.log(response);
+                        if (response.error) {
+                            throw Error(`${response.error.message}`)
+                        }
+                        return {create:true, error:null}
+                    })
+                    .catch(error => {
+                        return {create: false, error:error.message}
+                    })
+                if (!createBusinessVar.create) {
+                    throw createBusinessVar
+                }
             }
             setActivatedSubmitForm(false)
+            return createBusinessVar
         } catch (error) {
             setActivatedSubmitForm(false)
-            console.error("Fetch error:", error);
+            throw error
         }
     }
     
     const handleSubmitBack = async () => {
-        const imageURLarray = inputForm.images;
-        const numberImages = imageURLarray.filter(image => {
-            if (image.url_cloudinary === '') {
-                return image
-            }
-        })
-        setProgressBar({
-            percentage:60,
-            modalProgress:true,
-            message:`Subiendo ${numberImages.length} imagen${numberImages.length === 1 ? '':'es'}`
-        })
-
-        let data2 = {}
-        if (status === "authenticated" && persBussines.nombre && persBussines.business) {
-            data2 = await signResponseCloudinary(persBussines.nombre, persBussines.business)
-        }
-        // Usamos map para crear un array de Promesas
-        const promises = imageURLarray.map(async (image,i) => {
-            if (image.url_cloudinary === '') {
-                const file = await convertURLtofile(image.fileURL);
-                if (file) {
-                    const formData = new FormData();
-                    formData.append('file', file);
-                    formData.append('api_key', data2.apiKey);
-                    formData.append("timestamp", data2.timestamp);
-                    formData.append("signature", data2.signature);
-                    formData.append("eager", "c_pad,h_300,w_400|c_crop,h_200,w_260");
-                    formData.append("folder", `${persBussines.nombre}/${persBussines.business}`);
-                    const response = await fetch(`https://api.cloudinary.com/v1_1/${data2.cloudname}/auto/upload`, {
-                        method: "POST",
-                        body: formData
-                    });
-                    const data = await response.json();
-                    dispatch(saveDataCloudinary({
-                        url_cloudinary: data.url,
-                        public_id: data.public_id,
-                        fileURL: image.fileURL
-                    }));
+        try {
+            const imageURLarray = inputForm.images;
+            const numberImages = imageURLarray.filter(image => {
+                if (image.url_cloudinary === '') {
+                    return image
                 }
-            }
-        });
-        
-        // Esperamos a que todas las Promesas se resuelvan antes de continuar
-        await Promise.all(promises).then(() => {
-            setActivatedSubmitForm(true)
-            setProgressBar({
-                percentage:62,
-                modalProgress:true,
-                message:'Fin de la subida de Image'
             })
-        }); 
+            setProgressBar({
+                percentage:60,
+                modalProgress:true,
+                message:`Subiendo ${numberImages.length} imagen${numberImages.length === 1 ? '':'es'}`
+            })
+    
+            let data2 = {}
+            if (status === "authenticated" && persBussines.nombre && persBussines.business) {
+                data2 = await signResponseCloudinary(persBussines.nombre, persBussines.business)
+            }
+            // Usamos map para crear un array de Promesas
+            const promises = imageURLarray.map(async (image,i) => {
+                if (image.url_cloudinary === '') {
+                    const file = await convertURLtofile(image.fileURL);
+                    if (file) {
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        formData.append('api_key', data2.apiKey);
+                        formData.append("timestamp", data2.timestamp);
+                        formData.append("signature", data2.signature);
+                        formData.append("eager", "c_pad,h_300,w_400|c_crop,h_200,w_260");
+                        formData.append("folder", `${persBussines.nombre}/${persBussines.business}`);
+                        const response = await fetch(`https://api.cloudinary.com/v1_1/${data2.cloudname}/auto/upload`, {
+                            method: "POST",
+                            body: formData
+                        });
+                        if (response.status !== 200 && response.status !== 304) {
+                            setProgressBar({
+                                percentage:0,
+                                modalProgress:false,
+                                message:''
+                            })
+                            dispatch(saveLimitMessage(`Error al enviar las imagenes: Imagen ${i+1}`))
+                            throw Error({error:true,message:"Error en imagenes"})
+                        }
+                        const data = await response.json();
+                        dispatch(saveDataCloudinary({
+                            url_cloudinary: data.url,
+                            public_id: data.public_id,
+                            fileURL: image.fileURL
+                        }));
+                    }
+                }
+            });
+            
+            // Esperamos a que todas las Promesas se resuelvan antes de continuar
+            await Promise.all(promises).then(() => {
+                setActivatedSubmitForm(true)
+                setProgressBar({
+                    percentage:62,
+                    modalProgress:true,
+                    message:'Fin de la subida de Image'
+                })
+            }); 
+        } catch (error) {
+            console.log(error);
+            return error
+        }
     };
 
 
@@ -242,7 +282,6 @@ return (
                         showButton={false}
                         showButtonPopover={true}
                         visibleLiked={false}
-                        
                         />
                 </div>
             </div>
