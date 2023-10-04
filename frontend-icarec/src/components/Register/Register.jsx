@@ -29,7 +29,8 @@ const RegisterForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
-      handleSubmit(onSubmit)()
+    handleSubmit(onSubmit)()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
   const { handleSubmit, control, formState: { errors }, setValue, getValues } = useForm({

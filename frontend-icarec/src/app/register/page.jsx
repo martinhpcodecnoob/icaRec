@@ -1,11 +1,14 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { logPageView } from '../../../utils/utils'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
+
 import LoadingScreen from '@/components/LoadingScreen'
 import ProtectedRoute from '@/components/Guards/ProtectedRoute'
-import RegisterForm from '@/components/Register/Register'
+/* import RegisterForm from '@/components/Register/Register' */
+
+const RegisterForm = dynamic(() => import('@/components/Register/Register'));
 
 const Register = () => {
 
@@ -13,13 +16,12 @@ const Register = () => {
 
   useEffect(() => {
       setIsLoading(false)
-      logPageView('register')
   }, [])
 
   if (isLoading) {
     return <LoadingScreen />
   }
-
+ 
   return (
     <>
     <Head>

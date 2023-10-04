@@ -1,15 +1,15 @@
-const { RegistrationEmailHTML } = require('../utils/templates')
+const { RegistrationEmailHTML, NewRegistrationMail } = require('../utils/templates')
 const { sendEmailWithResend } = require('../utils/utils')
 
 const sendEmail = async  (req, res ) => {
     try {
         const user = req.user
-
+        
         const emailOptions = {
             from: 'tiendasE@resend.dev',
             to: user.email,
-            subject: 'Bienvenido a Tienda é',
-            html: RegistrationEmailHTML(user.name)
+            subject: 'Bienvenido a Kuskana',
+            html: NewRegistrationMail(user.name)
           }
       
           await sendEmailWithResend(emailOptions)

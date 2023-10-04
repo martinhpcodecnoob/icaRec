@@ -19,7 +19,7 @@ function generateAuthToken( userId, expires, secret ) {
 async function sendEmailWithResend({ from, to, subject, html }) {
   try {
     await resend.emails.send({
-      from,
+      from: "Kuskana <Kuskana@kuskana.com>",
       to,
       subject,
       html

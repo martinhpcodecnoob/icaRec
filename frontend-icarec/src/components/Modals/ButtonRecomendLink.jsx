@@ -12,7 +12,7 @@ export default function ButtonRecomendLink({inputForm}) {
     }
     if (isLoading) {
         return <LoadingScreen/>
-    }
+    } 
     return (
         <>
             <Link

@@ -4,7 +4,6 @@ import { Raleway } from 'next/font/google'
 import Script from "next/script";
 import ProvidersRedux from "@/redux/provider";
 import { NextAuthProvider } from "@/components/SesionProvider";
-
 const raleway = Raleway({ subsets: ['latin'] })
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY

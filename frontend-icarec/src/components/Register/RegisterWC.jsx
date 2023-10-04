@@ -29,7 +29,9 @@ const RegisterWC = () => {
 
   useEffect(() => {
       handleSubmit(onSubmit)()
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
   const { handleSubmit, control, formState: { errors }, setValue, getValues } = useForm({
       resolver: yupResolver(validationSchemaWithoutCredentials),
   })
