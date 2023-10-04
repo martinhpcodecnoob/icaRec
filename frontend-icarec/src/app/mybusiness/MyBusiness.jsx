@@ -6,6 +6,7 @@ import BusinessSubComponent from '@/components/BusinessSubComponent'
 import FileInput from '@/components/Formbussiness/Fileinput'
 import Form from '@/components/Formbussiness/Form'
 import detodologo from '../../../public/kuskanazul.svg'
+import manoclick from '../../../public/manoclick.png'
 import { logPageView } from '../../../utils/utils'
 import { useSession } from 'next-auth/react'
 import { useRouter } from "next/navigation"
@@ -34,7 +35,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
         nombre:data?.user?.name.split(' ').join(''),
         business:inputForm?.name_business
     }
-
+    console.log(data);
     useEffect(() => {
         if (servicesRedux.length === 0) {
             dispatch(addAllServices(servicess))
@@ -65,7 +66,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
                     modalProgress:false,
                     message:''
                 })
-                router.push('/')
+                // router.push('/')
             }, 1000);
         }
     }, [progressBar])
@@ -202,7 +203,7 @@ return (
                         ¡Descubre un mundo de oportunidades con un click!
                     </div>
                     <div className='w-10 relative'>
-                        <Image alt='click' src={'/manoclick.png'} fill/>
+                        <Image alt='click' src={manoclick} className='w-full'/>
                     </div>
                 </div>
                 <div>

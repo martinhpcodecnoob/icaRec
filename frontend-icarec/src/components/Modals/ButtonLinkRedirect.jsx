@@ -17,24 +17,27 @@ export default function ButtonLinkRedirect({idBusiness, idUserBusiness}) {
     return (
         <>
             {
-                isLoading ?
-                    (<>
-                        <Spinner
-                            aria-label="Warning spinner example"
-                            color="warning"
-                        />
-                    </>)
-                    :
-                    data.user.userId === idUserBusiness ?
-                        (<Link
-                            
-                            href={`${process.env.NEXT_PUBLIC_URL}/mybusiness/${idBusiness ? idBusiness:'error'}`}
-                            className="bg-[#100E80] px-4 rounded-[1rem] text-white"
-                        >
-                            Editar mi sitio
-                        </Link>)
+                data ? 
+                    isLoading ?
+                        (<>
+                            <Spinner
+                                aria-label="Warning spinner example"
+                                color="warning"
+                            />
+                        </>)
                         :
-                        null
+                        data.user.userId === idUserBusiness ?
+                            (<Link
+                                
+                                href={`${process.env.NEXT_PUBLIC_URL}/mybusiness/${idBusiness ? idBusiness:'error'}`}
+                                className="bg-[#100E80] px-4 rounded-[1rem] text-white"
+                            >
+                                Editar mi sitio
+                            </Link>)
+                            :
+                            null
+                    :
+                    null
             }
         </>
     )
