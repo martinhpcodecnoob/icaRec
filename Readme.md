@@ -9,11 +9,9 @@ Kuskana es un Directorio de Negocios con el objetivo de permitir que cualquier e
 - **Seguimiento de Usuarios:** Kuskana rastrea a los usuarios a través de su registro en la plataforma. Esto permite un seguimiento y análisis efectivo del comportamiento de los usuarios, lo que puede ser útil para mejorar la experiencia del usuario y las estrategias de marketing.
 
 - **Fomentar la Competitividad:** Al permitir a los negocios obtener interacciones positivas y mejorar su visibilidad, Kuskana crea una especie de competitividad. Los negocios compiten por atraer a los usuarios y mejorar sus calificaciones, lo que impulsa la mejora continua y la calidad de los servicios ofrecidos.
-- <!-- Uno de los objetivos clave del proyecto es crear alcance y tráfico en la plataforma web. Esto es esencial para implementar estrategias de publicidad y promoción efectivas. -->
-
-- <!-- Otro objetivo importante es dar seguimiento a los usuarios a través de su registro en nuestra plataforma. Este seguimiento y análisis del comportamiento de los usuarios nos proporciona información valiosa para mejorar la experiencia del usuario y nuestras estrategias de marketing. -->
-
-- <!-- El proyecto también busca fomentar una especie de competitividad. Al permitir a los negocios obtener interacciones positivas y mejorar su visibilidad, Kuskana crea un entorno en el que los negocios compiten por atraer a los usuarios y mejorar sus calificaciones. Esto impulsa la mejora continua y la calidad de los servicios ofrecidos. -->
+<!-- Uno de los objetivos clave del proyecto es crear alcance y tráfico en la plataforma web. Esto es esencial para implementar estrategias de publicidad y promoción efectivas. -->
+<!-- Otro objetivo importante es dar seguimiento a los usuarios a través de su registro en nuestra plataforma. Este seguimiento y análisis del comportamiento de los usuarios nos proporciona información valiosa para mejorar la experiencia del usuario y nuestras estrategias de marketing. -->
+<!-- El proyecto también busca fomentar una especie de competitividad. Al permitir a los negocios obtener interacciones positivas y mejorar su visibilidad, Kuskana crea un entorno en el que los negocios compiten por atraer a los usuarios y mejorar sus calificaciones. Esto impulsa la mejora continua y la calidad de los servicios ofrecidos. -->
 
 
 ## Modelos
