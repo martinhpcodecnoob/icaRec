@@ -6,7 +6,7 @@ Su finalidad es poder que cualquier negocio pueda crear un negocio de manera gra
 - Dar seguimiento a los usuarios a travez de los registro a nuestra paltaforma
 - Crear una especie de competitividad
 
-##Modelos
+## Modelos
 - **Account Model:** El modelo "Account" se utiliza para gestionar la información relacionada con las cuentas de usuario en la aplicación. Contiene campos como la contraseña, el proveedor de autenticación, el tipo de autenticación, el ID de usuario, y otros datos relacionados con la autenticación y la gestión de cuentas de usuario. Este modelo es esencial para la administración de cuentas y la seguridad de los usuarios en la aplicación.
 - **Business Model:** El modelo "Business" se encarga de la gestión de información relacionada con los negocios en la aplicación. Contiene campos que describen detalles del negocio, como el nombre, la ubicación, coordenadas de ubicación, descripción, número de teléfono, enlaces a redes sociales, sitio web, horario, servicios ofrecidos, imágenes y el propietario del negocio. Este modelo es fundamental para la administración y presentación de información de negocios en la aplicación.
 - **User Model:** El modelo "User" se utiliza para gestionar la información de usuarios en la aplicación. Contiene campos que almacenan detalles de usuario, como nombre, número de teléfono, DNI, correo electrónico, sexo, roles, fecha de creación de usuario y la asociación a negocios. Este modelo es esencial para administrar la información de usuarios y sus relaciones con otros elementos en la aplicación.
