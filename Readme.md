@@ -58,7 +58,7 @@ Cada uno de estos controladores tiene rutas y funciones específicas para llevar
     <tr>
         <td align="center" width="100">
             <a href="#">
-                <img src="https://www.rlogical.com/wp-content/uploads/2023/03/Rlogical-Blog-Images-thumbnail.webp" width="50" alt="NextJS"/>
+                <img src="https://assets-global.website-files.com/63b5c0982b18e6411f506075/64762b5b48d53f174fe39dd5_nextjs-may-30.png" width="50" alt="NextJS"/>
             </a>
             <br>NextJS
         </td>
