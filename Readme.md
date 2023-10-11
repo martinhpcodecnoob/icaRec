@@ -189,13 +189,13 @@ Para gestionar la autenticación y las sesiones de usuarios, utilizamos Next.js 
 
 # Developers Full Stack Web
 ## Julio Castro Alejos
-Desarrollador Backend: 
+Contacto: 
 <a href="https://www.linkedin.com/in/julio-castro-alejos-a4711920b/" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="/martinhpcoding" height="20" width="40" /></a>
 <p align="left">
 <img src="https://media.licdn.com/dms/image/D4D35AQGTU_VoSkVzTg/profile-framedphoto-shrink_200_200/0/1682366345946?e=1697655600&v=beta&t=FXNSbR5SXVaWoJNmn9D4b7iEARTQ2EbXRXXuJhohJeE" width="80" style="border-radius: 50%;" />
 
 ## Martin Hernandez Peña
-Desarrollador Frontend: 
+Contacto: 
 <a href="https://www.linkedin.com/in/martinhpcoding/" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="/martinhpcoding" height="20" width="40" /></a>
 <p align="left">
 <img src="https://media.licdn.com/dms/image/D4E35AQH2r1tkO5N7Ug/profile-framedphoto-shrink_200_200/0/1682434191438?e=1697652000&v=beta&t=0TJsV8voncJbId-bPKJOAnITYqBnX-v_Zut5aUsP09w" width="80" style="border-radius: 50%;" />
