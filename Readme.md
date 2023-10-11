@@ -170,3 +170,33 @@ Cada uno de estos controladores tiene rutas y funciones específicas para llevar
         </td>
     </tr>
 </table>
+
+# Restricciones
+* No se puede crear un negocio hasta que el usuario se haya registrado o logueado, tampoco puede entrar a la ruta /mybusiness ya que bloqueara su acceso con un mensaje
+
+* No podra editar los negocios de otros usuarios a excepcion del suyo.
+
+* No podra poner mas 3 imagenes y un peso de 1.5mb
+
+* Exite roles en los usuarios donde el rol "admin" tendra la opcion de descargar la data en excel y figura todos los usuarios registrados en la plataforma.
+
+# Seguridad
+En Kuskana, la seguridad es una prioridad. Para garantizarla, implementamos un sistema de acceso que utiliza dos tipos de tokens: access tokens y refresh tokens. Los access tokens permiten a los usuarios navegar por la plataforma de manera segura, accediendo a las diferentes funcionalidades. Mientras tanto, los refresh tokens les otorgan la capacidad de renovar sus access tokens, mejorando así la protección de sus cuentas.
+
+Además, hemos incorporado un sistema de recuperación de contraseñas que agrega una capa adicional de seguridad. Cuando los usuarios necesitan restablecer sus contraseñas, se genera un token de contraseña con una vigencia de una hora. Esto garantiza que el proceso sea seguro y minimiza el riesgo de accesos no autorizados.
+
+Para gestionar la autenticación y las sesiones de usuarios, utilizamos Next.js con NextAuth, que nos proporciona una capa de seguridad adicional al proteger nuestras sesiones a través de un secreto en las variables de entorno.
+
+# Developers Full Stack Web
+## Julio Castro Alejos
+Desarrollador Backend: 
+<a href="https://www.linkedin.com/in/julio-castro-alejos-a4711920b/" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="/martinhpcoding" height="20" width="40" /></a>
+<p align="left">
+<img src="https://media.licdn.com/dms/image/D4D35AQGTU_VoSkVzTg/profile-framedphoto-shrink_200_200/0/1682366345946?e=1697655600&v=beta&t=FXNSbR5SXVaWoJNmn9D4b7iEARTQ2EbXRXXuJhohJeE" width="80" style="border-radius: 50%;" />
+
+## Martin Hernandez Peña
+Desarrollador Frontend: 
+<a href="https://www.linkedin.com/in/martinhpcoding/" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="/martinhpcoding" height="20" width="40" /></a>
+<p align="left">
+<img src="https://media.licdn.com/dms/image/D4E35AQH2r1tkO5N7Ug/profile-framedphoto-shrink_200_200/0/1682434191438?e=1697652000&v=beta&t=0TJsV8voncJbId-bPKJOAnITYqBnX-v_Zut5aUsP09w" width="80" style="border-radius: 50%;" />
+
