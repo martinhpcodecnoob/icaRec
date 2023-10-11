@@ -152,9 +152,9 @@ Cada uno de estos controladores tiene rutas y funciones específicas para llevar
         </td>
         <td align="center" width="100">
             <a href="#">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxfnGNQzNvQsyBIj26EvQZrEPtkz2vCrOJA7aB0ZHdCvq_Lh0e8B3TjjvUZSOgpX0Kcls&usqp=CAU" width="50" alt="Auth0"/>
+                <img src="https://i0.wp.com/www.omnidefend.com/wp-content/uploads/2022/03/0Auth_Trans.png?fit=1014%2C676&ssl=1" width="50" alt="Auth0"/>
             </a>
-            <br>Auth0
+            <br>Oauth 2.0
         </td>
         <td align="center" width="100">
             <a href="#">
