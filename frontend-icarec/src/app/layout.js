@@ -13,6 +13,7 @@ const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID
 export const metadata = {
   metadataBase: new URL('https://www.kuskana.com/'),
   title: "Kuskana",
+  description:"Somos una plataforma para el descubrimiento y promoción de negocios locales y en línea, conectando a consumidores con una amplia gama de productos y servicios de alta calidad.",
   keywords:[
       'Negocios online','Tienda online','tiendas cercanas',
       'servicios en linea','producto en linea','negocios locales',
