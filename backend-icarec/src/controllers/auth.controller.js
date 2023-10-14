@@ -10,7 +10,7 @@ const { generateAuthToken, sendEmailWithResend } = require("../utils/utils")
 const { EmailPasswordRecoveryHTML, newRecoveryPasswordHTML } = require("../utils/templates");
 
 const {SECRET, REFRESH_SECRET} = process.env
-const ACCESS_TOKEN_EXPIRATION = '15m'
+const ACCESS_TOKEN_EXPIRATION = '1d'
 const REFRESH_TOKEN_EXPIRATION = '1w'
 
 async function generateAccessAndRefreshTokens(req, res){

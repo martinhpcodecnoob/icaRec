@@ -11,7 +11,6 @@ export const NextAuthProvider = ({ children }) => {
         <Suspense fallback={<LoadingScreen />}>
             {children}
         </Suspense>
-        <TokenRenewal />
     </SessionProvider>
     )
 }
