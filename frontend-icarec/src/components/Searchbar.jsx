@@ -2,7 +2,8 @@
 import React, { useState } from 'react'
 import { FcSearch } from "react-icons/fc";
 import PopServices from './Modals/PopServices';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { collectionSelectService } from '@/redux/Slices/sliceLandingTwo';
 
 const Searchbar = () => {
     const [inputValue, setInputValue] = useState('')
@@ -10,6 +11,7 @@ const Searchbar = () => {
     const [refInputElement, setRefInputElement] = useState(null)
     const [visible, setVisible] = useState(false);
     const infoServices = useSelector(state => state.landing)
+    const dispatch = useDispatch()
 
     const showPopover = () => {
         setVisible(true);
@@ -20,17 +22,21 @@ const Searchbar = () => {
 
     const handleInputChange = (event) => {
         const value = event.target.value
-        setInputValue(value)
-
-        if (infoServices.services.length > 0) {
-            const filteredSuggestions = infoServices.services.filter(word =>
-                word.toLowerCase().includes(value.toLowerCase()) && word.toLowerCase() !== value.toLowerCase() || word.toLowerCase() === value.toLowerCase()
-            )
-            setSuggestions(filteredSuggestions)
-        }
-        showPopover()
+            setInputValue(value)
+    
+            if (infoServices.services.length > 0) {
+                const filteredSuggestions = infoServices.services.filter(word =>
+                    word.toLowerCase().includes(value.toLowerCase()) && word.toLowerCase() !== value.toLowerCase() || word.toLowerCase() === value.toLowerCase()
+                )
+                setSuggestions(filteredSuggestions)
+            }
+            showPopover()
     }
 
+    const btnSearch = () => {
+        dispatch(collectionSelectService(infoServices.selectService))
+        setInputValue("")
+    }
     return (
         <div className='flex items-center'>
             <div className="relative mx-auto lg:w-[70%] sm:w-[60%] text-gray-600 z-20">
@@ -41,6 +47,7 @@ const Searchbar = () => {
                     hidePopover={hidePopover}
                     suggestions={suggestions}
                     inputValue={inputValue}
+                    setInputValue = {setInputValue}
                 >
                     <input
                         ref={setRefInputElement}
@@ -53,7 +60,7 @@ const Searchbar = () => {
                         autoComplete="off"
                         onClick={showPopover} onMouseLeave={hidePopover}
                     />
-                    <button type="submit" className="absolute rounded-[2rem] bg-[#F3BA1A] p-5 right-0 top-0">
+                    <button onClick={btnSearch} className="absolute rounded-[2rem] bg-[#F3BA1A] p-5 right-0 top-0">
                         <FcSearch/>
                     </button>
                 </PopServices>

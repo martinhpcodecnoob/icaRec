@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { usePopper } from 'react-popper';
 import { useDispatch } from 'react-redux';
 
-export default function PopServices({children,referenceElement,showPopover,hidePopover,visible,suggestions,inputValue}) {
+export default function PopServices({children,referenceElement,showPopover,hidePopover,visible,suggestions,inputValue,setInputValue}) {
     const [popperElement, setPopperElement] = useState(null);
     const dispatch = useDispatch()
     const { styles, attributes } = usePopper(referenceElement, popperElement, {
@@ -14,8 +14,8 @@ export default function PopServices({children,referenceElement,showPopover,hideP
 
     const captureSelect = (e) => {
         const {textContent} = e.target
+        setInputValue(textContent)
         dispatch(extractServices(textContent))
-        dispatch(collectionSelectService(textContent))
         hidePopover()
     }
     return (
