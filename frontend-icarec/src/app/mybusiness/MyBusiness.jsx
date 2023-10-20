@@ -152,6 +152,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
             let data2 = {}
             if (status === "authenticated" && persBussines.nombre && persBussines.business) {
                 data2 = await signResponseCloudinary(persBussines.nombre, persBussines.business)
+                console.log(data2);
             }
             // Usamos map para crear un array de Promesas
             const promises = imageURLarray.map(async (image,i) => {
@@ -176,6 +177,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
                                 message:''
                             })
                             dispatch(saveLimitMessage(`Error al enviar las imagenes: Imagen ${i+1}`))
+                            console.log(response);
                             throw Error({error:true,message:"Error en imagenes"})
                         }
                         const data = await response.json();
