@@ -16,7 +16,7 @@ import WarningModal from '@/components/Formbussiness/WarningModal'
 import FileInput from '@/components/Formbussiness/Fileinput'
 import Form from '@/components/Formbussiness/Form'
 
-import { createBusiness, saveDataCloudinary, saveLimitMessage } from '@/redux/Slices/slicePreview'
+import { createBusiness, destroyCloudinary, resetSaveImgDelete, saveDataCloudinary, saveLimitMessage } from '@/redux/Slices/slicePreview'
 import { addAllServices } from '@/redux/Slices/sliceLanding'
 import { businessIdUpdates } from '@/redux/Slices/sliceLandingTwo'
 
@@ -29,9 +29,11 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
     
     const router = useRouter()
     const inputForm = useSelector(state => state.preview.inputForm)
+    const imgDeleteCloud = useSelector(state => state.preview.imgDeleteCloud)
     const message = useSelector(state => state.preview.fileLimit)
     const dispatch = useDispatch()
     const servicesRedux = useSelector(state => state.landing.services)
+
     const {data,status} = useSession();
     const [activatedSubmitForm, setActivatedSubmitForm] = useState(false)
     const [progressBar, setProgressBar] = useState({percentage:0,modalProgress:false, message:''})
@@ -51,7 +53,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
         if (activatedSubmitForm) {
             finalSubmitback()
                 .then((finareponse) => {
-                    console.log(finareponse);
+                    // console.log(finareponse);
                     setTimeout(() => {
                         setProgressBar({
                             percentage:100,
@@ -98,7 +100,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
         let createBusinessVar
         try {
             setProgressBar({
-                percentage:85,
+                percentage:75,
                 modalProgress:true,
                 message:"Guardando formulario"
             })
@@ -108,8 +110,31 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
                     updates:inputForm,
                     userId:data?.user?.userId,
                     accessToken: data?.user?.token
-                })).then(response => {
+                })).then(async response => {
                     console.log("este es response al hacer update",response)
+                    if (imgDeleteCloud.length > 0) {
+                        setProgressBar({
+                            percentage:85,
+                            modalProgress:true,
+                            message:"Actualizando las imagenes a la nube"
+                        })
+                        const promiseDeleteCloud = imgDeleteCloud?.map(async(image,i) => {
+                        await dispatch(destroyCloudinary(image.public_id))
+                            .then((action) => {
+                                const {errorBolean,message} = action.payload
+                                if (!errorBolean) {
+                                    console.log(message);
+                                    return
+                                }
+                                console.log(message);
+                                return
+                            })
+                            .catch(err => console.log("Error desde dispatch destroy: ",err))
+                        });
+                        await Promise.all(promiseDeleteCloud).then(() => {
+                            dispatch(resetSaveImgDelete())
+                        })
+                    }
                 })
             } else {
                 createBusinessVar =await dispatch(createBusiness({userId:data?.user?.userId, business:inputForm, accessToken: data?.user?.token}))
@@ -152,7 +177,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
             let data2 = {}
             if (status === "authenticated" && persBussines.nombre && persBussines.business) {
                 data2 = await signResponseCloudinary(persBussines.nombre, persBussines.business)
-                console.log(data2);
+                // console.log(data2);
             }
             // Usamos map para crear un array de Promesas
             const promises = imageURLarray.map(async (image,i) => {
@@ -177,7 +202,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
                                 message:''
                             })
                             dispatch(saveLimitMessage(`Error al enviar las imagenes: Imagen ${i+1}`))
-                            console.log(response);
+                            // console.log(response);
                             throw Error({error:true,message:"Error en imagenes"})
                         }
                         const data = await response.json();

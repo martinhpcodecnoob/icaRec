@@ -1,5 +1,5 @@
 'use client'
-import { destroyCloudinary, removeImageOfRedux } from "@/redux/Slices/slicePreview";
+import { destroyCloudinary, removeImageOfRedux, saveImgDelete } from "@/redux/Slices/slicePreview";
 import Image from "next/image"
 import React, { useEffect, useState } from 'react';
 import { BsChevronCompactLeft, BsChevronCompactRight} from 'react-icons/bs';
@@ -51,19 +51,8 @@ export default function CarouselSingle({imageSlides,imagesPublicId,hidden,visibl
                     return objImage
                 }
             })
-            // dispatch(destroyCloudinary('dkjfbkljdsfhn'))
-            dispatch(destroyCloudinary(objPublicId[0].public_id))
-                .then((action) => {
-                    const {errorBolean,message} = action.payload
-                    if (!errorBolean) {
-                        console.log(message);
-                        dispatch(removeImageOfRedux(imageSelect))
-                        return
-                    }
-                    console.log(message);
-                    return
-                })
-                .catch(err => console.log("Error desde dispatch destroy: ",err))
+            dispatch(saveImgDelete(objPublicId[0]))
+            dispatch(removeImageOfRedux(imageSelect))
         }else{
             dispatch(removeImageOfRedux(imageSelect))
         }
