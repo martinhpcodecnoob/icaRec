@@ -85,6 +85,7 @@ export const Slice = createSlice({
             loading:false,
             error:null
         },
+        imgDeleteCloud:[],
         fileLimit:""
     },
     reducers:{
@@ -120,6 +121,13 @@ export const Slice = createSlice({
                 return image !== img.fileURL
             })
             state.inputForm.images=[...newArrayImages]
+        },
+        saveImgDelete:(state,action)=>{
+            const saveImg = action.payload
+            state.imgDeleteCloud.push(saveImg)
+        },
+        resetSaveImgDelete:(state,action)=>{
+            state.imgDeleteCloud = []
         },
         saveDataCloudinary:(state,action) => {
             const {url_cloudinary,public_id,fileURL} = action.payload
@@ -172,6 +180,6 @@ export const Slice = createSlice({
 export const {
     saveLoaction,saveFormPreview,
     removeImageOfRedux,saveDataCloudinary,
-    saveLimitMessage,
-    saveFormEdition
+    saveLimitMessage,saveImgDelete,
+    saveFormEdition,resetSaveImgDelete
 } = Slice.actions
