@@ -200,6 +200,32 @@ export const checkIfTokenIsValid = async (token) => {
     }
   }
 
+  export const getBusinessByUser = async ( userId, accessToken ) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/business/getBusinessByUser/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${accessToken}`
+        },
+      })
+
+      const data = await response.json()
+
+      return {
+        status: response.status, 
+        data: data,
+      }
+    } catch (error) {
+      console.error("Error del servidor al extraer los negocios de los usuarios", error)
+      return {
+        status: 500, 
+        error: "Error del servidor al extraer los negocios de los usuarios",
+      }
+    }
+  }
+
+
   export const deleteAccount = async ( userId, accessToken ) => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/deleteAccountAndUser/${userId}`, {
