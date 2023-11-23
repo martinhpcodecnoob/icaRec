@@ -1,13 +1,13 @@
 import React from "react";
-import { useRouter } from 'next/navigation'
-import Image from 'next/image'
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const BusinessCard = ({ business }) => {
-    const router = useRouter()
+  const router = useRouter();
 
   const onClickBusiness = () => {
-    router.push(`/myBusiness/${business._id}`)
-  }
+    router.push(`/myweb/${business._id}`);
+  };
   return (
     <div className="max-w-full md:max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <div className="relative w-full h-[7.5rem] md:h-40">

@@ -101,36 +101,29 @@ const create_business = async (req, res) => {
 
 const delete_business = async (req, res) => {
   try {
-    const user = req.user
-    const { businessId } = req.body
+    const userId = req.user.id;
+    const businessIdToDelete = req.query.businessId;
 
     const deletedBusiness = await Business.findOneAndDelete({
-      _id: businessId,
-      owner: user._id
+      _id: businessIdToDelete,
+      owner: userId
     })
 
     if (!deletedBusiness) {
       return res.status(404).json({
         deleted: false,
-        message: "Business not found or you are not authorized to delete it"
+        message: "Negocio no encontrado o no autorizado"
       })
     }
 
-    user.businesses = user.businesses.filter(
-      (business) => business._id.toString() !== businessId
-    )
-
-    await user.save()
-
     return res.status(200).json({
       deleted: true,
-      business: deletedBusiness.business_name
     })
 
   } catch (error) {
     return res.status(500).json({
       deleted: false,
-      message: "Error deleting business",
+      message: "Error al intentar eliminar el negocio.",
       error
     })
   }

@@ -20,7 +20,7 @@ import Popbuttons from "@/components/Modals/Popbuttons";
 import { extractAllBusiness, getServices } from "@/redux/Slices/sliceLanding";
 import { BiReset } from "react-icons/bi";
 import { resetCollectionService } from "@/redux/Slices/sliceLandingTwo";
-import { getBusinessByUser } from "../../utils/apiBackend";
+import { getBusinessByUser, getRecommendedBusinesses } from "../../utils/apiBackend";
 
 const LandingPage = ({ dataBusiness }) => {
   const router = useRouter();
@@ -130,11 +130,11 @@ const LandingPage = ({ dataBusiness }) => {
               ) : null}
               <button
                 onClick={async () => {
-                  const data = await getBusinessByUser(
+                  const data = await getRecommendedBusinesses(
                     session.user.userId,
                     session.user.token
                   );
-                  console.log(data);
+                  console.log("negrecomen:", data);
                 }}
               >
                 Obtener Negocios
