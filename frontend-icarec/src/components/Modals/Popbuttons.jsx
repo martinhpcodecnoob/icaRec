@@ -51,6 +51,12 @@ export default function Popbuttons({viewPopover=false, creeateBusinness, closeSe
                         <Link href={'/mybusiness'} onClick={creeateBusinness} className="w-full flex px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Crear Negocio</Link>
                     </li>
                     <li>
+                        <button onClick={closeSession} className="w-full flex px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Ver mis Negocios</button>
+                    </li>
+                    <li>
+                        <button onClick={closeSession} className="w-full flex px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Ver mis Recomendaciones</button>
+                    </li>
+                    <li>
                         <button onClick={closeSession} className="w-full flex px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Cerrar sesion</button>
                     </li>
                 </ul>
