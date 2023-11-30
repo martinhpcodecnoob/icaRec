@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
 import ModalDelete from '@/components/Modals/ModalDelete'
+import BusinessList from '@/components/BusinessGroup/BusinessList'
 
 const WithCustomLoading = dynamic(
   () => import('@/components/Screens/RegisterScreen'),
@@ -10,10 +11,10 @@ const WithCustomLoading = dynamic(
   }
 )
 
-
 const IndexPage = () => {
   const [active, setActive] = useState(false)
   return (
+   //<BusinessList />
     <div>
       {/* The loading component will be rendered while  <WithCustomLoading/> is loading */}
       {/* <WithCustomLoading /> */}
