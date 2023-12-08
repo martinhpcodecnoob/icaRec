@@ -106,6 +106,7 @@ const get_recommended_businesses = async (req, res) => {
         : 0
 
       return {
+        interactionId: interaction._id,
         ...interaction.business.toObject(),
         totalLikes,
       }
