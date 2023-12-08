@@ -1,4 +1,5 @@
 const Interaction = require("../models/Interaction")
+const Business = require("../models/Business")
 
 const create_interaction = async (req, res) => {
   try {
@@ -56,14 +57,65 @@ const update_interaction = async (req, res) => {
 const get_recommended_businesses = async (req, res) => {
   try {
     const userId = req.user.id
+
     const interactionsFound = await Interaction.find({
       user: userId,
       liked: true,
     }).populate('business')
+
     if (!interactionsFound) {
-      return res.status(404).json({ message: "No se han encontrado interacciones" })
+      return res.status(404).json({ message: "No se han encontrado interacciones" });
     }
-    return res.status(200).json({ found: true, message: "Negocios recomendados encontrados", interactionsFound })
+
+    const allRecommendedBusinesses = await Business.aggregate([
+      {
+        $lookup: {
+          from: "interactions",
+          localField: "_id",
+          foreignField: "business",
+          as: "interactions",
+        },
+      },
+      {
+        $match: {
+          "interactions.liked": true,
+        },
+      },
+      {
+        $addFields: {
+          totalLikes: {
+            $size: "$interactions",
+          },
+        },
+      },
+      {
+        $project: {
+          interactions: 0,
+        },
+      },
+    ])
+
+    const recommendedBusinessesMap = new Map(
+      allRecommendedBusinesses.map((business) => [business._id.toString(), business])
+    )
+    
+    const businessesWithLikes = interactionsFound.map((interaction) => {
+      const businessId = interaction.business._id.toString()
+      const totalLikes = recommendedBusinessesMap.has(businessId)
+        ? recommendedBusinessesMap.get(businessId).totalLikes
+        : 0
+
+      return {
+        ...interaction.business.toObject(),
+        totalLikes,
+      }
+    })
+
+    return res.status(200).json({
+      found: true,
+      message: "Negocios recomendados encontrados",
+      businessesWithLikes,
+    })
   } catch (error) {
     return res.status(500).json({
       found: false,
