@@ -146,17 +146,6 @@ const LandingPage = ({ dataBusiness }) => {
                   />
                 </>
               ) : null}
-              <button
-                onClick={async () => {
-                  const data = await getRecommendedBusinesses(
-                    session.user.userId,
-                    session.user.token
-                  );
-                  console.log("negrecomen:", data);
-                }}
-              >
-                Obtener Negocios
-              </button>
             </div>
           )}
         </div>
