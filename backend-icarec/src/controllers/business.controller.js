@@ -1,5 +1,6 @@
 const Business = require("../models/Business")
-const mongoose = require('mongoose');
+const Interaction = require("../models/Interaction")
+const mongoose = require('mongoose')
 
 const get_business = async (req, res) => {
   try {
@@ -169,15 +170,37 @@ const getBusinessByUser = async (req, res) => {
     const businesses = await Business.find({ owner: userId })
 
     if (!businesses) {
-      return res.status(404).json({ message: 'No se encontraron negocios para este usuario.' })
+      return res.status(404).json({ message: 'No se encontraron negocios para este usuario.' });
     }
 
-    res.status(200).json({ businesses })
+    const interactions = await Interaction.find({
+      business: { $in: businesses.map(business => business._id) },
+      liked: true,
+    })
+
+    const businessIdToTotalLikes = new Map()
+    interactions.forEach(interaction => {
+      const businessId = interaction.business.toString()
+      businessIdToTotalLikes.set(businessId, (businessIdToTotalLikes.get(businessId) || 0) + 1);
+    })
+
+    const businessesWithLikes = businesses.map(business => {
+      const businessId = business._id.toString()
+      const totalLikes = businessIdToTotalLikes.get(businessId) || 0
+
+      return {
+        ...business.toObject(),
+        totalLikes,
+      }
+    })
+
+    res.status(200).json({ businesses: businessesWithLikes })
   } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: 'Error al obtener los negocios del usuario.' })
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener los negocios del usuario.' });
   }
 }
+
 const get_all_business_services = async (req, res) => {
   try {
     const result = await Business.aggregate([
