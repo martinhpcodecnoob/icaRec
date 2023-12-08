@@ -110,6 +110,8 @@ const delete_business = async (req, res) => {
       owner: userId
     })
 
+    await Interaction.deleteMany({ business: businessIdToDelete });
+
     if (!deletedBusiness) {
       return res.status(404).json({
         deleted: false,
