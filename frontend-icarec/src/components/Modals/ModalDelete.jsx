@@ -1,7 +1,10 @@
+import { catchDeleteBussiness } from '@/redux/Slices/sliceLandingTree';
 import React from 'react'
 import { BiSolidLike,BiSolidDislike } from "react-icons/bi";
+import { useDispatch } from 'react-redux';
 
-export default function ModalDelete({activated = false, setActive}) {
+export default function ModalDelete({activated = false}) {
+    const dispatch = useDispatch()
     return (
         <>
             <div
@@ -27,7 +30,7 @@ export default function ModalDelete({activated = false, setActive}) {
                             </div>
                         </button>
                         <button className='ml-4'
-                            onClick={() => setActive(false)}    
+                            onClick={() => dispatch(catchDeleteBussiness(null))}    
                         >
                             <div>
                                 <BiSolidDislike className='bg-[#100E80] text-[#F3BA1A] w-[3rem] h-[3rem] p-2 rounded-[2rem]'/>

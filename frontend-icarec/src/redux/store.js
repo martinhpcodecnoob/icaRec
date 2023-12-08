@@ -3,6 +3,7 @@ import { Slice } from "./Slices/slicePreview";
 import { popupSlice } from "./Slices/popupSlice";
 import { Landing } from './Slices/sliceLanding'
 import { LandingTwo } from "./Slices/sliceLandingTwo";
+import { LandingTree } from "./Slices/sliceLandingTree";
 
 
 export default configureStore({
@@ -10,6 +11,7 @@ export default configureStore({
         preview:Slice.reducer,
         popup:popupSlice.reducer,
         landing:Landing.reducer,
-        landingTwo:LandingTwo.reducer
+        landingTwo:LandingTwo.reducer,
+        landingTree:LandingTree.reducer
     }
 })

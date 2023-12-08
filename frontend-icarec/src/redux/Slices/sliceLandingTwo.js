@@ -62,6 +62,60 @@ export const businessIdUpdates = createAsyncThunk(
     }
 )
 
+export const getBusinessByUser = createAsyncThunk(
+    'getBusinessByUser',
+    async({userId, accessToken}) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/business/getBusinessByUser/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `${accessToken}`
+                },
+            })
+            const data = await response.json()
+            if (response.status === 200 || response.status === 304) {
+                return {
+                    status: response.status,
+                    data: data,
+                    } 
+                }
+            throw Error(data.message)
+            } catch (error) {
+                console.error("Error del servidor al extraer los negocios de los usuarios", error)
+                throw error
+            }
+    }
+)
+
+export const getRecommendedBusinesses = createAsyncThunk(
+    'getRecommendedBusinesses',
+    async({userId, accessToken}) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/interaction/getRecommendedBusinesses/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `${accessToken}`
+                },
+            })
+        
+            const data = await response.json()
+            if (response.status === 200 || response.status === 304) {
+                return {
+                    status: response.status,
+                    data: data,
+                    }
+                
+                }
+            throw Error(data.message)
+            } catch (error) {
+                console.error("Error del servidor al extraer los negocios recomendados por los usuarios", error)
+                throw error
+        }
+    }
+)
+
 export const LandingTwo = createSlice({
     name:'slice_landing_two',
     initialState:{
@@ -74,12 +128,34 @@ export const LandingTwo = createSlice({
             fulfilled:false,
             loading:false,
             error:null
-        }
+        },
+        updateStateRecomendUser:{
+            fulfilled:false,
+            loading:false,
+            error:null
+        },
+        updateStateBusinessUser:{
+            fulfilled:false,
+            loading:false,
+            error:null
+        },
+        stateShowRecomendUser:false,
+        stateShowBusinessUser:false
     },
     reducers:{
         resetCollectionService:(state,action) => {
             state.collectionService = []
         },
+        changeStateRecomend:(state,action) => {
+            if (action.payload === true || action.payload === false) {
+                state.stateShowRecomendUser = action.payload
+            }
+        },
+        changeStateBusinessUser:(state,action) => {
+            if (action.payload === true || action.payload === false) {
+                state.stateShowBusinessUser = action.payload
+            }
+        }
     },
     extraReducers:(builder) => {
         builder
@@ -108,7 +184,33 @@ export const LandingTwo = createSlice({
                 state.updateState.loading = true
                 state.updateState.error = null
             })
+        builder
+            .addCase(getBusinessByUser.fulfilled, (state,action) => {
+                state.updateStateBusinessUser.fulfilled = action.payload
+                state.updateStateBusinessUser.loading = false
+            })
+            .addCase(getBusinessByUser.rejected, (state,action) => {
+                state.updateStateBusinessUser.error = action.error.message
+                state.updateStateBusinessUser.loading = false
+            })
+            .addCase(getBusinessByUser.pending, (state,action) => {
+                state.updateStateBusinessUser.loading = true
+                state.updateStateBusinessUser.error = null
+            })
+        builder
+            .addCase(getRecommendedBusinesses.fulfilled, (state,action) => {
+                state.updateStateRecomendUser.fulfilled = action.payload
+                state.updateStateRecomendUser.loading = false
+            })
+            .addCase(getRecommendedBusinesses.rejected, (state,action) => {
+                state.updateStateRecomendUser.error = action.error.message
+                state.updateStateRecomendUser.loading = false
+            })
+            .addCase(getRecommendedBusinesses.pending, (state,action) => {
+                state.updateStateRecomendUser.loading = true
+                state.updateStateRecomendUser.error = null
+            })
     }
 })
 
-export const {resetCollectionService} = LandingTwo.actions
+export const {resetCollectionService,changeStateRecomend,changeStateBusinessUser} = LandingTwo.actions

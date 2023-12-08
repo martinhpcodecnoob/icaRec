@@ -59,8 +59,7 @@ const get_recommended_businesses = async (req, res) => {
     const interactionsFound = await Interaction.find({
       user: userId,
       liked: true,
-    })
-    console.log("Estas son las interacioneS:", interactionsFound)
+    }).populate('business')
     if (!interactionsFound) {
       return res.status(404).json({ message: "No se han encontrado interacciones" })
     }
