@@ -31,11 +31,11 @@ export default function CardsdownTree({bussinessAll}) {
                     (
                         <div className='grid gap-5 2xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2' id='down'>
                             {
-                                bussinessAll.fulfilled?.data ? bussinessAll.fulfilled?.data?.interactionsFound?.map((e,i) =>
+                                bussinessAll.fulfilled?.data ? bussinessAll.fulfilled?.data?.businessesWithLikes?.map((e,i) =>
                                 (
                                     <CardSingleTwo 
                                         key={i} 
-                                        elementBusiness={e.business} 
+                                        elementBusiness={e} 
                                     />
                                 )) 
                                 :
