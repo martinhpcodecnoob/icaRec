@@ -21,6 +21,9 @@ import { extractAllBusiness, getServices } from "@/redux/Slices/sliceLanding";
 import { BiReset } from "react-icons/bi";
 import { resetCollectionService } from "@/redux/Slices/sliceLandingTwo";
 import { getBusinessByUser, getRecommendedBusinesses } from "../../utils/apiBackend";
+import CardsdownTwo from "@/components/Cards/CardsdownTwo";
+import CardsdownTree from "@/components/Cards/CardsdownTree";
+import ModalDelete from "@/components/Modals/ModalDelete";
 
 const LandingPage = ({ dataBusiness }) => {
   const router = useRouter();
@@ -31,9 +34,25 @@ const LandingPage = ({ dataBusiness }) => {
   const collectionService = useSelector(
     (state) => state.landingTwo.collectionService
   );
+  const stateShowRecomendUser = useSelector(
+    (state) => state.landingTwo.stateShowRecomendUser
+  );
+  const stateShowBusinessUser = useSelector(
+    (state) => state.landingTwo.stateShowBusinessUser
+  );
+  const updateStateRecomendUser = useSelector(
+    (state) => state.landingTwo.updateStateRecomendUser
+  );
+  const updateStateBusinessUser = useSelector(
+    (state) => state.landingTwo.updateStateBusinessUser
+  );
+  const userIdDeleteSelectBusiness = useSelector(
+    (state) => state.landingTree.deleteBussinessByUser.userIdDeleteSelect
+  )
+  console.log("El id a eliminar ",userIdDeleteSelectBusiness);
   const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
-
+    console.log(session);
   useEffect(() => {
     dispatch(extractAllBusiness(dataBusiness.businesses));
     if (error === "OAuthAccountNotLinked") {
@@ -63,14 +82,13 @@ const LandingPage = ({ dataBusiness }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
-
+  
   if (
     session?.user?.isRegistered === false &&
     session.user.providerType !== "credentials"
   ) {
     return null;
   }
-
   const handleSignOut = () => {
     setIsLoading(true);
     signOut();
@@ -153,28 +171,50 @@ const LandingPage = ({ dataBusiness }) => {
         <div className="flex justify-center items-center text-2xl pt-2 m-2">
           ¿En qué te puedo ayudar?
         </div>
-        <Searchbar />
-        {/* <Cardsup/> */}
-        <div id="cardDown">
-          <Cardsdown
-            bussinessAll={
-              collectionService.length > 0 ? collectionService : businessAll
-            }
-          />
-          {collectionService.length > 0 ? (
-            <div className="flex justify-center">
-              <button
-                className="flex justify-center items-center"
-                onClick={() => dispatch(resetCollectionService())}
-              >
-                <BiReset className="text-[4rem] text-[#100E80]" />
-                <div className="text-[1.5rem]">Limpiar Busqueda</div>
-              </button>
-            </div>
-          ) : null}
-        </div>
+          {
+            stateShowRecomendUser ?
+              (
+                <CardsdownTree bussinessAll={updateStateRecomendUser}/>
+              )
+                :
+              stateShowBusinessUser ?
+              (
+                <CardsdownTwo bussinessAll={updateStateBusinessUser}/>
+              )
+                :
+              (
+                <>
+                  <Searchbar />
+                  {/* <Cardsup/> */}
+                  <div id="cardDown">
+                    <Cardsdown
+                      bussinessAll={
+                        collectionService.length > 0 ? collectionService : businessAll
+                      }
+                    />
+                    {collectionService.length > 0 ? (
+                      <div className="flex justify-center">
+                        <button
+                          className="flex justify-center items-center"
+                          onClick={() => dispatch(resetCollectionService())}
+                        >
+                          <BiReset className="text-[4rem] text-[#100E80]" />
+                          <div className="text-[1.5rem]">Limpiar Busqueda</div>
+                        </button>
+                      </div>
+                    ) : null}
+                  </div>
+                </>
+              )
+          }
       </div>
       <PopupContainer />
+      {
+        userIdDeleteSelectBusiness ? 
+        (
+          <ModalDelete activated={userIdDeleteSelectBusiness ? true : false}/>
+        ) : null
+      }
     </div>
   );
 };
