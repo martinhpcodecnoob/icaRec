@@ -6,6 +6,7 @@ import { usePopper } from 'react-popper';
 import ExtractUsersButton from '../ExtractUsersButton';
 import { changeStateBusinessUser, changeStateRecomend, getBusinessByUser, getRecommendedBusinesses } from '@/redux/Slices/sliceLandingTwo';
 import { useDispatch } from 'react-redux';
+import { changeTypeBusinessORecomend } from '@/redux/Slices/sliceLandingTree';
 
 export default function Popbuttons({viewPopover=false, creeateBusinness, closeSession}) {
     const [visible, setVisible] = useState(false);
@@ -61,6 +62,7 @@ export default function Popbuttons({viewPopover=false, creeateBusinness, closeSe
                                     userId,
                                     accessToken:token
                                 }))
+                                dispatch(changeTypeBusinessORecomend('business'))
                                 dispatch(changeStateRecomend(false))
                                 dispatch(changeStateBusinessUser(true))
                             }
@@ -74,6 +76,7 @@ export default function Popbuttons({viewPopover=false, creeateBusinness, closeSe
                                     userId,
                                     accessToken:token
                                 }))
+                                dispatch(changeTypeBusinessORecomend('recomend'))
                                 dispatch(changeStateBusinessUser(false))
                                 dispatch(changeStateRecomend(true))
                             }

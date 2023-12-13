@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-const uriBack = process.env.NEXT_PUBLIC_BACKEND_URI
+ export const uriBack = process.env.NEXT_PUBLIC_BACKEND_URI
 export const collectionSelectService = createAsyncThunk(
     'collectionSelectService',
     async(serviceSelect) => {

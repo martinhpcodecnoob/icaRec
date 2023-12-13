@@ -20,7 +20,6 @@ import Popbuttons from "@/components/Modals/Popbuttons";
 import { extractAllBusiness, getServices } from "@/redux/Slices/sliceLanding";
 import { BiReset } from "react-icons/bi";
 import { resetCollectionService } from "@/redux/Slices/sliceLandingTwo";
-import { getBusinessByUser, getRecommendedBusinesses } from "../../utils/apiBackend";
 import CardsdownTwo from "@/components/Cards/CardsdownTwo";
 import CardsdownTree from "@/components/Cards/CardsdownTree";
 import ModalDelete from "@/components/Modals/ModalDelete";
