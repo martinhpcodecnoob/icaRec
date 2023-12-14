@@ -189,7 +189,7 @@ export default function Form({formatDataIdBusiness}) {
 
     const handleFileChange = (e) => {
         const file = e.target.files
-        // console.log(file);
+        console.log(file);
 
         if (file.length < 1) {
             dispatch(saveLimitMessage("No has subido ni una imagen"))
@@ -211,18 +211,23 @@ export default function Form({formatDataIdBusiness}) {
         }
 
         if (file.length > 0) {
-            const fileURL = URL.createObjectURL(file[0])
-            const objImages = {
-                fileURL: fileURL,
-                url_cloudinary:"",
-                public_id: ""
+            if (file[0].type === 'image/png' || file[0].type === "image/jpeg") {
+                const fileURL = URL.createObjectURL(file[0])
+                const objImages = {
+                    fileURL: fileURL,
+                    url_cloudinary:"",
+                    public_id: ""
+                }
+                input.images.push(objImages)
+                const currentFile = input.images
+                setInput({
+                    ...input,
+                    ["images"]:currentFile
+                })   
+            }else{
+                dispatch(saveLimitMessage('Las imagenes deben ser de formato JPG y PNG'))
+                return
             }
-            input.images.push(objImages)
-            const currentFile = input.images
-            setInput({
-                ...input,
-                ["images"]:currentFile
-            })   
         }
     }
 
