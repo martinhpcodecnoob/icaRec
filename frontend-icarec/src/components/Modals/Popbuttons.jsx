@@ -4,9 +4,13 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { usePopper } from 'react-popper';
 import ExtractUsersButton from '../ExtractUsersButton';
+import { changeStateBusinessUser, changeStateRecomend, getBusinessByUser, getRecommendedBusinesses } from '@/redux/Slices/sliceLandingTwo';
+import { useDispatch } from 'react-redux';
+import { changeTypeBusinessORecomend } from '@/redux/Slices/sliceLandingTree';
 
 export default function Popbuttons({viewPopover=false, creeateBusinness, closeSession}) {
     const [visible, setVisible] = useState(false);
+    const dispatch = useDispatch()
     const [referenceElement, setReferenceElement] = useState(null);
     const [popperElement, setPopperElement] = useState(null);
     const { data: session, status } = useSession()  
@@ -49,6 +53,34 @@ export default function Popbuttons({viewPopover=false, creeateBusinness, closeSe
                     } 
                     <li>
                         <Link href={'/mybusiness'} onClick={creeateBusinness} className="w-full flex px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Crear Negocio</Link>
+                    </li>
+                    <li>
+                        <button onClick={async() => {
+                            if (session?.user) {
+                                const {userId,token} = session?.user
+                                dispatch(getBusinessByUser({
+                                    userId,
+                                    accessToken:token
+                                }))
+                                dispatch(changeTypeBusinessORecomend('business'))
+                                dispatch(changeStateRecomend(false))
+                                dispatch(changeStateBusinessUser(true))
+                            }
+                        }} className="w-full flex px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Ver mis Negocios</button>
+                    </li>
+                    <li>
+                        <button onClick={() => {
+                            if (session?.user) {
+                                const {userId,token} = session?.user
+                                dispatch(getRecommendedBusinesses({
+                                    userId,
+                                    accessToken:token
+                                }))
+                                dispatch(changeTypeBusinessORecomend('recomend'))
+                                dispatch(changeStateBusinessUser(false))
+                                dispatch(changeStateRecomend(true))
+                            }
+                        }} className="w-full flex px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Ver mis Recomendaciones</button>
                     </li>
                     <li>
                         <button onClick={closeSession} className="w-full flex px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Cerrar sesion</button>
