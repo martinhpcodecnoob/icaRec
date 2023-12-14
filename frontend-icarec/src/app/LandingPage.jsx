@@ -48,10 +48,10 @@ const LandingPage = ({ dataBusiness }) => {
   const userIdDeleteSelectBusiness = useSelector(
     (state) => state.landingTree.deleteBussinessByUser.userIdDeleteSelect
   )
-  console.log("El id a eliminar ",userIdDeleteSelectBusiness);
+
   const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
-    console.log(session);
+
   useEffect(() => {
     dispatch(extractAllBusiness(dataBusiness.businesses));
     if (error === "OAuthAccountNotLinked") {
@@ -110,13 +110,15 @@ const LandingPage = ({ dataBusiness }) => {
     <div>
       <ToastContainer />
       <div className="flex justify-between items-center p-4">
-        <Image
-          src={detodologo2}
-          alt="logo"
-          width={100}
-          height={100}
-          className="h-[3rem] w-[3rem]"
-        />
+        <button onClick={() => window.location.reload()}>
+          <Image
+            src={detodologo2}
+            alt="logo"
+            width={100}
+            height={100}
+            className="h-[3rem] w-[3rem]"
+          />
+        </button>
         <div className="flex justify-center items-center lgx:hidden">
           <p>Descubre un mundo de oportunidades con un clic!</p>
         </div>

@@ -111,7 +111,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
                     userId:data?.user?.userId,
                     accessToken: data?.user?.token
                 })).then(async response => {
-                    console.log("este es response al hacer update",response)
+                    // console.log("este es response al hacer update",response)
                     if (imgDeleteCloud.length > 0) {
                         setProgressBar({
                             percentage:85,
@@ -253,8 +253,11 @@ return (
     <div>
         <div className='hidden mdx:block sticky top-0 z-10'>
             <div className='flex items-center justify-around p-2 mb-2 bg-[#FFF8EE]'>
-                <Image alt='logo' src={detodologo}
-                    className='h-[30%] w-[30%] smartphone:h-[40%] smartphone:w-[40%]'/>
+                <Link href={'/'}>
+                    <Image alt='logo' src={detodologo}
+                        className='h-[30%] w-[30%] smartphone:h-[40%] smartphone:w-[40%]'/>
+
+                </Link>
 
                 <button 
                     type="button" 
