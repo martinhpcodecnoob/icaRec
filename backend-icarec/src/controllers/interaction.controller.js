@@ -56,10 +56,10 @@ const update_interaction = async (req, res) => {
 
 const get_recommended_businesses = async (req, res) => {
   try {
-    const userId = req.user.id
+    // const userId = req.user.id
 
     const interactionsFound = await Interaction.find({
-      user: userId,
+      user: '651c3f562e9f8c4db295c68a',
       liked: true,
     }).populate('business')
 
@@ -98,9 +98,20 @@ const get_recommended_businesses = async (req, res) => {
     const recommendedBusinessesMap = new Map(
       allRecommendedBusinesses.map((business) => [business._id.toString(), business])
     )
-    
-    const businessesWithLikes = interactionsFound.map((interaction) => {
+    // console.log('recommendedBusinessesMap: ',recommendedBusinessesMap);
+    const businessesWithLikes = interactionsFound?.map((interaction) => {
+      const business = interaction.business;
+      if (!business || !business._id) {
+        // console.warn('Interacción con negocio nulo o sin _id:', interaction);
+        return {
+          interactionId: interaction._id,
+          message: "Este negocio no tiene un ID asignado",
+          ...business ? business.toObject() : {},  // Incluir otros campos del negocio si existen
+          totalLikes: 0,
+        };
+      }
       const businessId = interaction.business._id.toString()
+      // console.log('businessId: ',businessId);
       const totalLikes = recommendedBusinessesMap.has(businessId)
         ? recommendedBusinessesMap.get(businessId).totalLikes
         : 0
@@ -111,6 +122,7 @@ const get_recommended_businesses = async (req, res) => {
         totalLikes,
       }
     })
+    // console.log('businessesWithLikes: ',businessesWithLikes);
 
     return res.status(200).json({
       found: true,
@@ -118,6 +130,7 @@ const get_recommended_businesses = async (req, res) => {
       businessesWithLikes,
     })
   } catch (error) {
+    // console.error('ERROR >>>>>>>>>> ', error);
     return res.status(500).json({
       found: false,
       message: "No se han encontrado interacciones por el servidor",
