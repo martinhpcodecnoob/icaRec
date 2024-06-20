@@ -14,11 +14,13 @@ const PhoneSection = ({ control, errors, setValue, getValues }) => {
   const countriesOptions = (
     <>
       <option value="default">Selecciona un país</option>
-      {countries.map((country, index) => (
-        <option key={`country-${country.code}-${index}`} value={country.code}>
-          {country.name}
-        </option>
-      ))}
+      {countries.map((country, index) => {
+        return(
+          <option key={`country-${country.code}-${index}`} value={country.code}>
+            {country.name}
+          </option>
+        )
+      })}
     </>
   );
 
@@ -37,8 +39,11 @@ const PhoneSection = ({ control, errors, setValue, getValues }) => {
 
   const handleCountryChange = (e) => {
     const selectedCode = e.target.value;
+    // console.log('selectedCode: ',selectedCode);
     const selectedCountry = countries.find(
-      (country) => country.code === selectedCode
+      (country) => {
+        return country.name === selectedCode
+      }
     );
     if (selectedCountry) {
       setSelectedCountry(selectedCode);

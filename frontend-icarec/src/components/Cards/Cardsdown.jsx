@@ -4,7 +4,7 @@ import { Link as LinkScroll } from 'react-scroll';
 import CardSingle from "./CardSingle";
 
 export default function Cardsdown({bussinessAll}) {
-
+    // console.log('bussinessAll: >>>>>>>>>: ',bussinessAll);
     return (
         <div className='flex flex-col justify-center items-center mb-6'>
             <LinkScroll activeClass="active" to="down" spy={true} smooth={true} offset={-30} duration={500}>

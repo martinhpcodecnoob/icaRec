@@ -56,10 +56,10 @@ const update_interaction = async (req, res) => {
 
 const get_recommended_businesses = async (req, res) => {
   try {
-    // const userId = req.user.id
+    const userId = req.user.id
 
     const interactionsFound = await Interaction.find({
-      user: '651c3f562e9f8c4db295c68a',
+      user: userId,
       liked: true,
     }).populate('business')
 
@@ -99,16 +99,19 @@ const get_recommended_businesses = async (req, res) => {
       allRecommendedBusinesses.map((business) => [business._id.toString(), business])
     )
     // console.log('recommendedBusinessesMap: ',recommendedBusinessesMap);
-    const businessesWithLikes = interactionsFound?.map((interaction) => {
+    let businessesWithLikes = interactionsFound?.map((interaction) => {
       const business = interaction.business;
       if (!business || !business._id) {
         // console.warn('Interacción con negocio nulo o sin _id:', interaction);
-        return {
-          interactionId: interaction._id,
-          message: "Este negocio no tiene un ID asignado",
-          ...business ? business.toObject() : {},  // Incluir otros campos del negocio si existen
-          totalLikes: 0,
-        };
+        // return {
+        //   interactionId: interaction._id,
+        //   message: "Este negocio no tiene un ID asignado",
+        //   ...business ? business.toObject() : {},  // Incluir otros campos del negocio si existen
+        //   totalLikes: 0,
+        //   images:[],
+        //   business:null
+        // };
+        return
       }
       const businessId = interaction.business._id.toString()
       // console.log('businessId: ',businessId);
@@ -123,7 +126,9 @@ const get_recommended_businesses = async (req, res) => {
       }
     })
     // console.log('businessesWithLikes: ',businessesWithLikes);
-
+    businessesWithLikes = businessesWithLikes.filter((ele) => {
+      return ele !== undefined
+    })
     return res.status(200).json({
       found: true,
       message: "Negocios recomendados encontrados",

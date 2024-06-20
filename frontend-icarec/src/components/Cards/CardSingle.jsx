@@ -18,6 +18,7 @@ export default function CardSingle({elementBusiness}) {
         setVisible(true)
         // setChangeBody(changeBody.classList.add('overflow-hiddden'))
     }
+    
     return (
         <>
             <ModalHome 
@@ -33,7 +34,7 @@ export default function CardSingle({elementBusiness}) {
                 >
                     <Image
                         onClick={handleShowModal}
-                        src={elementBusiness.images[0]?.url_cloudinary ? elementBusiness.images[0]?.url_cloudinary : imageDefault}
+                        src={elementBusiness.images.length > 0 ? elementBusiness.images[0]?.url_cloudinary : imageDefault}
                         alt={elementBusiness._id}
                         width={1000}
                         height={1000}

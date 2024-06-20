@@ -23,6 +23,7 @@ import { resetCollectionService } from "@/redux/Slices/sliceLandingTwo";
 import CardsdownTwo from "@/components/Cards/CardsdownTwo";
 import CardsdownTree from "@/components/Cards/CardsdownTree";
 import ModalDelete from "@/components/Modals/ModalDelete";
+import BtnWhassapLanding from "@/components/Buttons/BtnWhassapLanding";
 
 const LandingPage = ({ dataBusiness }) => {
   const router = useRouter();
@@ -124,17 +125,21 @@ const LandingPage = ({ dataBusiness }) => {
         </div>
         <div className="flex justify-center items-center">
           {!session && (
-            <button
-              color="failure"
-              onClick={openLogin}
-              className={`relative text-[1rem] focus:outline-none text-[#100E80]  bg-[#f3ba1a] hover:bg-[#FAE3A3] focus:ring-4 focus:ring-blue-400 font-bold rounded-lg text-sm px-5 py-2.5`}
-            >
-              Login
-            </button>
+            <>
+              <BtnWhassapLanding/>
+              <button
+                color="failure"
+                onClick={openLogin}
+                className={`relative text-[1rem] focus:outline-none text-[#100E80]  bg-[#f3ba1a] hover:bg-[#FAE3A3] focus:ring-4 focus:ring-blue-400 font-bold rounded-lg text-sm px-5 py-2.5`}
+              >
+                Login
+              </button>
+            </>
           )}
           {session && (
             <div className="flex space-x-6 px-4 items-center">
-              <div>
+              <BtnWhassapLanding/>
+              <div className="mdx:hidden">
                 <p>Bienvenido! </p>
                 <p>{session.user.name.split(" ")[0]}</p>
               </div>

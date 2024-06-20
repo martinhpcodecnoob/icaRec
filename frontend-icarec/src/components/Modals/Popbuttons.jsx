@@ -72,6 +72,7 @@ export default function Popbuttons({viewPopover=false, creeateBusinness, closeSe
                         <button onClick={() => {
                             if (session?.user) {
                                 const {userId,token} = session?.user
+                                // console.log('tokennnnnn: ',token);
                                 dispatch(getRecommendedBusinesses({
                                     userId,
                                     accessToken:token

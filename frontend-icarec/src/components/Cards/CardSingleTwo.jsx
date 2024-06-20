@@ -15,7 +15,9 @@ export default function CardSingleTwo({elementBusiness,elementDeleteBusiness = f
     const handleCloseModal = () => {
         setVisible(false)
     }
-    
+    // console.log('elementBusiness: >>>>>>>>>>>>>,', elementBusiness);
+    // console.log('elementBusiness.images[0]?.url_cloudinary: >>>>>>>>>>>>>,', elementBusiness.images[0]?.url_cloudinary);
+
     const handleShowModal = () => {
         setVisible(true)
     }
@@ -34,7 +36,7 @@ export default function CardSingleTwo({elementBusiness,elementDeleteBusiness = f
                 >
                     <Image
                         onClick={handleShowModal}
-                        src={elementBusiness.images[0]?.url_cloudinary ? elementBusiness.images[0]?.url_cloudinary : imageDefault}
+                        src={elementBusiness.images.length > 0 ? elementBusiness.images[0]?.url_cloudinary : imageDefault}
                         alt={elementBusiness._id}
                         width={1000}
                         height={1000}
