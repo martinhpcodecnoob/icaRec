@@ -12,6 +12,7 @@ import ButtonRedirect from './Modals/ButtonRedirect';
 import ButtonRecomend from './Modals/ButtonRecomend';
 import ButtonShareLink from './Modals/ButtonShareLink';
 import ButtonRecomendLink from './Modals/ButtonRecomendLink';
+import { eliminarEspacios } from '../../utils/functionsUtil';
 
 const BusinessSubComponent = ({
                                 inputForm,showButton=true,
@@ -22,8 +23,9 @@ const BusinessSubComponent = ({
                                 showRecomendInteraction = false,
                                 linkIconsState = false
                               }) => {
-  const website = inputForm.name_web?inputForm.name_web:inputForm.website
+  const website = inputForm.name_web ? inputForm.name_web: inputForm.website === undefined || inputForm.website === ''  ? undefined : inputForm.website 
   const services = inputForm.list_service ? inputForm.list_service : inputForm.services
+
   return (
     <>
     {Object.keys(inputForm).length !== 0 ? (
@@ -73,18 +75,18 @@ const BusinessSubComponent = ({
         {
           linkIconsState ?
             (<>
-              <Link className={`px-2 ${inputForm.facebook === "" ?'hidden':''}`} href={inputForm.facebook} target='_blank'>
+              <a className={`px-2 ${inputForm.facebook === "" ?'hidden':''}`} href={inputForm.facebook} target='_blank'>
                 <FaFacebook className='text-blue-600 text-[2rem]'/>
-              </Link>
+              </a>
               <Link className={`px-2 ${inputForm.cellphone === "" ?'hidden':''}`} href={`https://wa.me/51${inputForm.cellphone}`} target='_blank'>
                 <IoLogoWhatsapp className='text-green-400 text-[2rem]'/>
               </Link>
               <a className={`px-2 ${inputForm.cellphone === "" ?'hidden':''}`} href={`tel:${inputForm.cellphone}`} target='_blank'>
                 <BsFillTelephoneOutboundFill className='text-[2rem]'/>
               </a>
-              <Link className={`px-2 ${website===undefined ?'hidden':''}`} href={`${inputForm.name_web}`} target='_blank'>
+              <a className={`px-2 ${website===undefined ?'hidden':''}`} href={`${eliminarEspacios(website)}`} target='_blank'>
                 <TfiWorld className='text-[2rem]'/>
-              </Link>
+              </a>
               <ButtonShareLink idLinkBussiness={inputForm._id}/>
             </>)
             :

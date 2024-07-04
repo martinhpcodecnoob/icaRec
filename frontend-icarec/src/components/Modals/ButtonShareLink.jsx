@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 export default function ButtonShareLink({idLinkBussiness}) {
     const handleCopyClic = () => {
-        navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_URL}/myweb/${idLinkBussiness ? idLinkBussiness:'error'}`)
+        navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_URL}myweb/${idLinkBussiness ? idLinkBussiness:'error'}`)
             .then((data) => {
                 toast.info("Enlace copiado al portapapeles")
             })
