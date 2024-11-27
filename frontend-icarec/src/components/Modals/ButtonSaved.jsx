@@ -46,7 +46,7 @@ export default function ButtonSaved({paramsIdBusiness}) {
 
     const handleSaved = () => {
         if (!session) {
-            toast.error("Registrate primero para savedar")
+            toast.error("Registrate primero para guardar")
             // router.push('/newUser');
         }
         if (session && status === 'authenticated') {
