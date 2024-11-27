@@ -13,7 +13,11 @@ const userSchema = new Schema({
     },
     dni: {
         type: String,
-        required: true
+        required: false,
+        default:'no dni',
+        set: function(value) {
+            return value === '' ? 'no dni' : value;
+        }
     },
     email: {
         type: String,

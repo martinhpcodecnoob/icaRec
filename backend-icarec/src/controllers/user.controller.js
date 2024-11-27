@@ -140,6 +140,7 @@ const create_user = async(req,res) =>{
 const update_user = async (req, res) => {
   try {
     const { userId, cellphone, dni, sex } = req.body
+    // console.log('DNI: ',dni);
     
     if (!userId) {
       return res.status(400).json({ updated: false, message: 'User ID is required.' })
@@ -149,9 +150,11 @@ const update_user = async (req, res) => {
       return res.status(400).json({ updated: false, message: 'The value of "cellphone" must be a string' })
     }
 
-    if (dni === undefined ) {
-      return res.status(400).json({ updated: false, message: 'The value of "dni" must be a string' })
-    }
+    // if (dni === undefined ) {
+    //   console.log('Error en el DNI');
+      
+    //   return res.status(400).json({ updated: false, message: 'The value of "dni" must be a string' })
+    // }
 
     if (sex === undefined ) {
       return res.status(400).json({ updated: false, message: 'The value of "sex" must be a string' })

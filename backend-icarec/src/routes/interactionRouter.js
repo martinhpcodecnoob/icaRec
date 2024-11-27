@@ -10,5 +10,4 @@ interactionRouter.get("/verifieldInteraction/:userId", checkUserExistence, check
 interactionRouter.get("/getRecommendedBusinesses/:userId", authenticateAndAuthorizeUser, IC.get_recommended_businesses)
 interactionRouter.delete("/deleteRecommendedBusiness/:userId", authenticateAndAuthorizeUser, IC.delete_recommended_business)
 
-
 module.exports= interactionRouter

@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const User = require("../models/User")
 const Business = require('../models/Business')
 const Interaction = require("../models/Interaction")
+const SavedBusiness = require("../models/SavedBusiness")
 
 const checkUserExistence = async (req, res, next) => {
   const userId = req.params.userId
@@ -82,6 +83,61 @@ const checkExistingInteraction = async (req, res, next) => {
   }
 }
 
+const checkExistingSaveds = async(req,res,next) => {
+  try {
+    const user = req.user
+    const business = req.business
+
+    const existingSaved = await SavedBusiness.findOne({
+      user:user._id,
+      business:business._id
+    })
+    
+    //aqui en este caso verificamos si el guardado esta habilitado si o no
+    if (existingSaved) {
+      return res.status(201).json({
+        message:"An saved already exists for this user and business.",
+        details:{
+          idSaved: existingSaved._id,
+          saved: existingSaved.saved
+        }
+      })
+    }
+    //creamos una condicion que muestre si no existe un registro de guardado de ese negocio
+    //entonces solo devoilvemos false pero sin el id ya que no existe
+
+    // if (!existingSaved) {
+    //   return res.status(201).json({
+    //     message:"There is no related save between the user and the business",
+    //     details:{
+    //       saved: false
+    //     }
+    //   })
+    // }
+
+    req.existingSaved = existingSaved
+    next()
+
+  } catch (error) {
+    return res.status(500).json({
+      message:"Error checking for existing Saved.",
+      error
+    })
+  }
+}
+
+const reponseNotExistingSave = (req, res) => {
+  const existingSaved = req.existingSaved
+  if (!existingSaved) {
+      return res.status(201).json({
+        message:"There is no related save between the user and the business",
+        details:{
+          saved: false
+        }
+      })
+    }
+}
+
 const validateUserSchema = (req, res, next) => {
   const userValidationErrors = req.user.validateSync()
 
@@ -158,4 +214,6 @@ module.exports = {
   validateUserSchema,
   authenticateAndAuthorizeUser,
   verifyAdminRole,
+  checkExistingSaveds,
+  reponseNotExistingSave
 }

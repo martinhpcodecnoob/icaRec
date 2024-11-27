@@ -6,8 +6,9 @@ const businessRouter = express.Router()
 
 businessRouter.post("/createBusiness/:userId", authenticateAndAuthorizeUser, validateUserSchema, BC.create_business)
 businessRouter.get("/getBusiness", BC.get_business)
+
 businessRouter.get("/getBusinessByUser/:userId", authenticateAndAuthorizeUser, BC.getBusinessByUser)
-businessRouter.get("/splitBusiness", BC.splitBusiness)
+businessRouter.get("/splitBusiness", BC.splitBusiness) //por el momento no se usa esta ruta
 businessRouter.get("/getAllBusiness", BC.get_all_businesses)
 businessRouter.get("/getAllBusinessServices", BC.get_all_business_services)
 businessRouter.delete('/deleteBusiness/:userId',authenticateAndAuthorizeUser, BC.delete_business)

@@ -93,7 +93,7 @@ const get_recommended_businesses = async (req, res) => {
           interactions: 0,
         },
       },
-    ])
+    ])   
 
     const recommendedBusinessesMap = new Map(
       allRecommendedBusinesses.map((business) => [business._id.toString(), business])
