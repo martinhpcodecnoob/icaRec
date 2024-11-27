@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
- export const uriBack = process.env.NEXT_PUBLIC_BACKEND_URI
+export const uriBack = process.env.NEXT_PUBLIC_BACKEND_URI
 export const collectionSelectService = createAsyncThunk(
     'collectionSelectService',
     async(serviceSelect) => {
@@ -66,7 +66,7 @@ export const getBusinessByUser = createAsyncThunk(
     'getBusinessByUser',
     async({userId, accessToken}) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/business/getBusinessByUser/${userId}`, {
+            const response = await fetch(`${uriBack}/api/business/getBusinessByUser/${userId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -116,6 +116,33 @@ export const getRecommendedBusinesses = createAsyncThunk(
     }
 )
 
+export const getSavedByUser = createAsyncThunk(
+    'getSavedByUser',
+    async({userId, accessToken}) => {
+        try {
+            const response = await fetch(`${uriBack}/api/savedbusiness/getSavedBusiness/${userId}`,{
+                method:'GET',
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': `${accessToken}`
+                }
+            })
+
+            const data = await response.json()
+            if ([200,304].includes(response.status)) {
+                return {
+                    status: response.status,
+                    data
+                }
+            }
+            throw Error(data.message);
+            
+        } catch (error) {
+            console.error("Error del servidor al extraer los negocios recomendados por los usuarios", error)
+            throw error
+        }
+    }
+)
 export const LandingTwo = createSlice({
     name:'slice_landing_two',
     initialState:{
@@ -139,8 +166,14 @@ export const LandingTwo = createSlice({
             loading:false,
             error:null
         },
+        updateStateSavedUser:{
+            fulfilled:false,
+            loading:false,
+            error:null
+        },
         stateShowRecomendUser:false,
-        stateShowBusinessUser:false
+        stateShowBusinessUser:false,
+        stateShowSavedUser:false
     },
     reducers:{
         resetCollectionService:(state,action) => {
@@ -154,6 +187,11 @@ export const LandingTwo = createSlice({
         changeStateBusinessUser:(state,action) => {
             if (action.payload === true || action.payload === false) {
                 state.stateShowBusinessUser = action.payload
+            }
+        },
+        changeStateSavedUser:(state,action) => {
+            if (typeof action.payload === 'boolean') {
+                state.stateShowSavedUser = action.payload
             }
         }
     },
@@ -210,7 +248,20 @@ export const LandingTwo = createSlice({
                 state.updateStateRecomendUser.loading = true
                 state.updateStateRecomendUser.error = null
             })
+        builder
+            .addCase(getSavedByUser.fulfilled, (state,action) => {
+                state.updateStateSavedUser.fulfilled = action.payload
+                state.updateStateSavedUser.loading = false
+            })
+            .addCase(getSavedByUser.rejected, (state,action) => {
+                state.updateStateSavedUser.error = action.error.message
+                state.updateStateSavedUser.loading = false
+            })
+            .addCase(getSavedByUser.pending, (state,action) => {
+                state.updateStateSavedUser.loading = true
+                state.updateStateSavedUser.error = null
+            })
     }
 })
 
-export const {resetCollectionService,changeStateRecomend,changeStateBusinessUser} = LandingTwo.actions
+export const {resetCollectionService,changeStateRecomend,changeStateBusinessUser,changeStateSavedUser} = LandingTwo.actions

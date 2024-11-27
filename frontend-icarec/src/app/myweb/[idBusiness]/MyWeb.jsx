@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Link from "next/link";
 import ButtonLinkRedirect from "@/components/Modals/ButtonLinkRedirect";
 import ButtonKuskana from "@/components/Modals/ButtonKuskana";
+import ButtonSaved from "@/components/Modals/ButtonSaved";
 
 export default function MyWeb({myBusiness}) {
     if (myBusiness === undefined) {
@@ -32,8 +33,9 @@ export default function MyWeb({myBusiness}) {
                                     <div className="mx-1">{myBusiness.totalLikes === undefined ? 'N':myBusiness.totalLikes.toLocaleString('en-US')}</div>
                                     <div><BsSuitHeartFill className="text-[1.4rem] mx-1"/></div>
                                 </div>
-                                <div>
+                                <div className="flex flex-col items-center justify-center space-y-1">
                                     <ButtonRecomend paramsIdBusiness={myBusiness?._id}/>
+                                    <ButtonSaved paramsIdBusiness={myBusiness?._id}/>
                                 </div>
                             </div>
                             <div className="bg-slate-500 w-full rounded-sm h-[3px]"></div>

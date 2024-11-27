@@ -32,6 +32,24 @@ export const verifieldInteraction = createAsyncThunk(
     }
 )
 
+export const verifieldSaveds = createAsyncThunk(
+    'verifieldSaveds',
+    async(idsSaved) => {
+        const {userId, businessId} = idsSaved
+        try {
+            const response = await fetch(`${uriBack}/api/savedbusiness/verifieldSaveds/${userId}?businessId=${businessId}`)
+            const dataVerifield = await response.json()
+            if (dataVerifield.details === undefined) {
+                throw Error("no existe el guardado")
+            }
+            return dataVerifield.details
+        } catch (error) {
+            // console.log("Error en los  ",error);
+            throw error
+        }
+    }
+)
+
 export const postCreateLiked = createAsyncThunk(
     'postCreateLiked',
     async(idsInteractions) => {
@@ -72,6 +90,25 @@ export const postCreateLiked = createAsyncThunk(
     }
 )
 
+export const postCreateSaved = createAsyncThunk(
+    'postCreateSaved',
+    async(idsSaved) => {
+        const {userId, businessId} = idsSaved
+        try {
+            const response = await fetch(`${uriBack}/api/savedbusiness/createSavedBusiness/${userId}?businessId=${businessId}`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+            })
+            const savedSingle = await response.json()
+            return savedSingle.details ? savedSingle.details : savedSingle;
+
+        } catch (error) {
+            throw error
+        }
+    }
+)
 
 export const Landing = createSlice({
     name:'slice_landing',
@@ -86,6 +123,12 @@ export const Landing = createSlice({
         interaction:{
         },
         stateLikedPost:{
+            loading:false,
+            error:null
+        },
+        saved:{
+        },
+        stateSavedVerifield:{
             loading:false,
             error:null
         }
@@ -135,6 +178,19 @@ export const Landing = createSlice({
                 state.stateLikedPost.error = null
             })
         builder
+            .addCase(postCreateSaved.fulfilled, (state,action) => {
+                    state.interaction = action.payload
+                    state.stateLikedPost.loading = false
+            })
+            .addCase(postCreateSaved.rejected, (state,action)=>{
+                state.stateLikedPost.loading = false
+                state.stateLikedPost.error = true
+            })
+            .addCase(postCreateSaved.pending, (state,action) => {
+                state.stateLikedPost.loading = true
+                state.stateLikedPost.error = null
+            })
+        builder
             .addCase(verifieldInteraction.fulfilled, (state,action) => {
                 let data={}
                 if (action.payload.details) {
@@ -153,6 +209,26 @@ export const Landing = createSlice({
             .addCase(verifieldInteraction.pending, (state,action) => {
                 state.stateLikedPost.loading = true
                 state.stateLikedPost.error = null
+            })
+        builder
+            .addCase(verifieldSaveds.fulfilled, (state,action) => {
+                let data = {}
+                if (action.payload.details) {
+                    data = action.payload.details
+                    state.saved = data
+                    state.stateSavedVerifield.loading = false
+                } else {
+                    state.saved = action.payload
+                    state.stateSavedVerifield.loading = false
+                }
+            })
+            .addCase(verifieldSaveds.rejected, (state, action) => {
+                state.stateSavedVerifield.loading = false
+                state.stateSavedVerifield.error = true
+            })
+            .addCase(verifieldSaveds.pending, (state,action) => {
+                state.stateSavedVerifield.loading = true
+                state.stateSavedVerifield.error = null
             })
     }
 })

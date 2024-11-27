@@ -21,6 +21,7 @@ export default function CardsdownTree({bussinessAll}) {
                         onClick={() => {
                             dispatch(changeStateRecomend(false))
                             dispatch(changeStateBusinessUser(false))
+                            dispatch(changeStateSavedUser(false))
                         }}
                     >
                         <FaAngleLeft className="text-[#100E80] text-3xl"/>

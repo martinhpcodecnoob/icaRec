@@ -12,14 +12,12 @@ export const validationSchema = Yup.object().shape({
   sex: Yup.string()
     .oneOf(['Hombre', 'Mujer'], 'Debes seleccionar una opción de género.')
     .required('Debes seleccionar tu sexo.'),
-  documentType: Yup.string()
-    .notOneOf(['default'], 'Selecciona un tipo de documento')
+    documentType: Yup.string()
+    .oneOf(['default', 'DNI'], 'Selecciona un tipo de documento válido')
     .required('El tipo de documento es obligatorio'),
-  documentNumber: Yup.number()
-    .integer('El número de documento debe ser un número entero')
-    .positive('El número de documento debe ser positivo')
-    .typeError('El número de documento es obligatorio')
-    .required('El número de documento es obligatorio'),
+  documentNumber: Yup.string()
+    .nullable() // Permite que sea null o vacío
+    .matches(/^\d*$/, 'El número de documento debe ser un número entero positivo'),
   phoneNumber: Yup.number()
     .integer('El celular debe ser un número entero')
     .positive('El celular debe ser positivo')
@@ -43,13 +41,11 @@ export const validationSchema = Yup.object().shape({
 
 export const validationSchemaWithoutCredentials = Yup.object().shape({
   documentType: Yup.string()
-    .notOneOf(['default'], 'Selecciona un tipo de documento')
+    .oneOf(['default', 'DNI'], 'Selecciona un tipo de documento válido')
     .required('El tipo de documento es obligatorio'),
-  documentNumber: Yup.number()
-    .integer('El número de documento debe ser un número entero')
-    .positive('El número de documento debe ser positivo')
-    .typeError('El número de documento es obligatorio')
-    .required('El número de documento es obligatorio'),
+  documentNumber: Yup.string()
+    .nullable() // Permite que sea null o vacío
+    .matches(/^\d*$/, 'El número de documento debe ser un número entero positivo'),
   phoneNumber: Yup.number()
     .integer('El celular debe ser un número entero')
     .positive('El celular debe ser positivo')

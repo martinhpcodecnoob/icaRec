@@ -24,6 +24,7 @@ import CardsdownTwo from "@/components/Cards/CardsdownTwo";
 import CardsdownTree from "@/components/Cards/CardsdownTree";
 import ModalDelete from "@/components/Modals/ModalDelete";
 import BtnWhassapLanding from "@/components/Buttons/BtnWhassapLanding";
+import CardsdownFour from "@/components/Cards/CardsdownFour";
 
 const LandingPage = ({ dataBusiness }) => {
   const router = useRouter();
@@ -40,11 +41,17 @@ const LandingPage = ({ dataBusiness }) => {
   const stateShowBusinessUser = useSelector(
     (state) => state.landingTwo.stateShowBusinessUser
   );
+  const stateSavedUser = useSelector(
+    (state) => state.landingTwo.stateShowSavedUser
+  );
   const updateStateRecomendUser = useSelector(
     (state) => state.landingTwo.updateStateRecomendUser
   );
   const updateStateBusinessUser = useSelector(
     (state) => state.landingTwo.updateStateBusinessUser
+  );
+  const updateStateSavedUser = useSelector(
+    (state) => state.landingTwo.updateStateSavedUser
   );
   const userIdDeleteSelectBusiness = useSelector(
     (state) => state.landingTree.deleteBussinessByUser.userIdDeleteSelect
@@ -52,7 +59,8 @@ const LandingPage = ({ dataBusiness }) => {
 
   const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
-
+  // console.log('Esta es la SESSION: ',session);
+  
   useEffect(() => {
     dispatch(extractAllBusiness(dataBusiness.businesses));
     if (error === "OAuthAccountNotLinked") {
@@ -167,6 +175,11 @@ const LandingPage = ({ dataBusiness }) => {
           ¿En qué te puedo ayudar?
         </div>
           {
+            stateSavedUser ?
+              (
+                <CardsdownFour bussinessAll={updateStateSavedUser}/>
+              )
+              :
             stateShowRecomendUser ?
               (
                 <CardsdownTree bussinessAll={updateStateRecomendUser}/>

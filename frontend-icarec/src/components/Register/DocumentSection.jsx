@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { Controller } from 'react-hook-form'
 
-const DocumentSection = ({control, errors, setValue, getValues}) => {
+const DocumentSection = ({control, errors, setValue, getValues, clearErrors}) => {
 
   const [showDocumentTypeInput, setShowDocumentTypeInput] = useState(false)
 
@@ -19,12 +19,13 @@ const DocumentSection = ({control, errors, setValue, getValues}) => {
 
     if (selectedValue === 'default') {
       setValue('documentNumber', '')
+      clearErrors('documentNumber')
     }
   }
 
   return (
     <div className='w-full mb-2'>
-      <span className='text-[#100e80] font-semibold'>Tipo de documento: </span>
+      <span className='text-[#100e80] font-semibold'>Tipo de documento (Opcional): </span>
       <div className='grid grid-cols-4'>
         {showDocumentTypeInput ? (
           //Cuando el showDocumentTypeInput es true:
@@ -42,6 +43,7 @@ const DocumentSection = ({control, errors, setValue, getValues}) => {
                     onChange={(e) => {
                       field.onChange(e)
                       handleDocumentTypeChange(e)
+                      setShowDocumentTypeInput(e.target.value !== 'default')
                     }}
                   >
                     {documentTypeOptions}

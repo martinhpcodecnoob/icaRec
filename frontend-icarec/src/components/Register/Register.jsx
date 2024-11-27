@@ -38,6 +38,7 @@ const RegisterForm = () => {
     formState: { errors },
     setValue,
     getValues,
+    clearErrors
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
@@ -126,6 +127,7 @@ const RegisterForm = () => {
           errors={errors}
           setValue={setValue}
           getValues={getValues}
+          clearErrors={clearErrors}
         />
         <PhoneSection
           control={control}

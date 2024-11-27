@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { usePopper } from 'react-popper';
 import ExtractUsersButton from '../ExtractUsersButton';
-import { changeStateBusinessUser, changeStateRecomend, getBusinessByUser, getRecommendedBusinesses } from '@/redux/Slices/sliceLandingTwo';
+import { changeStateBusinessUser, changeStateRecomend, changeStateSavedUser, getBusinessByUser, getRecommendedBusinesses, getSavedByUser } from '@/redux/Slices/sliceLandingTwo';
 import { useDispatch } from 'react-redux';
 import { changeTypeBusinessORecomend } from '@/redux/Slices/sliceLandingTree';
 
@@ -64,6 +64,7 @@ export default function Popbuttons({viewPopover=false, creeateBusinness, closeSe
                                 }))
                                 dispatch(changeTypeBusinessORecomend('business'))
                                 dispatch(changeStateRecomend(false))
+                                dispatch(changeStateSavedUser(false))
                                 dispatch(changeStateBusinessUser(true))
                             }
                         }} className="w-full flex px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Ver mis Negocios</button>
@@ -79,9 +80,30 @@ export default function Popbuttons({viewPopover=false, creeateBusinness, closeSe
                                 }))
                                 dispatch(changeTypeBusinessORecomend('recomend'))
                                 dispatch(changeStateBusinessUser(false))
+                                dispatch(changeStateSavedUser(false))
                                 dispatch(changeStateRecomend(true))
                             }
                         }} className="w-full flex px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Ver mis Recomendaciones</button>
+                    </li>
+                    <li>
+                        <button
+                            onClick={() => {
+                                if (session?.user) {
+                                    const {userId,token} = session?.user
+                                    dispatch(getSavedByUser({
+                                        userId,
+                                        accessToken:token
+                                    }))
+                                    dispatch(changeTypeBusinessORecomend('saveds'))
+                                    dispatch(changeStateBusinessUser(false))
+                                    dispatch(changeStateRecomend(false))
+                                    dispatch(changeStateSavedUser(true))
+                                }
+                            }}
+                            className='w-full flex px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]'
+                        >
+                            Guardados
+                        </button>
                     </li>
                     <li>
                         <button onClick={closeSession} className="w-full flex px-4 py-2 hover:bg-gray-100 focus:bg-[#FAE3A3]">Cerrar sesion</button>

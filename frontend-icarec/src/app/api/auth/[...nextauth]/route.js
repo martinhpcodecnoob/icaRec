@@ -33,7 +33,7 @@ const handler = NextAuth({
           password: { label: "Password", type: "password", placeholder: "Contraseña ..." }
         },
         async authorize(credentials, req) {
-          console.log("URL DEL BACKEND EN EL FRONT: ", process.env.NEXT_PUBLIC_BACKEND_URI)
+          // console.log("URL DEL BACKEND EN EL FRONT: ", process.env.NEXT_PUBLIC_BACKEND_URI)
           const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/auth/login`, {
             method: 'POST',
             headers: {
@@ -103,7 +103,7 @@ const handler = NextAuth({
         }
       },
        async jwt({ token, account, user, trigger, session, isNewUser }) {
-        console.log("El usuario es nuevo? ", isNewUser)
+        // console.log("El usuario es nuevo? ", isNewUser)
         if(trigger === 'update'){
           if(session.user.newToken){
             token.userToken = session.user.newToken
@@ -117,7 +117,7 @@ const handler = NextAuth({
           token.role = user.role  
         }
         if (isNewUser) {
-          console.log("Este es el id del usuario en el trigger: ", user)
+          // console.log("Este es el id del usuario en el trigger: ", user)
           await sendUserWelcomeEmail(user.id)
         }
         if (account) {

@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { BiSolidLike,BiSolidDislike } from "react-icons/bi";
 import { useDispatch, useSelector } from 'react-redux';
 import { Spinner } from 'flowbite-react';
-import { getBusinessByUser } from '@/redux/Slices/sliceLandingTwo';
+import { getBusinessByUser, getSavedByUser } from '@/redux/Slices/sliceLandingTwo';
 
 export default function ModalDelete({activated = false}) {
     const dispatch = useDispatch()
@@ -25,6 +25,8 @@ export default function ModalDelete({activated = false}) {
         (state) => state.landingTree.deleteBussinessByUser.userIdDeleteSelect
     )
     useEffect(() => {
+        //caundo termina de borrar en el back del lado del front 
+        //el estado de deleteBussinessByUser se limpiara
         if (loadDeleteBusiness === false && fulfilledDeleteBusiness && userIdDeleteSelect) {
             dispatch(catchDeleteBussiness(null))
             dispatch(resetdeleteBussinessByUser())
@@ -32,6 +34,15 @@ export default function ModalDelete({activated = false}) {
                 if (session?.user) {
                     const {userId,token} = session?.user
                     dispatch(getBusinessByUser({
+                        userId,
+                        accessToken:token
+                    }))
+                }
+            }
+            if (typeBusinessORecomend === 'saveds') {
+                if (session?.user) {
+                    const {userId,token} = session?.user
+                    dispatch(getSavedByUser({
                         userId,
                         accessToken:token
                     }))
@@ -75,7 +86,8 @@ export default function ModalDelete({activated = false}) {
                                                 dispatch(deleteBusiness({
                                                     businessId:userIdDeleteSelectBusiness,
                                                     userId,
-                                                    accessToken:token
+                                                    accessToken:token,
+                                                    typeBusinessORecomend
                                                 }))
                                             }
                                         }}

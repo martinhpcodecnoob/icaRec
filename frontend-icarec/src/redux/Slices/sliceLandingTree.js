@@ -2,23 +2,39 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { uriBack } from "./sliceLandingTwo";
 export const deleteBusiness = createAsyncThunk(
     'deleteBusiness',
-    async({businessId,userId,accessToken}) => {
+    async({businessId,userId,accessToken,typeBusinessORecomend}) => {
         try {
-            const response = await fetch(`${uriBack}/api/business/deleteBusiness/${userId}?businessId=${businessId}`,{
-                method:'DELETE',
-                headers:{
-                    'Content-Type':'application/json',
+            const endpoints = {
+                business: `${uriBack}/api/business/deleteBusiness/${userId}?businessId=${businessId}`,
+                saveds: `${uriBack}/api/savedbusiness/deleteSavedBusiness/${userId}?businessId=${businessId}`
+            };
+        
+            if (!endpoints[typeBusinessORecomend]) {
+                throw Error('Tipo de negocio no válido');
+            }
+        
+            const response = await fetch(endpoints[typeBusinessORecomend], {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
                     'Authorization': `${accessToken}`
                 }
-            })
-            const data = await response.json()
-            if (response.status === 200 || response.status === 304) {
-                return{
+            });
+        
+            const data = await response.json();
+        
+            if ([200, 304].includes(response.status)) {
+                return {
                     status: response.status,
                     data
-                }
+                };
             }
-            throw Error(data.message)
+        
+            if (data.message) {
+                throw Error(data.message);
+            }
+        
+            throw Error('Error en la petición');
         } catch (error) {
             console.error("Error del servidor al extraer los negocios de los usuarios", error)
             throw error
@@ -39,10 +55,12 @@ export const LandingTree = createSlice({
     },
     reducers:{
         catchDeleteBussiness:(state,action) => {
+            console.log("Probando el action delete: ",action);
+            
             state.deleteBussinessByUser.userIdDeleteSelect = action.payload
         },
         changeTypeBusinessORecomend:(state,action) => {
-            if (action.payload === 'recomend' || action.payload === 'business') {
+            if (['recomend', 'business', 'saveds'].includes(action.payload)) {
                 state.deleteBussinessByUser.typeBusinessORecomend = action.payload
             }else{
                 console.log("Debes poner de un tipo especifico");

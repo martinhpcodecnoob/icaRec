@@ -13,6 +13,7 @@ import ButtonRecomend from './Modals/ButtonRecomend';
 import ButtonShareLink from './Modals/ButtonShareLink';
 import ButtonRecomendLink from './Modals/ButtonRecomendLink';
 import { eliminarEspacios } from '../../utils/functionsUtil';
+import ButtonSaved from './Modals/ButtonSaved';
 
 const BusinessSubComponent = ({
                                 inputForm,showButton=true,
@@ -35,8 +36,9 @@ const BusinessSubComponent = ({
         {
           showRecomendInteraction ? 
             (
-              <div className='lg:hidden'>
+              <div className='lg:hidden flex justify-around smartphone:flex-col smartphone:w-auto smartphone:space-y-2 w-full'>
                 <ButtonRecomend paramsIdBusiness={inputForm._id}/>
+                <ButtonSaved paramsIdBusiness={inputForm._id}/>
               </div>
             )
             :

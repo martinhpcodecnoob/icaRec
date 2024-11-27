@@ -123,10 +123,10 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
                             .then((action) => {
                                 const {errorBolean,message} = action.payload
                                 if (!errorBolean) {
-                                    console.log(message);
+                                    // console.log(message);
                                     return
                                 }
-                                console.log(message);
+                                // console.log(message);
                                 return
                             })
                             .catch(err => console.log("Error desde dispatch destroy: ",err))
@@ -139,7 +139,7 @@ export default function MyBusiness({servicess,formatDataIdBusiness=undefined,use
             } else {
                 createBusinessVar =await dispatch(createBusiness({userId:data?.user?.userId, business:inputForm, accessToken: data?.user?.token}))
                     .then(response => {
-                        console.log(response);
+                        // console.log(response);
                         if (response.error) {
                             throw Error(`${response.error.message}`)
                         }

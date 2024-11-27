@@ -28,18 +28,20 @@ const RegisterWC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
-      handleSubmit(onSubmit)()
+      // handleSubmit(onSubmit)()
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-  const { handleSubmit, control, formState: { errors }, setValue, getValues } = useForm({
+  const { handleSubmit, control, formState: { errors }, setValue, getValues, clearErrors } = useForm({
       resolver: yupResolver(validationSchemaWithoutCredentials),
   })
+  console.log('errors formulario',errors);
   
   const onSubmit = async(data) => {
 
     setIsSubmitting(true)
-
+    // console.log('data de foremulario: ',data);
+    
     const {sex, documentNumber, phoneNumber, phoneCode} = data
     const fullPhoneNumber = `+${phoneCode} ${phoneNumber}`
     try {
@@ -67,6 +69,8 @@ const RegisterWC = () => {
       //Podria hacer que la pantallad error reciba un string de props para poder mostrar un mejor manejo de errores
       return <ErrorScreen />
     }finally {
+      // console.log('Prueba el submiting en false');
+      
       setIsSubmitting(false)
     }
   }
@@ -76,7 +80,7 @@ const RegisterWC = () => {
       <form className='flex flex-col justify-center items-center sm:w-1/2 md:w-1/4' onSubmit={handleSubmit(onSubmit)}>
         <DeleteAccountButton userId={session?.user?.userId} accessToken={session?.user?.token}/>
         <RegistrationInfo title={"Ya casi terminamos"}/>
-        <DocumentSection control={control} errors={errors} setValue={setValue} getValues={getValues} />
+        <DocumentSection control={control} errors={errors} setValue={setValue} getValues={getValues} clearErrors={clearErrors}/>
         <PhoneSection control={control} errors={errors} setValue={setValue} getValues={getValues}/>
         <SexCheckBoxes control={control} errors={errors} setValue={setValue} getValues={getValues} />
         <RegistrationButton isSubmitting={isSubmitting} />
