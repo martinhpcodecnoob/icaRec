@@ -25,7 +25,7 @@ export default function ModalDelete({activated = false}) {
         (state) => state.landingTree.deleteBussinessByUser.userIdDeleteSelect
     )
 
-    let messageDelete = typeBusinessORecomend === 'saved' ? 'Se eliminara de tus guardados' : 'Vas a eliminar un Negocio'
+    let messageDelete = typeBusinessORecomend === 'saveds' ? 'Se eliminara de tus guardados' : 'Vas a eliminar un Negocio'
     useEffect(() => {
         //caundo termina de borrar en el back del lado del front 
         //el estado de deleteBussinessByUser se limpiara
