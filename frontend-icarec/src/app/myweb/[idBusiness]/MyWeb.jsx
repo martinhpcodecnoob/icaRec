@@ -11,6 +11,7 @@ import Link from "next/link";
 import ButtonLinkRedirect from "@/components/Modals/ButtonLinkRedirect";
 import ButtonKuskana from "@/components/Modals/ButtonKuskana";
 import ButtonSaved from "@/components/Modals/ButtonSaved";
+import PopupContainer from "@/components/Login/PopupContainer";
 
 export default function MyWeb({myBusiness}) {
     if (myBusiness === undefined) {
@@ -74,6 +75,7 @@ export default function MyWeb({myBusiness}) {
                 </div>
             </div>
             <ToastContainer position="top-center" theme="light"/>
+            <PopupContainer />
         </div>
     )
 }

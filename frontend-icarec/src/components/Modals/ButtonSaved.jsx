@@ -8,6 +8,8 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react"
 import { Spinner } from 'flowbite-react';
 import { toast } from 'react-toastify';
+import { openExternalLogin } from "@/redux/Slices/popupSlice";
+import { logEvent } from "../../../utils/utils";
 // import { useRouter } from 'next/navigation';
 
 export default function ButtonSaved({paramsIdBusiness}) {
@@ -47,6 +49,8 @@ export default function ButtonSaved({paramsIdBusiness}) {
     const handleSaved = () => {
         if (!session) {
             toast.error("Registrate primero para guardar")
+            logEvent("press_login_button");
+            dispatch(openExternalLogin());
             // router.push('/newUser');
         }
         if (session && status === 'authenticated') {
